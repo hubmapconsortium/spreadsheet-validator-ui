@@ -1,4 +1,4 @@
-name: Triage
+name: Bug Report
 description: A new bug report that should be reviewed by the developer
 title: "[Bug]: "
 labels: ["bug", "triage"]
