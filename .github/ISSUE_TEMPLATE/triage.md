@@ -2,7 +2,8 @@
 name: Triage
 about: A new bug report that should be reviewed by the developer
 title: 'triage:'
-labels: triage
+labels: ''
+assignees: ''
 
 ---
 
