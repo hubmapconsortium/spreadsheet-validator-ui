@@ -1,21 +1,52 @@
----
 name: Triage
-about: A new bug report that should be reviewed by the developer
-title: 'triage:'
-labels: ''
-assignees: ''
-
----
-
-### Describe the issue (in 2-3 sentences)
-
-### Steps to Reproduce
-1.
-2.
-3.
-
-### Expected behavior
-
-### (Optional) Screenshots or Stack traces
-
-### (Optional) Environment
+description: A new bug report that should be reviewed by the developer
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees:
+  - johardi
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Describe the issue
+      placeholder: Tell us what you see in 1-3 sentences.
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - Other
+      validations:
+        required: true
+  - type: textarea
+    id: reproduce-steps
+    attributes:
+      label: Steps to reproduce the issue
+      description: Please briefly narrate the steps to get the error.
+      placeholder: Guide us to reproduce your bad experience.
+      value: |
+        1. 
+        2. 
+        3. 
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: What is the expected behavior?
+      placeholder: Please tell us what did you expect to happen.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
