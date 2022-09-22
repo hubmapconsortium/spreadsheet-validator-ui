@@ -27,8 +27,8 @@ body:
         - Safari
         - Microsoft Edge
         - Other
-      validations:
-        required: true
+    validations:
+      required: true
   - type: textarea
     id: reproduce-steps
     attributes:
