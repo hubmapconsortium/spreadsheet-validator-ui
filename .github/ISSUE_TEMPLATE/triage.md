@@ -1,20 +1,20 @@
 ---
 name: Triage
-about: New bug reports that should be reviewed by developer
+about: A new bug report that should be reviewed by the developer
 title: 'triage:'
 labels: triage
-# TODO: assignees: ???
 
 ---
 
-**TODO**: Decide which of these are relevant for your repo, and whether more precise questions should be asked.
+### Describe the issue (in 2-3 sentences)
 
-### Describe the issue
-
-### To Reproduce
+### Steps to Reproduce
+1.
+2.
+3.
 
 ### Expected behavior
 
-### Screenshots / Stack traces
+### (Optional) Screenshots or Stack traces
 
-### Environment
+### (Optional) Environment
