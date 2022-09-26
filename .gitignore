@@ -1,1 +1,4 @@
-# TODO: Language dependent.
+node_modules
+build
+
+.DS_Store
