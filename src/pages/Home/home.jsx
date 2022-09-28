@@ -11,6 +11,7 @@ const LogoBox = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
   height: 'calc(100% - 600px)',
+  minHeight: '250px',
   img: {
     width: '700px',
     marginTop: 'auto',
