@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, styled } from '@mui/material';
 import { FilePond } from 'react-filepond';
 import Container from '../../styles/Container';
@@ -35,6 +36,7 @@ const SubmitBox = styled(Box)({
 
 const Home = () => {
   const [file, setFile] = useState();
+  const navigate = useNavigate();
   return (
     <Container>
       <LogoBox>
@@ -55,7 +57,7 @@ const Home = () => {
         />
       </InputSection>
       <SubmitBox>
-        <Button variant="contained" size="large">Start Validating</Button>
+        <Button variant="contained" size="large" onClick={() => navigate('dashboard')}>Start Validating</Button>
       </SubmitBox>
     </Container>
   );
