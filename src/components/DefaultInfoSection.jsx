@@ -8,10 +8,11 @@ const InfoSection = styled(Section)({
 
 const ChangeButton = styled(Button)({
   fontSize: '8pt',
-  height: '25px',
+  height: '30px',
   position: 'relative',
   left: '8px',
-  bottom: '3px',
+  bottom: '2px',
+  borderRadius: '20px',
 });
 
 const DefaultInfoSection = () => {
@@ -23,7 +24,7 @@ const DefaultInfoSection = () => {
       <InfoBox>
         Spreadsheet is uploaded from&nbsp;
         {spreadsheetUrl}
-        <ChangeButton variant="contained">Change</ChangeButton>
+        <ChangeButton variant="contained" disableElevation="true">Change</ChangeButton>
       </InfoBox>
       <InfoBox>
         Spreadsheet is validated against&nbsp;
