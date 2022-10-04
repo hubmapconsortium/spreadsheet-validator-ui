@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Collapse, List, ListItemButton, ListItemText, ListSubheader, styled } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -6,6 +7,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { ERROR_FOUND, ERROR_NOT_FOUND } from '../../constants/Status';
+import { GREEN, LIGHT_GRAY, RED } from '../../constants/Color';
 
 const MenuItem = styled(ListItemButton)({
   paddingLeft: '30px',
@@ -13,13 +15,13 @@ const MenuItem = styled(ListItemButton)({
   width: '380px',
   height: '5vw',
   '&:hover': {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: LIGHT_GRAY,
   },
   '&:active': {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: LIGHT_GRAY,
   },
   '&.Mui-selected': {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: LIGHT_GRAY,
   },
 });
 
@@ -40,13 +42,13 @@ const SubMenuItem = styled(ListItemButton)({
   paddingLeft: '50px',
   paddingRight: '30px',
   '&:hover': {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: LIGHT_GRAY,
   },
   '&:active': {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: LIGHT_GRAY,
   },
   '&.Mui-selected': {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: LIGHT_GRAY,
   },
 });
 
@@ -58,16 +60,20 @@ const SubMenuItemText = styled(ListItemText)({
 
 const ErrorStatusIcon = styled(ErrorIcon)({
   verticalAlign: 'middle',
-  color: '#da0e4b',
+  color: RED,
 });
 
 const NoErrorStatusIcon = styled(CheckCircleIcon)({
   verticalAlign: 'middle',
-  color: '#7cd32f',
+  color: GREEN,
 });
 
-const NestedMenuItem = ({ icon, title, onClick, subMenu }) => {
+const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate(navigateTo);
+  };
   const openSubMenus = () => {
     setOpen(!open);
   };
@@ -85,7 +91,7 @@ const NestedMenuItem = ({ icon, title, onClick, subMenu }) => {
             subheader={<SubMenuTitle>{subMenu.title}</SubMenuTitle>}
           >
             {subMenu.items.map((subMenuItem) => (
-              <SubMenuItem onClick={subMenuItem.onClick}>
+              <SubMenuItem onClick={() => navigate(subMenuItem.navigateTo)}>
                 <SubMenuItemText primary={subMenuItem.title} />
                 {subMenuItem.status === ERROR_FOUND ? <ErrorStatusIcon /> : <NoErrorStatusIcon />}
               </SubMenuItem>
@@ -100,13 +106,13 @@ const NestedMenuItem = ({ icon, title, onClick, subMenu }) => {
 NestedMenuItem.propTypes = {
   icon: PropTypes.node,
   title: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  navigateTo: PropTypes.string.isRequired,
   subMenu: PropTypes.shape({
     title: PropTypes.string,
     items: PropTypes.arrayOf(
       PropTypes.shape({
         title: PropTypes.string.isRequired,
-        onClick: PropTypes.func.isRequired,
+        navigateTo: PropTypes.string.isRequired,
         status: PropTypes.oneOf([ERROR_NOT_FOUND, ERROR_FOUND]),
       }),
     ),

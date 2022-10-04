@@ -1,23 +1,24 @@
 import { Stack, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { BLACK } from '../../constants/Color';
 
 const NavLink = styled(Link)({
   fontSize: '14pt',
   fontStyle: 'normal',
   '&:link': {
     textDecoration: 'none',
-    color: '#000000',
+    color: BLACK,
   },
   '&:visited': {
     textDecoration: 'none',
-    color: '#000000',
+    color: BLACK,
   },
   '&:hover': {
     textDecoration: 'none',
   },
   '&:active': {
     textDecoration: 'none',
-    color: '#000000',
+    color: BLACK,
   },
 });
 

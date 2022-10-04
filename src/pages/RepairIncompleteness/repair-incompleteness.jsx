@@ -1,14 +1,17 @@
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import Section from '../../styles/Section';
+import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 
 const RepairIncompleteness = () => {
-  const title = 'Repair Incompleteness';
   const subtitle = '12 out of 99 metadata rows were incomplete.';
   return (
     <>
       <Section>
-        <PageTitle title={title} subtitle={subtitle} />
+        <PageTitle
+          title={REPAIR_INCOMPLETENESS}
+          subtitle={subtitle}
+        />
       </Section>
       <DefaultInfoSection />
     </>

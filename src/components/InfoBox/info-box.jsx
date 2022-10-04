@@ -1,6 +1,7 @@
 import { Typography, styled } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
+import { BLUE } from '../../constants/Color';
 
 const InfoText = styled(Typography)({
   fontFamily: 'Roboto',
@@ -9,7 +10,7 @@ const InfoText = styled(Typography)({
 
 const InfoIcon = styled(InfoOutlinedIcon)({
   verticalAlign: 'middle',
-  color: '#3e80c3',
+  color: BLUE,
   minWidth: '35px',
 });
 

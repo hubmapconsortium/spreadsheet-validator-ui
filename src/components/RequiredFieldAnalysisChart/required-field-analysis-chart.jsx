@@ -1,8 +1,8 @@
 import { styled, Typography } from '@mui/material';
-import { LIGHT_GRAY } from '../../constants/Color';
 import Card from '../../styles/Card';
 import Section from '../../styles/Section';
 import TableStackedBar from '../TableStackedBar';
+import { DARK_GRAY } from '../../constants/Color';
 
 const ChartCard = styled(Card)({
   width: '75%',
@@ -28,7 +28,7 @@ const Title = styled(Typography)({
 const SubTitle = styled(Typography)({
   fontFamily: 'Roboto',
   fontSize: '17pt',
-  color: LIGHT_GRAY,
+  color: DARK_GRAY,
 });
 
 // eslint-disable-next-line react/prop-types
