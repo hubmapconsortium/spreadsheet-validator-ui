@@ -1,18 +1,18 @@
-import { Box, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import { Outlet } from 'react-router-dom';
+import Container from '../../styles/Container';
 import './content-area.css';
 
-const PageSpace = styled(Box)({
+const PageContainer = styled(Container)({
   width: '90vw',
-  height: '90vh',
   padding: '50px',
   backgroundColor: '#f2f2f2',
 });
 
 const ContentArea = () => (
-  <PageSpace>
+  <PageContainer>
     <Outlet />
-  </PageSpace>
+  </PageContainer>
 );
 
 export default ContentArea;
