@@ -2,6 +2,10 @@ import { Button, Link, styled } from '@mui/material';
 import Section from '../styles/Section';
 import InfoBox from './InfoBox';
 
+const InfoSection = styled(Section)({
+  marginBottom: '20px',
+});
+
 const ChangeButton = styled(Button)({
   fontSize: '8pt',
   height: '25px',
@@ -15,7 +19,7 @@ const DefaultInfoSection = () => {
   const templateUrl = 'https://cedar.metadatacenter.org/templates/edit/https://repo.metadatacenter.org/templates/87046e67-c2da-40ac-be3c-f3e6c818ecc1';
   const templateName = 'Sample Section Specification v1.0';
   return (
-    <Section>
+    <InfoSection>
       <InfoBox>
         Spreadsheet is uploaded from&nbsp;
         {spreadsheetUrl}
@@ -32,7 +36,7 @@ const DefaultInfoSection = () => {
           {templateName}
         </Link>
       </InfoBox>
-    </Section>
+    </InfoSection>
   );
 };
 
