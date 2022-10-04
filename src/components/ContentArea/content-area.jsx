@@ -1,7 +1,6 @@
 import { styled } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Container from '../../styles/Container';
-import './content-area.css';
 
 const PageContainer = styled(Container)({
   width: '90vw',

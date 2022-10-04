@@ -1,7 +1,6 @@
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import Section from '../../styles/Section';
-import './repair-inconsistency.css';
 
 const RepairInconsistency = () => {
   const title = 'Repair Inconsistency';

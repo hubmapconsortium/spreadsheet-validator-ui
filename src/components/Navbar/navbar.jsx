@@ -1,6 +1,5 @@
 import { Stack, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
-import './navbar.css';
 
 const NavLink = styled(Link)({
   fontSize: '14pt',

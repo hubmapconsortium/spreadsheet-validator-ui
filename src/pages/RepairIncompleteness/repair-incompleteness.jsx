@@ -1,7 +1,6 @@
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import Section from '../../styles/Section';
-import './repair-incompleteness.css';
 
 const RepairIncompleteness = () => {
   const title = 'Repair Incompleteness';

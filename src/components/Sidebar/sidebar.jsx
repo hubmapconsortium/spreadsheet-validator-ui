@@ -6,7 +6,6 @@ import NestedMenuItem from '../NestedMenuItem';
 import logo from '../../logo.svg';
 import Container from '../../styles/Container';
 import { ERROR_FOUND, ERROR_NOT_FOUND } from '../../constants/Status';
-import './sidebar.css';
 
 const LogoSection = styled(Box)({
   display: 'flex',
