@@ -1,10 +1,48 @@
 import { GREEN, RED } from './Color';
 import { ERROR_FOUND, ERROR_NOT_FOUND } from './Status';
 
+export const REPAIR_INCOMPLETENESS_BADGE_DATA = {
+  items: [{
+    title: 'sample_ID',
+    caption: 'Value missing in 17 rows',
+    status: ERROR_FOUND,
+    navigateTo: 'overview',
+    helpText: 'The unique Submission ID for the sample assigned by the ingest portal. An example value might be "VAN0010-LK-152-162".',
+  },
+  {
+    title: 'storage_medium',
+    caption: 'Value missing in 0 rows',
+    status: ERROR_NOT_FOUND,
+    navigateTo: 'overview',
+    helpText: 'What was the sample preserved in.',
+  },
+  {
+    title: 'storage_temperature',
+    caption: 'Value missing in 8 rows',
+    status: ERROR_FOUND,
+    navigateTo: 'overview',
+    helpText: 'The temperature during storage, after preparation and before the assay is performed.',
+  },
+  {
+    title: 'section_index_number',
+    caption: 'Value missing in 5 rows',
+    status: ERROR_FOUND,
+    navigateTo: 'overview',
+    helpText: 'The index number for the section if the sample is a single section.',
+  },
+  {
+    title: 'section_thickness_unit',
+    caption: 'Value missing in 5 rows',
+    status: ERROR_FOUND,
+    navigateTo: 'overview',
+    helpText: 'Thickness unit.',
+  }],
+};
+
 export const REPAIR_INCOMPLETENESS_SUBMENU_DATA = {
   title: 'Types of Error',
   items: [{
-    title: 'Missing Sample_ID',
+    title: 'Missing sample_ID',
     status: ERROR_FOUND,
     navigateTo: 'overview',
   },
