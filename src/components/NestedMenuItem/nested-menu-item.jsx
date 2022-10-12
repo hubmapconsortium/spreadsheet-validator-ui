@@ -7,7 +7,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { ERROR_FOUND, ERROR_NOT_FOUND } from '../../constants/Status';
-import { GREEN, LIGHT_GRAY, RED } from '../../constants/Color';
+import { GREEN, LIGHTER_GRAY, RED } from '../../constants/Color';
 
 const MenuItem = styled(ListItemButton)({
   paddingLeft: '30px',
@@ -15,13 +15,13 @@ const MenuItem = styled(ListItemButton)({
   width: '380px',
   height: '5vw',
   '&:hover': {
-    backgroundColor: LIGHT_GRAY,
+    backgroundColor: LIGHTER_GRAY,
   },
   '&:active': {
-    backgroundColor: LIGHT_GRAY,
+    backgroundColor: LIGHTER_GRAY,
   },
   '&.Mui-selected': {
-    backgroundColor: LIGHT_GRAY,
+    backgroundColor: LIGHTER_GRAY,
   },
 });
 
@@ -42,13 +42,13 @@ const SubMenuItem = styled(ListItemButton)({
   paddingLeft: '50px',
   paddingRight: '30px',
   '&:hover': {
-    backgroundColor: LIGHT_GRAY,
+    backgroundColor: LIGHTER_GRAY,
   },
   '&:active': {
-    backgroundColor: LIGHT_GRAY,
+    backgroundColor: LIGHTER_GRAY,
   },
   '&.Mui-selected': {
-    backgroundColor: LIGHT_GRAY,
+    backgroundColor: LIGHTER_GRAY,
   },
 });
 

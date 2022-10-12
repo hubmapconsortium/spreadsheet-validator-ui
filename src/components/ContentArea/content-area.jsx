@@ -1,12 +1,12 @@
 import { styled } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Container from '../../styles/Container';
-import { LIGHT_GRAY } from '../../constants/Color';
+import { LIGHTER_GRAY } from '../../constants/Color';
 
 const PageContainer = styled(Container)({
   width: '90vw',
   padding: '50px',
-  backgroundColor: LIGHT_GRAY,
+  backgroundColor: LIGHTER_GRAY,
 });
 
 const ContentArea = () => (
