@@ -7,6 +7,7 @@ import Help from './pages/Help';
 import Dashboard from './pages/Dashboard';
 import Overview from './pages/Overview';
 import RepairIncompleteness from './pages/RepairIncompleteness';
+import RepairIncompletenessWorkspace from './pages/RepairIncompletenessWorkspace';
 import RepairInconsistency from './pages/RepairInconsistency';
 
 const DefaultContainer = () => (
@@ -33,6 +34,7 @@ const App = () => (
           <Route index element={<Navigate to="overview" replace />} />
           <Route path="overview" element={<Overview />} />
           <Route path="repair-incompleteness" element={<RepairIncompleteness />} />
+          <Route path="repair-incompleteness/:id" element={<RepairIncompletenessWorkspace />} />
           <Route path="repair-inconsistency" element={<RepairInconsistency />} />
         </Route>
       </Route>
