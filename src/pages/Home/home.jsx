@@ -7,11 +7,19 @@ import logo from '../../logo.svg';
 import 'filepond/dist/filepond.min.css';
 import './home.css';
 
+const HomeContainer = styled(Container)({
+  height: '75vh',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
+const InnerHomeContainer = styled(Container)({
+});
+
 const LogoBox = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
-  height: 'calc(100% - 600px)',
-  minHeight: '250px',
   img: {
     width: '700px',
     marginTop: 'auto',
@@ -26,7 +34,6 @@ const TaglineBox = styled(Box)({
 const InputSection = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center',
   padding: '30px',
 });
 
@@ -39,28 +46,30 @@ const Home = () => {
   const [file, setFile] = useState();
   const navigate = useNavigate();
   return (
-    <Container>
-      <LogoBox>
-        <img src={logo} alt="spreadsheet-validator-logo" />
-      </LogoBox>
-      <TaglineBox>
-        <h2>Upload and submit your spreadsheet file to validate the data</h2>
-      </TaglineBox>
-      <InputSection>
-        <FilePond
-          files={file}
-          onupdatefiles={setFile}
-          allowMultiple={false}
-          server="/api"
-          name="files"
-          labelIdle='Drag & Drop your Excel file or <span class="filepond--label-action">Browse</span>'
-          sx={{ fontSize: '50pt' }}
-        />
-      </InputSection>
-      <SubmitBox>
-        <Button variant="contained" size="large" onClick={() => navigate('dashboard')}>Start Validating</Button>
-      </SubmitBox>
-    </Container>
+    <HomeContainer>
+      <InnerHomeContainer>
+        <LogoBox>
+          <img src={logo} alt="spreadsheet-validator-logo" />
+        </LogoBox>
+        <TaglineBox>
+          <h2>Upload and submit your spreadsheet file to validate the data</h2>
+        </TaglineBox>
+        <InputSection>
+          <FilePond
+            files={file}
+            onupdatefiles={setFile}
+            allowMultiple={false}
+            server="/api"
+            name="files"
+            labelIdle='Drag & Drop your Excel file or <span class="filepond--label-action">Browse</span>'
+            sx={{ fontSize: '50pt' }}
+          />
+        </InputSection>
+        <SubmitBox>
+          <Button variant="contained" size="large" onClick={() => navigate('dashboard')}>Start Validating</Button>
+        </SubmitBox>
+      </InnerHomeContainer>
+    </HomeContainer>
   );
 };
 
