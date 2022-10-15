@@ -34,7 +34,7 @@ const App = () => (
           <Route index element={<Navigate to="overview" replace />} />
           <Route path="overview" element={<Overview />} />
           <Route path="repair-incompleteness" element={<RepairIncompleteness />} />
-          <Route path="repair-incompleteness/:id" element={<RepairIncompletenessWorkspace />} />
+          <Route path="repair-incompleteness/:column" element={<RepairIncompletenessWorkspace />} />
           <Route path="repair-inconsistency" element={<RepairInconsistency />} />
         </Route>
       </Route>
