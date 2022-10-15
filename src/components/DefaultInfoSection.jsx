@@ -24,7 +24,7 @@ const DefaultInfoSection = () => {
       <InfoBox>
         Spreadsheet is uploaded from&nbsp;
         {spreadsheetUrl}
-        <ChangeButton variant="contained" disableElevation="true">Change</ChangeButton>
+        <ChangeButton variant="contained" disableElevation>Change</ChangeButton>
       </InfoBox>
       <InfoBox>
         Spreadsheet is validated against&nbsp;
