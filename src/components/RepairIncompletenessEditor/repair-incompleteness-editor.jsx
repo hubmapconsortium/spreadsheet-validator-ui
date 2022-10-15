@@ -1,9 +1,13 @@
+import { useContext, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled, Table, TableContainer } from '@mui/material';
+import AppContext from '../../pages/AppContext';
 import Card from '../../styles/Card';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
-import { REPAIR_INCOMPLETENESS_HEADER_DATA, SPREADSHEET_DATA, SPREADSHEET_METADATA } from '../../constants/TestData';
+import moveToFront from '../../helpers/array-utils';
 import { LIGHT_GRAY } from '../../constants/Color';
+import filterRowsWithEmptyColumn from '../../helpers/data-utils';
 
 const EditorCard = styled(Card)({
   display: 'flex',
@@ -24,21 +28,35 @@ const EditorContainer = styled(TableContainer)({
   margin: '30px',
 });
 
-const RepairIncompletnessEditor = () => (
-  <EditorCard>
-    <EditorContainer>
-      <EditorTable stickyHeader>
-        <SheetHeader
-          metadata={SPREADSHEET_METADATA}
-          data={REPAIR_INCOMPLETENESS_HEADER_DATA}
-        />
-        <SheetBody
-          metadata={SPREADSHEET_METADATA}
-          data={SPREADSHEET_DATA}
-        />
-      </EditorTable>
-    </EditorContainer>
-  </EditorCard>
-);
+const RepairIncompletnessEditor = () => {
+  const { metadata, data } = useContext(AppContext);
+  const { column } = useParams();
+  const columns = Object.keys(metadata.spreadsheet.columns);
+  const getColumnOrder = useMemo(
+    () => moveToFront(column, columns),
+    [column, columns],
+  );
+  const getIncompleteRows = useMemo(
+    () => filterRowsWithEmptyColumn(column, data),
+    [column, data],
+  );
+  return (
+    <EditorCard>
+      <EditorContainer>
+        <EditorTable stickyHeader>
+          <SheetHeader
+            metadata={metadata}
+            columnOrder={getColumnOrder}
+          />
+          <SheetBody
+            metadata={metadata}
+            data={getIncompleteRows}
+            columnOrder={getColumnOrder}
+          />
+        </EditorTable>
+      </EditorContainer>
+    </EditorCard>
+  );
+};
 
 export default RepairIncompletnessEditor;

@@ -43,17 +43,34 @@ const TextField = ({ type }) => (
   </FormControl>
 );
 
-const SheetHeader = ({ metadata, data }) => (
+const getColumnLabel = (column, metadata) => (
+  metadata.spreadsheet.columns[column].label
+);
+
+const getColumnType = (column, metadata) => (
+  metadata.spreadsheet.columns[column].type
+);
+
+const SheetHeader = ({ metadata, columnOrder }) => (
   <TableHead>
     <TableRow>
-      {data.headers.map((header, index) => (
-        <SheetCell align="center" sticky={index === 0}>
-          <HeaderLabel>{header.label}</HeaderLabel>
-          {header.enableFilter
-            && <FilterTextField type={metadata.columns[index].type} />}
-          {header.enableEditByColumn
-            && <TextField type={metadata.columns[index].type} />}
-        </SheetCell>
+      {columnOrder.map((column, index) => (
+        <>
+          {index === 0
+            && (
+              <SheetCell align="center" sticky>
+                <HeaderLabel>{getColumnLabel(column, metadata)}</HeaderLabel>
+                <TextField type={getColumnType(column, metadata)} />
+              </SheetCell>
+            )}
+          {index !== 0
+            && (
+              <SheetCell align="center">
+                <HeaderLabel>{getColumnLabel(column, metadata)}</HeaderLabel>
+                <FilterTextField type={getColumnType(column, metadata)} />
+              </SheetCell>
+            )}
+        </>
       ))}
     </TableRow>
   </TableHead>
@@ -69,24 +86,18 @@ TextField.propTypes = {
 
 SheetHeader.propTypes = {
   metadata: PropTypes.shape({
-    columns: PropTypes.arrayOf(
-      PropTypes.shape({
-        type: PropTypes.oneOf(TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE).isRequired,
-        categorical: PropTypes.bool.isRequired,
-        possibleValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.object)),
-      }),
-    ),
+    spreadsheet: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      columns: PropTypes.objectOf(
+        PropTypes.shape({
+          label: PropTypes.string.isRequired,
+          type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
+          permissibleValues: PropTypes.objectOf(PropTypes.string),
+        }),
+      ).isRequired,
+    }).isRequired,
   }).isRequired,
-  data: PropTypes.shape({
-    headers: PropTypes.arrayOf(
-      PropTypes.shape({
-        key: PropTypes.string.isRequired,
-        label: PropTypes.string.isRequired,
-        enableFilter: PropTypes.bool.isRequired,
-        enableEditByColumn: PropTypes.bool.isRequired,
-      }),
-    ),
-  }).isRequired,
+  columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default SheetHeader;
