@@ -196,44 +196,6 @@ export const APP_CONTEXT = {
   errorReport: ERROR_REPORT,
 };
 
-export const REPAIR_INCOMPLETENESS_BADGE_DATA = {
-  items: [{
-    title: 'sample_ID',
-    caption: 'Value missing in 17 rows',
-    status: ERROR_FOUND,
-    navigateTo: 'sample_ID',
-    helpText: 'The unique Submission ID for the sample assigned by the ingest portal. An example value might be "VAN0010-LK-152-162".',
-  },
-  {
-    title: 'storage_medium',
-    caption: 'Value missing in 0 rows',
-    status: ERROR_NOT_FOUND,
-    navigateTo: 'storage_medium',
-    helpText: 'What was the sample preserved in.',
-  },
-  {
-    title: 'storage_temperature',
-    caption: 'Value missing in 8 rows',
-    status: ERROR_FOUND,
-    navigateTo: 'storage_temperature',
-    helpText: 'The temperature during storage, after preparation and before the assay is performed.',
-  },
-  {
-    title: 'section_index_number',
-    caption: 'Value missing in 5 rows',
-    status: ERROR_FOUND,
-    navigateTo: 'section_index_number',
-    helpText: 'The index number for the section if the sample is a single section.',
-  },
-  {
-    title: 'section_thickness_unit',
-    caption: 'Value missing in 5 rows',
-    status: ERROR_FOUND,
-    navigateTo: 'section_thickness_unit',
-    helpText: 'Thickness unit.',
-  }],
-};
-
 export const REPAIR_INCONSISTENCY_SUBMENU_DATA = {
   title: 'Types of Error',
   items: [{

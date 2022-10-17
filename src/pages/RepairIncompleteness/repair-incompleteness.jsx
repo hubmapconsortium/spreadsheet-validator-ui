@@ -1,21 +1,25 @@
+import { useContext, useMemo } from 'react';
 import { Grid, styled } from '@mui/material';
+import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairBadge from '../../components/RepairBadge';
 import Section from '../../styles/Section';
+import { buildRepairIncompletenessBadges } from '../../helpers/data-utils';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
-import { REPAIR_INCOMPLETENESS_BADGE_DATA } from '../../constants/TestData';
 
 const RepairBadgeSection = styled(Section)({
   width: '800px',
   padding: '10px 0 0 50px',
 });
 
-const provideData = () => (REPAIR_INCOMPLETENESS_BADGE_DATA);
-
 const RepairIncompleteness = () => {
+  const { errorReport } = useContext(AppContext);
   const subtitle = '12 out of 99 metadata rows were incomplete.';
-  const badgeData = provideData();
+  const getBadgeData = useMemo(
+    () => buildRepairIncompletenessBadges(errorReport),
+    [errorReport],
+  );
   return (
     <>
       <Section>
@@ -27,7 +31,7 @@ const RepairIncompleteness = () => {
       <DefaultInfoSection />
       <RepairBadgeSection>
         <Grid container spacing={3}>
-          {badgeData.items.map((data) => (
+          {getBadgeData.map((data) => (
             <Grid item xs={3}>
               <RepairBadge data={data} />
             </Grid>

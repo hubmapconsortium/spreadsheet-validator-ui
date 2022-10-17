@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Stack, styled, Tooltip, Typography } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import { Box, Button, Stack, styled, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PropTypes from 'prop-types';
-import { BLACK, BLUE, DARK_GRAY, GREEN, LIGHT_GREEN, LIGHT_RED, RED, WHITE } from '../../constants/Color';
+import { BLACK, DARK_GRAY, GREEN, LIGHT_GREEN, LIGHT_RED, RED, WHITE } from '../../constants/Color';
 import { ERROR_FOUND, ERROR_NOT_FOUND } from '../../constants/Status';
 
 const BadgeButton = styled(Button)({
@@ -42,12 +41,6 @@ const CaptionBox = styled(Box)({
   padding: '0px',
 });
 
-const FilledInfoIcon = styled(InfoIcon)({
-  verticalAlign: 'middle',
-  color: BLUE,
-  margin: '5px',
-});
-
 const FilledCheckIcon = styled(CheckCircleIcon)({
   fontSize: '50px',
   verticalAlign: 'middle',
@@ -70,13 +63,6 @@ const CaptionLabel = styled(Typography)({
   padding: '10px',
   textTransform: 'none',
 });
-
-// eslint-disable-next-line react/prop-types
-const HelpIcon = ({ helpText }) => (
-  <Tooltip title={<Typography fontSize={16}>{helpText}</Typography>} arrow>
-    <FilledInfoIcon />
-  </Tooltip>
-);
 
 // eslint-disable-next-line react/prop-types
 const Title = ({ title }) => (
@@ -106,7 +92,6 @@ const RepairBadge = ({ data }) => {
       {repairStatus === ERROR_FOUND && (
         <RedBadgeButton onClick={() => navigate(data.navigateTo)}>
           <Stack direction="column" alignItems="center" spacing={0}>
-            <HelpIcon helpText={data.helpText} />
             <Title title={data.title} />
             <Caption caption={data.caption} />
           </Stack>
@@ -115,7 +100,6 @@ const RepairBadge = ({ data }) => {
       {repairStatus === ERROR_NOT_FOUND && (
         <GreenBadgeButton onClick={() => navigate(data.navigateTo)}>
           <Stack direction="column" alignItems="center" spacing={0}>
-            <HelpIcon helpText={data.helpText} />
             <Title title={data.title} />
             <CheckIcon />
           </Stack>
@@ -131,7 +115,6 @@ RepairBadge.propTypes = {
     caption: PropTypes.string.isRequired,
     status: PropTypes.oneOf([ERROR_NOT_FOUND, ERROR_FOUND]).isRequired,
     navigateTo: PropTypes.string.isRequired,
-    helpText: PropTypes.string,
   }).isRequired,
 };
 
