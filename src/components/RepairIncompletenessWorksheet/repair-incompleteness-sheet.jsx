@@ -28,7 +28,7 @@ const EditorContainer = styled(TableContainer)({
   margin: '30px',
 });
 
-const RepairIncompletnessEditor = () => {
+const RepairIncompletnessWorksheet = () => {
   const { metadata, data } = useContext(AppContext);
   const { column } = useParams();
   const columns = Object.keys(metadata.spreadsheet.columns);
@@ -59,4 +59,4 @@ const RepairIncompletnessEditor = () => {
   );
 };
 
-export default RepairIncompletnessEditor;
+export default RepairIncompletnessWorksheet;

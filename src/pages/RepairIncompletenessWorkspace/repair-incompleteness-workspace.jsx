@@ -4,7 +4,7 @@ import { Box, styled } from '@mui/material';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
-import RepairIncompletnessEditor from '../../components/RepairIncompletenessEditor';
+import RepairIncompletnessWorksheet from '../../components/RepairIncompletenessWorksheet';
 import Section from '../../styles/Section';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 
@@ -35,7 +35,7 @@ const RepairIncompletenessWorkspace = () => {
         />
       </Section>
       <DefaultInfoSection />
-      <RepairIncompletnessEditor />
+      <RepairIncompletnessWorksheet />
     </WorkspaceArea>
   );
 };
