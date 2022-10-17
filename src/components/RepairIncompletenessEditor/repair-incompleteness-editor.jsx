@@ -7,7 +7,7 @@ import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import moveToFront from '../../helpers/array-utils';
 import { LIGHT_GRAY } from '../../constants/Color';
-import filterRowsWithEmptyColumn from '../../helpers/data-utils';
+import { filterRowsWithEmptyColumn } from '../../helpers/data-utils';
 
 const EditorCard = styled(Card)({
   display: 'flex',

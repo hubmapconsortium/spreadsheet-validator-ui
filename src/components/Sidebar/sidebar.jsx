@@ -8,7 +8,7 @@ import Container from '../../styles/Container';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
 import { REPAIR_INCONSISTENCY_SUBMENU_DATA } from '../../constants/TestData';
 import AppContext from '../../pages/AppContext';
-import { ERROR_FOUND } from '../../constants/Status';
+import { buildRepairIncompletenessSubMenu } from '../../helpers/data-utils';
 
 const SideBarContainer = styled(Container)({
   width: '380px',
@@ -44,20 +44,6 @@ const RepairIcon = styled(ConstructionIcon)({
   verticalAlign: 'middle',
   fontSize: '24pt',
 });
-
-const buildRepairIncompletenessSubMenu = (errorReport) => {
-  const subMenuItems = Object.keys(errorReport.missingRequired).map((column) => (
-    {
-      title: `Missing ${column}`,
-      status: ERROR_FOUND,
-      navigateTo: `repair-incompleteness/${column}`,
-    }
-  ));
-  return {
-    title: 'Types of Error',
-    items: subMenuItems,
-  };
-};
 
 const SideBar = () => {
   const { errorReport } = useContext(AppContext);
