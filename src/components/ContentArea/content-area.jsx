@@ -4,8 +4,11 @@ import Container from '../../styles/Container';
 import { LIGHTER_GRAY } from '../../constants/Color';
 
 const PageContainer = styled(Container)({
-  width: '90vw',
-  padding: '50px',
+  minHeight: '100vh',
+  height: '100%',
+  width: '100%',
+  paddingTop: '50px',
+  paddingLeft: '50px',
   backgroundColor: LIGHTER_GRAY,
 });
 

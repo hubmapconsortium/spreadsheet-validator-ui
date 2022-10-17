@@ -10,6 +10,10 @@ import { REPAIR_INCONSISTENCY_SUBMENU_DATA } from '../../constants/TestData';
 import AppContext from '../../pages/AppContext';
 import { ERROR_FOUND } from '../../constants/Status';
 
+const SideBarContainer = styled(Container)({
+  width: '380px',
+});
+
 const LogoSection = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
@@ -62,7 +66,7 @@ const SideBar = () => {
     [errorReport],
   );
   return (
-    <Container>
+    <SideBarContainer>
       <LogoSection>
         <img src={logo} alt="spreadsheet-validator-logo" />
       </LogoSection>
@@ -87,7 +91,7 @@ const SideBar = () => {
           />
         </NestedMenu>
       </MenuSection>
-    </Container>
+    </SideBarContainer>
   );
 };
 

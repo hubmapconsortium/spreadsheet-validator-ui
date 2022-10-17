@@ -8,13 +8,16 @@ import 'filepond/dist/filepond.min.css';
 import './home.css';
 
 const HomeContainer = styled(Container)({
-  height: '75vh',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  top: 0,
+  position: 'absolute',
 });
 
-const InnerHomeContainer = styled(Container)({
+const InputArea = styled(Box)({
+  width: '100vw',
+  margin: 'auto',
 });
 
 const LogoBox = styled(Box)({
@@ -47,7 +50,7 @@ const Home = () => {
   const navigate = useNavigate();
   return (
     <HomeContainer>
-      <InnerHomeContainer>
+      <InputArea>
         <LogoBox>
           <img src={logo} alt="spreadsheet-validator-logo" />
         </LogoBox>
@@ -68,7 +71,7 @@ const Home = () => {
         <SubmitBox>
           <Button variant="contained" size="large" onClick={() => navigate('dashboard')}>Start Validating</Button>
         </SubmitBox>
-      </InnerHomeContainer>
+      </InputArea>
     </HomeContainer>
   );
 };

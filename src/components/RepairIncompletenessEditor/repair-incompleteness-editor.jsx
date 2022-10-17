@@ -24,7 +24,7 @@ const EditorContainer = styled(TableContainer)({
   borderColor: LIGHT_GRAY,
   borderRadius: '5px',
   maxHeight: '800px',
-  maxWidth: '72vw',
+  maxWidth: '70vw',
   margin: '30px',
 });
 
