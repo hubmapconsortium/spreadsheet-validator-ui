@@ -48,6 +48,9 @@ const SubmitBox = styled(Box)({
 const Home = () => {
   const [file, setFile] = useState();
   const navigate = useNavigate();
+  const submitSpreadsheet = () => {
+    navigate('dashboard');
+  };
   return (
     <HomeContainer>
       <InputArea>
@@ -69,7 +72,7 @@ const Home = () => {
           />
         </InputSection>
         <SubmitBox>
-          <Button variant="contained" size="large" onClick={() => navigate('dashboard')}>Start Validating</Button>
+          <Button variant="contained" size="large" onClick={submitSpreadsheet}>Start Validating</Button>
         </SubmitBox>
       </InputArea>
     </HomeContainer>
