@@ -1,7 +1,8 @@
-import { FormControl, OutlinedInput, IconButton, InputAdornment, styled, TableHead, TableRow, Typography } from '@mui/material';
+import { FormControl, OutlinedInput, IconButton, InputAdornment, styled, TableHead, TableRow, Typography, Select, MenuItem } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import PropTypes from 'prop-types';
 import SheetCell from '../SheetCell';
+import { getDataTypeForColumn, getLabelForColumn, getPermissibleValuesForColumn } from '../../../helpers/data-utils';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
 
 const HeaderLabel = styled(Typography)({
@@ -32,52 +33,68 @@ const FilterTextField = ({ type }) => (
   </FormControl>
 );
 
+const DropDownSelector = ({ options }) => (
+  <Select
+    id="test"
+    // onChange={handleChange}
+    sx={{ height: '40px' }}
+  >
+    {Object.keys(options).map((option) => (
+      <MenuItem value={option}>{option}</MenuItem>
+    ))}
+  </Select>
+);
+
 const TextField = ({ type }) => (
-  <FormControl fullWidth>
-    <OutlinedInput
-      hiddenLabel
-      type={type}
-      size="small"
-      placeholder="Enter value..."
-    />
-  </FormControl>
-);
-
-const getColumnLabel = (column, metadata) => (
-  metadata.spreadsheet.columns[column].label
-);
-
-const getColumnType = (column, metadata) => (
-  metadata.spreadsheet.columns[column].type
+  <OutlinedInput
+    hiddenLabel
+    type={type}
+    size="small"
+    placeholder="Enter value..."
+  />
 );
 
 const SheetHeader = ({ metadata, columnOrder }) => (
   <TableHead>
     <TableRow>
-      {columnOrder.map((column, index) => (
-        <>
-          {index === 0
-            && (
-              <SheetCell align="center" sticky>
-                <HeaderLabel>{getColumnLabel(column, metadata)}</HeaderLabel>
-                <TextField type={getColumnType(column, metadata)} />
-              </SheetCell>
-            )}
-          {index !== 0
-            && (
-              <SheetCell align="center">
-                <HeaderLabel>{getColumnLabel(column, metadata)}</HeaderLabel>
-                <FilterTextField type={getColumnType(column, metadata)} />
-              </SheetCell>
-            )}
-        </>
-      ))}
+      {columnOrder.map((column, index) => {
+        const columnLabel = getLabelForColumn(column, metadata);
+        const columnType = getDataTypeForColumn(column, metadata);
+        const permissibleValues = getPermissibleValuesForColumn(column, metadata);
+        return (
+          <>
+            {index === 0
+              && (
+                <SheetCell align="center" sticky>
+                  <HeaderLabel>{columnLabel}</HeaderLabel>
+                  <FormControl fullWidth>
+                    {permissibleValues && <DropDownSelector options={permissibleValues} />}
+                    {!permissibleValues && <TextField type={columnType} />}
+                  </FormControl>
+                </SheetCell>
+              )}
+            {index !== 0
+              && (
+                <SheetCell align="center">
+                  <HeaderLabel>{columnLabel}</HeaderLabel>
+                  <FilterTextField type={columnType} />
+                </SheetCell>
+              )}
+          </>
+        );
+      })}
     </TableRow>
   </TableHead>
 );
 
 FilterTextField.propTypes = {
   type: PropTypes.string.isRequired,
+};
+
+DropDownSelector.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.object),
+  ).isRequired,
 };
 
 TextField.propTypes = {

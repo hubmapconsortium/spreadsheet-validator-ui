@@ -1,6 +1,7 @@
 import { FormControl, OutlinedInput, MenuItem, Select, styled, TableBody, TableRow, Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import SheetCell from '../SheetCell';
+import { getDataTypeForColumn, getPermissibleValuesForColumn } from '../../../helpers/data-utils';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
 import { LIGHT_RED } from '../../../constants/Color';
 
@@ -12,7 +13,7 @@ const DropDownSelector = ({ options }) => (
   <Select
     id="test"
     // onChange={handleChange}
-    sx={{ backgroundColor: LIGHT_RED }}
+    sx={{ backgroundColor: LIGHT_RED, height: '40px' }}
   >
     {Object.keys(options).map((option) => (
       <MenuItem value={option}>{option}</MenuItem>
@@ -42,39 +43,33 @@ const WrappedText = ({ text }) => (
   </Tooltip>
 );
 
-const getPermissibleValues = (column, metadata) => (
-  metadata.spreadsheet.columns[column].permissibleValue
-);
-
-const getColumnType = (column, metadata) => (
-  metadata.spreadsheet.columns[column].type
-);
-
 const SheetBody = ({ metadata, data, columnOrder }) => (
   <TableBody>
     {data.map((row) => (
       <TableRow>
-        {columnOrder.map((column, index) => (
-          <>
-            {index === 0
-              && (
-                <SheetCell sx={{ zIndex: 998 }} sticky>
-                  <FormControl fullWidth>
-                    {getPermissibleValues(column, metadata)
-                      && <DropDownSelector options={getPermissibleValues(column, metadata)} />}
-                    {!getPermissibleValues(column, metadata)
-                      && <TextField value={row[column]} type={getColumnType(column, metadata)} />}
-                  </FormControl>
-                </SheetCell>
-              )}
-            {index !== 0
-              && (
-                <SheetCell align="right">
-                  <WrappedText text={row[column]} />
-                </SheetCell>
-              )}
-          </>
-        ))}
+        {columnOrder.map((column, index) => {
+          const permissibleValues = getPermissibleValuesForColumn(column, metadata);
+          const columnType = getDataTypeForColumn(column, metadata);
+          return (
+            <>
+              {index === 0
+                && (
+                  <SheetCell sx={{ zIndex: 998 }} sticky>
+                    <FormControl fullWidth>
+                      {permissibleValues && <DropDownSelector options={permissibleValues} />}
+                      {!permissibleValues && <TextField value={row[column]} type={columnType} />}
+                    </FormControl>
+                  </SheetCell>
+                )}
+              {index !== 0
+                && (
+                  <SheetCell align="right">
+                    <WrappedText text={row[column]} />
+                  </SheetCell>
+                )}
+            </>
+          );
+        })}
       </TableRow>
     ))}
   </TableBody>

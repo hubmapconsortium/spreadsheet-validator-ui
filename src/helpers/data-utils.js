@@ -31,3 +31,15 @@ export function buildRepairIncompletenessBadges(errorReport) {
   ));
   return badgeItems;
 }
+
+export function getLabelForColumn(column, metadata) {
+  return metadata.spreadsheet.columns[column].label;
+}
+
+export function getPermissibleValuesForColumn(column, metadata) {
+  return metadata.spreadsheet.columns[column].permissibleValues;
+}
+
+export function getDataTypeForColumn(column, metadata) {
+  return metadata.spreadsheet.columns[column].type;
+}
