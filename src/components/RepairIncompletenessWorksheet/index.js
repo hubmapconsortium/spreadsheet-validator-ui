@@ -1,3 +1,3 @@
-import RepairIncompletnessWorksheet from './repair-incompleteness-sheet';
+import RepairIncompletnessWorksheet from './repair-incompleteness-worksheet';
 
 export default RepairIncompletnessWorksheet;
