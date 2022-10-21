@@ -76,7 +76,7 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
   };
   return (
     <>
-      <MenuItem onClick={() => { navigate(navigateTo); openSubMenus(); }}>
+      <MenuItem key={title} onClick={() => { navigate(navigateTo); openSubMenus(); }}>
         {icon}
         <MenuItemText primary={title} />
         {subMenu && (open ? <ExpandLess /> : <ExpandMore />)}
@@ -88,7 +88,7 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
             subheader={<SubMenuTitle>{subMenu.title}</SubMenuTitle>}
           >
             {subMenu.items.map((subMenuItem) => (
-              <SubMenuItem onClick={() => navigate(subMenuItem.navigateTo)}>
+              <SubMenuItem key={subMenuItem.title} onClick={() => navigate(subMenuItem.navigateTo)}>
                 <SubMenuItemText primary={subMenuItem.title} />
                 {subMenuItem.status === ERROR_FOUND && <ErrorStatusIcon />}
                 {subMenuItem.status === ERROR_NOT_FOUND && <NoErrorStatusIcon />}
