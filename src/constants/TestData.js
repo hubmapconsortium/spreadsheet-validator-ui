@@ -190,7 +190,7 @@ export const ERROR_REPORT = {
   },
 };
 
-export const APP_CONTEXT = {
+export const APP_DATA = {
   metadata: SPREADSHEET_METADATA,
   data: SPREADSHEET_DATA,
   errorReport: ERROR_REPORT,

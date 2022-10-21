@@ -71,15 +71,12 @@ const NoErrorStatusIcon = styled(CheckCircleIcon)({
 const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const onClick = () => {
-    navigate(navigateTo);
-  };
   const openSubMenus = () => {
     setOpen(!open);
   };
   return (
     <>
-      <MenuItem onClick={() => { onClick(); openSubMenus(); }}>
+      <MenuItem onClick={() => { navigate(navigateTo); openSubMenus(); }}>
         {icon}
         <MenuItemText primary={title} />
         {subMenu && (open ? <ExpandLess /> : <ExpandMore />)}
@@ -93,7 +90,8 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
             {subMenu.items.map((subMenuItem) => (
               <SubMenuItem onClick={() => navigate(subMenuItem.navigateTo)}>
                 <SubMenuItemText primary={subMenuItem.title} />
-                {subMenuItem.status === ERROR_FOUND ? <ErrorStatusIcon /> : <NoErrorStatusIcon />}
+                {subMenuItem.status === ERROR_FOUND && <ErrorStatusIcon />}
+                {subMenuItem.status === ERROR_NOT_FOUND && <NoErrorStatusIcon />}
               </SubMenuItem>
             ))}
           </SubMenu>

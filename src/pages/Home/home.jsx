@@ -6,6 +6,7 @@ import Container from '../../styles/Container';
 import logo from '../../logo.svg';
 import 'filepond/dist/filepond.min.css';
 import './home.css';
+import { APP_DATA } from '../../constants/TestData';
 
 const HomeContainer = styled(Container)({
   display: 'flex',
@@ -45,11 +46,17 @@ const SubmitBox = styled(Box)({
   justifyContent: 'center',
 });
 
-const Home = () => {
+// eslint-disable-next-line react/prop-types
+const Home = ({ setAppData }) => {
   const [file, setFile] = useState();
   const navigate = useNavigate();
   const submitSpreadsheet = () => {
-    navigate('dashboard');
+    const validateData = async () => {
+      console.log('Calling validation API with input: ', file);
+      setAppData(APP_DATA);
+      navigate('overview');
+    };
+    validateData();
   };
   return (
     <HomeContainer>
