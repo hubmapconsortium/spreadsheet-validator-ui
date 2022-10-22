@@ -5,10 +5,11 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import NestedMenuItem from '../NestedMenuItem';
 import logo from '../../logo.svg';
 import Container from '../../styles/Container';
-import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
-import { REPAIR_INCONSISTENCY_SUBMENU_DATA } from '../../constants/TestData';
 import AppContext from '../../pages/AppContext';
 import { buildRepairIncompletenessSubMenu } from '../../helpers/data-utils';
+import { REPAIR_INCONSISTENCY_SUBMENU_DATA } from '../../constants/TestData';
+import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
+import { OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../../constants/Router';
 
 const SideBarContainer = styled(Container)({
   width: '380px',
@@ -62,14 +63,14 @@ const SideBar = () => {
           <NestedMenuItem
             icon={<OverviewIcon />}
             title={OVERVIEW}
-            navigateTo="overview"
+            navigateTo={OVERVIEW_PATH}
             selectedMenuItem={selectedMenuItem}
             setSelectedMenuItem={setSelectedMenuItem}
           />
           <NestedMenuItem
             icon={<RepairIcon />}
             title={REPAIR_INCOMPLETENESS}
-            navigateTo="repair-incompleteness"
+            navigateTo={REPAIR_INCOMPLENESS_PATH}
             subMenu={getRepairIncompletenessSubMenu}
             selectedMenuItem={selectedMenuItem}
             setSelectedMenuItem={setSelectedMenuItem}
@@ -77,7 +78,7 @@ const SideBar = () => {
           <NestedMenuItem
             icon={<RepairIcon />}
             title={REPAIR_INCONSISTENCY}
-            navigateTo="repair-inconsistency"
+            navigateTo={REPAIR_INCONSISTENCY_PATH}
             subMenu={REPAIR_INCONSISTENCY_SUBMENU_DATA}
             selectedMenuItem={selectedMenuItem}
             setSelectedMenuItem={setSelectedMenuItem}

@@ -1,4 +1,5 @@
 import { ERROR_FOUND } from '../constants/Status';
+import { REPAIR_INCOMPLENESS_PATH } from '../constants/Router';
 
 export function filterRowsWithEmptyColumn(column, data) {
   return data.filter((row) => (!row[column]));
@@ -10,7 +11,7 @@ export function buildRepairIncompletenessSubMenu(errorReport) {
     {
       title: `Missing ${column}`,
       status: ERROR_FOUND,
-      navigateTo: `repair-incompleteness/${column}`,
+      navigateTo: `${REPAIR_INCOMPLENESS_PATH}/${column}`,
     }
   ));
   return {
