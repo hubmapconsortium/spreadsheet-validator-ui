@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { Box, List, styled } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ConstructionIcon from '@mui/icons-material/Construction';
@@ -46,6 +46,7 @@ const RepairIcon = styled(ConstructionIcon)({
 });
 
 const SideBar = () => {
+  const [selectedMenuItem, setSelectedMenuItem] = useState({ OVERVIEW });
   const { errorReport } = useContext(AppContext);
   const getRepairIncompletenessSubMenu = useMemo(
     () => buildRepairIncompletenessSubMenu(errorReport),
@@ -62,18 +63,24 @@ const SideBar = () => {
             icon={<OverviewIcon />}
             title={OVERVIEW}
             navigateTo="overview"
+            selectedMenuItem={selectedMenuItem}
+            setSelectedMenuItem={setSelectedMenuItem}
           />
           <NestedMenuItem
             icon={<RepairIcon />}
             title={REPAIR_INCOMPLETENESS}
             navigateTo="repair-incompleteness"
             subMenu={getRepairIncompletenessSubMenu}
+            selectedMenuItem={selectedMenuItem}
+            setSelectedMenuItem={setSelectedMenuItem}
           />
           <NestedMenuItem
             icon={<RepairIcon />}
             title={REPAIR_INCONSISTENCY}
             navigateTo="repair-inconsistency"
             subMenu={REPAIR_INCONSISTENCY_SUBMENU_DATA}
+            selectedMenuItem={selectedMenuItem}
+            setSelectedMenuItem={setSelectedMenuItem}
           />
         </NestedMenu>
       </MenuSection>

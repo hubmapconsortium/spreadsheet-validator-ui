@@ -68,32 +68,54 @@ const NoErrorStatusIcon = styled(CheckCircleIcon)({
   color: GREEN,
 });
 
-const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
-  const [open, setOpen] = useState(false);
+// eslint-disable-next-line max-len
+const NestedMenuItem = ({ icon, title, navigateTo, subMenu, selectedMenuItem, setSelectedMenuItem }) => {
+  const [subMenuVisible, setSubMenuVisible] = useState(false);
+  const [parentMenuSelected, setParentMenuSelected] = useState(true);
   const navigate = useNavigate();
   const openSubMenus = () => {
-    setOpen(!open);
+    navigate(navigateTo);
+    if (parentMenuSelected) {
+      setSubMenuVisible(!subMenuVisible);
+    }
+    setParentMenuSelected(true);
+    setSelectedMenuItem(title);
   };
   return (
     <>
-      <MenuItem key={title} onClick={() => { navigate(navigateTo); openSubMenus(); }}>
+      <MenuItem
+        key={title}
+        selected={title === selectedMenuItem}
+        onClick={openSubMenus}
+      >
         {icon}
         <MenuItemText primary={title} />
-        {subMenu && (open ? <ExpandLess /> : <ExpandMore />)}
+        {subMenu && (subMenuVisible ? <ExpandLess /> : <ExpandMore />)}
       </MenuItem>
       {subMenu && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={subMenuVisible} timeout="auto" unmountOnExit>
           <SubMenu
             disablePadding
             subheader={<SubMenuTitle>{subMenu.title}</SubMenuTitle>}
           >
-            {subMenu.items.map((subMenuItem) => (
-              <SubMenuItem key={subMenuItem.title} onClick={() => navigate(subMenuItem.navigateTo)}>
-                <SubMenuItemText primary={subMenuItem.title} />
-                {subMenuItem.status === ERROR_FOUND && <ErrorStatusIcon />}
-                {subMenuItem.status === ERROR_NOT_FOUND && <NoErrorStatusIcon />}
-              </SubMenuItem>
-            ))}
+            {subMenu.items.map((subMenuItem) => {
+              const subMenuTitle = subMenuItem.title;
+              return (
+                <SubMenuItem
+                  key={subMenuTitle}
+                  selected={subMenuTitle === selectedMenuItem}
+                  onClick={() => {
+                    navigate(subMenuItem.navigateTo);
+                    setParentMenuSelected(false);
+                    setSelectedMenuItem(subMenuTitle);
+                  }}
+                >
+                  <SubMenuItemText primary={subMenuTitle} />
+                  {subMenuItem.status === ERROR_FOUND && <ErrorStatusIcon />}
+                  {subMenuItem.status === ERROR_NOT_FOUND && <NoErrorStatusIcon />}
+                </SubMenuItem>
+              );
+            })}
           </SubMenu>
         </Collapse>
       )}
@@ -115,6 +137,8 @@ NestedMenuItem.propTypes = {
       }),
     ),
   }),
+  selectedMenuItem: PropTypes.string.isRequired,
+  setSelectedMenuItem: PropTypes.func.isRequired,
 };
 
 NestedMenuItem.defaultProps = {
