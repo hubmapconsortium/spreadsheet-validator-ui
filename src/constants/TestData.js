@@ -196,6 +196,19 @@ export const APP_DATA = {
   errorReport: ERROR_REPORT,
 };
 
+export const PATCH_DATA = [
+  {},
+  {
+    sample_ID: { op: 'add', path: '/sample_ID', value: '9OLC.A3' },
+  },
+  {
+    preparation_temperature: { op: 'add', path: '/preparation_temperature', value: '4 Degrees Celsius' },
+  },
+  {
+    sample_ID: { op: 'add', path: '/sample_ID', value: '9OLC.A5' },
+  },
+];
+
 export const REPAIR_INCONSISTENCY_SUBMENU_DATA = {
   title: 'Types of Error',
   items: [{
