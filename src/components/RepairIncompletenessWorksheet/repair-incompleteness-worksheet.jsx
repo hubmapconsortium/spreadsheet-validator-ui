@@ -2,12 +2,12 @@ import { useContext, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled, Table, TableContainer } from '@mui/material';
 import AppContext from '../../pages/AppContext';
-import Card from '../../styles/Card';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
+import Card from '../../styles/Card';
 import moveToFront from '../../helpers/array-utils';
+import { getMissingRequiredForColumn } from '../../helpers/data-utils';
 import { LIGHT_GRAY } from '../../constants/Color';
-import { filterRowsWithEmptyColumn } from '../../helpers/data-utils';
 
 const EditorCard = styled(Card)({
   display: 'flex',
@@ -29,16 +29,17 @@ const EditorContainer = styled(TableContainer)({
 });
 
 const RepairIncompletnessWorksheet = () => {
-  const { metadata, data } = useContext(AppContext);
+  const { appData } = useContext(AppContext);
+  const { metadata, data, errorReport } = appData;
   const { column } = useParams();
   const columns = Object.keys(metadata.spreadsheet.columns);
   const getColumnOrder = useMemo(
     () => moveToFront(column, columns),
     [column, columns],
   );
-  const getIncompleteRows = useMemo(
-    () => filterRowsWithEmptyColumn(column, data),
-    [column, data],
+  const getRowFilter = useMemo(
+    () => getMissingRequiredForColumn(column, errorReport),
+    [column, errorReport],
   );
   return (
     <EditorCard>
@@ -50,8 +51,9 @@ const RepairIncompletnessWorksheet = () => {
           />
           <SheetBody
             metadata={metadata}
-            data={getIncompleteRows}
+            data={data}
             columnOrder={getColumnOrder}
+            rowFilter={getRowFilter}
           />
         </EditorTable>
       </EditorContainer>

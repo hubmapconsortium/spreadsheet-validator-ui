@@ -2,10 +2,10 @@ import { useContext, useMemo, useState } from 'react';
 import { Box, List, styled } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ConstructionIcon from '@mui/icons-material/Construction';
+import AppContext from '../../pages/AppContext';
 import NestedMenuItem from '../NestedMenuItem';
 import logo from '../../logo.svg';
 import Container from '../../styles/Container';
-import AppContext from '../../pages/AppContext';
 import { buildRepairIncompletenessSubMenu } from '../../helpers/data-utils';
 import { REPAIR_INCONSISTENCY_SUBMENU_DATA } from '../../constants/TestData';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
@@ -47,8 +47,9 @@ const RepairIcon = styled(ConstructionIcon)({
 });
 
 const SideBar = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState({ OVERVIEW });
-  const { errorReport } = useContext(AppContext);
+  const [selectedMenuItem, setSelectedMenuItem] = useState(OVERVIEW);
+  const { appData } = useContext(AppContext);
+  const { errorReport } = appData;
   const getRepairIncompletenessSubMenu = useMemo(
     () => buildRepairIncompletenessSubMenu(errorReport),
     [errorReport],

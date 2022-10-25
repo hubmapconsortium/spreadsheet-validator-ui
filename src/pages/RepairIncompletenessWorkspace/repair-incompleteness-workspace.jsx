@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, styled } from '@mui/material';
 import AppContext from '../AppContext';
@@ -12,20 +12,12 @@ const WorkspaceArea = styled(Box)({
   display: 'block',
 });
 
-const countBadRows = (errorReport, inColumn) => (
-  errorReport.missingRequired[inColumn]?.length
-);
-
 const RepairIncompletenessWorkspace = () => {
-  const { errorReport } = useContext(AppContext);
+  const { appData } = useContext(AppContext);
+  const { errorReport } = appData;
   const { column } = useParams();
-
-  const getBadRows = useMemo(
-    () => countBadRows(errorReport, column),
-    [errorReport, column],
-  );
-
-  const subtitle = `${getBadRows} rows were missing the ${column} value.`;
+  const totalBadRows = errorReport.missingRequired[column]?.length;
+  const subtitle = `${totalBadRows} rows were missing the ${column} value.`;
   return (
     <WorkspaceArea>
       <Section>

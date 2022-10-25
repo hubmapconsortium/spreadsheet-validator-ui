@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useReducer, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { Stack } from '@mui/material';
 import './App.css';
@@ -13,7 +13,9 @@ import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import SideBar from './components/Sidebar';
 import ContentArea from './components/ContentArea';
+import handlePatchCrud from './helpers/app-utils';
 import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from './constants/Router';
+import { PATCH_DATA } from './constants/TestData';
 
 const LandingPageContainer = () => (
   <Stack direction="column">
@@ -23,8 +25,8 @@ const LandingPageContainer = () => (
 );
 
 // eslint-disable-next-line react/prop-types
-const WorkspaceContainer = ({ appData }) => (
-  <AppContext.Provider value={appData}>
+const WorkspaceContainer = ({ appProviderData }) => (
+  <AppContext.Provider value={appProviderData}>
     <Stack direction="row">
       <SideBar />
       <ContentArea />
@@ -34,6 +36,8 @@ const WorkspaceContainer = ({ appData }) => (
 
 const App = () => {
   const [appData, setAppData] = useState({});
+  const [patches, managePatches] = useReducer(handlePatchCrud, PATCH_DATA);
+  const appProviderData = useMemo(() => ({ appData, patches, managePatches }), [appData, patches]);
   return (
     <Router>
       <Routes>
@@ -42,7 +46,7 @@ const App = () => {
           <Route path={ABOUT_PATH} element={<About />} />
           <Route path={HELP_PATH} element={<Help />} />
         </Route>
-        <Route element={<WorkspaceContainer appData={appData} />}>
+        <Route element={(<WorkspaceContainer appProviderData={appProviderData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
           <Route path={REPAIR_INCOMPLENESS_PATH} element={<RepairIncompleteness />} />
           <Route path={`${REPAIR_INCOMPLENESS_PATH}/:column`} element={<RepairIncompletenessWorkspace />} />

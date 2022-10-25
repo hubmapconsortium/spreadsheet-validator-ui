@@ -14,7 +14,8 @@ const RepairBadgeSection = styled(Section)({
 });
 
 const RepairIncompleteness = () => {
-  const { errorReport } = useContext(AppContext);
+  const { appData } = useContext(AppContext);
+  const { errorReport } = appData;
   const subtitle = '12 out of 99 metadata rows were incomplete.';
   const getBadgeData = useMemo(
     () => buildRepairIncompletenessBadges(errorReport),
