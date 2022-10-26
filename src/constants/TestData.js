@@ -96,7 +96,7 @@ export const SPREADSHEET_DATA = [
   }, {
     sample_ID: '9OLC.J4',
     preparation_medium: 'Methanol',
-    preparation_temperature: '-20 Celcius',
+    preparation_temperature: null,
     preparation_time_value: '4 min',
     preparation_time_unit: 'min',
     histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
@@ -106,7 +106,7 @@ export const SPREADSHEET_DATA = [
 export const ERROR_REPORT = {
   missingRequired: {
     sample_ID: [1, 2, 3],
-    preparation_temperature: [2],
+    preparation_temperature: [2, 4],
   },
   notStandardTerm: {
     preparation_medium: [
@@ -132,10 +132,6 @@ export const ERROR_REPORT = {
         row: 3,
         value: '24 Celcius',
         suggestion: '24 Celsius (Room Temperature)',
-      }, {
-        row: 4,
-        value: '-20 Celcius',
-        suggestion: 'Minus 20 Degrees Celsius',
       }],
     preparation_time_unit: [
       {
@@ -207,6 +203,7 @@ export const PATCH_DATA = [
   {
     sample_ID: { op: 'add', path: '/sample_ID', value: '9OLC.A5' },
   },
+  {},
 ];
 
 export const REPAIR_INCONSISTENCY_SUBMENU_DATA = {
