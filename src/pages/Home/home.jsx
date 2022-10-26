@@ -52,7 +52,6 @@ const Home = ({ setAppData }) => {
   const navigate = useNavigate();
   const submitSpreadsheet = () => {
     const validateData = async () => {
-      console.log('Calling validation API with input: ', file);
       setAppData(APP_DATA);
       navigate('overview');
     };
