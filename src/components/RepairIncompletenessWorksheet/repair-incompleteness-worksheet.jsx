@@ -1,4 +1,5 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
+import { useImmer } from 'use-immer';
 import { useParams } from 'react-router-dom';
 import { styled, Table, TableContainer } from '@mui/material';
 import AppContext from '../../pages/AppContext';
@@ -6,7 +7,7 @@ import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import Card from '../../styles/Card';
 import moveToFront from '../../helpers/array-utils';
-import { getMissingRequiredForColumn } from '../../helpers/data-utils';
+import { getMissingRequiredForColumn, getPatchValue } from '../../helpers/data-utils';
 import { LIGHT_GRAY } from '../../constants/Color';
 
 const EditorCard = styled(Card)({
@@ -29,17 +30,31 @@ const EditorContainer = styled(TableContainer)({
 });
 
 const RepairIncompletnessWorksheet = () => {
-  const { appData } = useContext(AppContext);
+  const { appData, patches } = useContext(AppContext);
   const { metadata, data, errorReport } = appData;
   const { column } = useParams();
   const columns = Object.keys(metadata.spreadsheet.columns);
-  const getColumnOrder = useMemo(
+  const columnOrder = useMemo(
     () => moveToFront(column, columns),
-    [column, columns],
+    [column],
   );
-  const getRowFilter = useMemo(
+  const rowFilter = useMemo(
     () => getMissingRequiredForColumn(column, errorReport),
-    [column, errorReport],
+    [column],
+  );
+  const existingUserInput = useMemo(
+    () => rowFilter
+      .reduce((result, rowIndex) => (
+        { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
+      ), {}),
+    [column],
+  );
+  const [userInput, setUserInput] = useImmer({});
+  useEffect(
+    () => {
+      setUserInput(existingUserInput);
+    },
+    [column],
   );
   return (
     <EditorCard>
@@ -47,13 +62,15 @@ const RepairIncompletnessWorksheet = () => {
         <EditorTable stickyHeader>
           <SheetHeader
             metadata={metadata}
-            columnOrder={getColumnOrder}
+            columnOrder={columnOrder}
           />
           <SheetBody
             metadata={metadata}
             data={data}
-            columnOrder={getColumnOrder}
-            rowFilter={getRowFilter}
+            columnOrder={columnOrder}
+            rowFilter={rowFilter}
+            userInput={userInput}
+            setUserInput={setUserInput}
           />
         </EditorTable>
       </EditorContainer>
