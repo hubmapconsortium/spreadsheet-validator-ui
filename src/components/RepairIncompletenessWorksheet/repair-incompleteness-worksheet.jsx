@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { useParams } from 'react-router-dom';
 import { styled, Table, TableContainer } from '@mui/material';
@@ -56,6 +56,13 @@ const RepairIncompletnessWorksheet = () => {
     },
     [column],
   );
+  const [batchInput, setBatchInput] = useState('');
+  useEffect(
+    () => {
+      setBatchInput('');
+    },
+    [column],
+  );
   return (
     <EditorCard>
       <EditorContainer>
@@ -63,12 +70,14 @@ const RepairIncompletnessWorksheet = () => {
           <SheetHeader
             metadata={metadata}
             columnOrder={columnOrder}
+            setBatchInput={setBatchInput}
           />
           <SheetBody
             metadata={metadata}
             data={data}
             columnOrder={columnOrder}
             rowFilter={rowFilter}
+            batchInput={batchInput}
             userInput={userInput}
             setUserInput={setUserInput}
           />

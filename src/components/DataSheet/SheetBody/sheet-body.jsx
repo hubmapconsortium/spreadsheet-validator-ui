@@ -50,8 +50,8 @@ const WrappedText = ({ text }) => (
   </Tooltip>
 );
 
-// eslint-disable-next-line react/prop-types
-const SheetBody = ({ metadata, data, columnOrder, rowFilter, userInput, setUserInput }) => {
+// eslint-disable-next-line react/prop-types, max-len
+const SheetBody = ({ metadata, data, columnOrder, rowFilter, batchInput, userInput, setUserInput }) => {
   const { managePatches } = useContext(AppContext);
   return (
     <TableBody>
@@ -82,7 +82,7 @@ const SheetBody = ({ metadata, data, columnOrder, rowFilter, userInput, setUserI
                     {permissibleValues
                       && (
                         <DropDownSelector
-                          value={userInput[rowIndex]}
+                          value={(batchInput !== '') ? batchInput : userInput[rowIndex]}
                           options={permissibleValues}
                           onChange={handleInputChange}
                         />
@@ -90,7 +90,7 @@ const SheetBody = ({ metadata, data, columnOrder, rowFilter, userInput, setUserI
                     {!permissibleValues
                       && (
                         <TextField
-                          value={userInput[rowIndex]}
+                          value={(batchInput !== '') ? batchInput : userInput[rowIndex]}
                           type={columnType}
                           onChange={handleInputChange}
                         />

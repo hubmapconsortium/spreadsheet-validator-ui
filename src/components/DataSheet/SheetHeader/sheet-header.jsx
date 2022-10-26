@@ -33,10 +33,10 @@ const FilterTextField = ({ type }) => (
   </FormControl>
 );
 
-const DropDownSelector = ({ options }) => (
+const DropDownSelector = ({ options, onChange }) => (
   <Select
     id="test"
-    // onChange={handleChange}
+    onChange={onChange}
     sx={{ height: '40px' }}
   >
     {Object.keys(options).map((option) => (
@@ -45,22 +45,28 @@ const DropDownSelector = ({ options }) => (
   </Select>
 );
 
-const TextField = ({ type }) => (
+const TextField = ({ type, onChange }) => (
   <OutlinedInput
     hiddenLabel
     type={type}
     size="small"
     placeholder="Enter value..."
+    onChange={onChange}
   />
 );
 
-const SheetHeader = ({ metadata, columnOrder }) => (
+const SheetHeader = ({ metadata, columnOrder, setBatchInput }) => (
   <TableHead>
     <TableRow>
       {columnOrder.map((column, index) => {
         const columnLabel = getLabelForColumn(column, metadata);
         const columnType = getDataTypeForColumn(column, metadata);
         const permissibleValues = getPermissibleValuesForColumn(column, metadata);
+        const handleInputChange = (event) => {
+          const userInput = event.target.value;
+          setBatchInput(userInput);
+          event.preventDefault();
+        };
         return (
           <>
             {index === 0
@@ -68,8 +74,20 @@ const SheetHeader = ({ metadata, columnOrder }) => (
                 <SheetCell align="center" sticky>
                   <HeaderLabel>{columnLabel}</HeaderLabel>
                   <FormControl fullWidth>
-                    {permissibleValues && <DropDownSelector options={permissibleValues} />}
-                    {!permissibleValues && <TextField type={columnType} />}
+                    {permissibleValues
+                      && (
+                        <DropDownSelector
+                          options={permissibleValues}
+                          onChange={handleInputChange}
+                        />
+                      )}
+                    {!permissibleValues
+                      && (
+                        <TextField
+                          type={columnType}
+                          onChange={handleInputChange}
+                        />
+                      )}
                   </FormControl>
                 </SheetCell>
               )}
@@ -92,13 +110,13 @@ FilterTextField.propTypes = {
 };
 
 DropDownSelector.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.objectOf(PropTypes.object),
-  ).isRequired,
+  options: PropTypes.objectOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 TextField.propTypes = {
   type: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 SheetHeader.propTypes = {
@@ -115,6 +133,7 @@ SheetHeader.propTypes = {
     }).isRequired,
   }).isRequired,
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setBatchInput: PropTypes.func.isRequired,
 };
 
 export default SheetHeader;
