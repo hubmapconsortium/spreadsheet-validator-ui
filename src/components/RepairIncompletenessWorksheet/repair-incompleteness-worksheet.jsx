@@ -1,14 +1,16 @@
 import { useContext, useEffect, useMemo } from 'react';
 import { useImmer } from 'use-immer';
-import { useParams } from 'react-router-dom';
-import { styled, Table, TableContainer } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Box, styled, Table, TableContainer } from '@mui/material';
 import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
+import BaseButton from '../../styles/BaseButton';
 import Card from '../../styles/Card';
 import moveToFront from '../../helpers/array-utils';
 import { getMissingRequiredForColumn } from '../../helpers/data-utils';
-import { LIGHT_GRAY } from '../../constants/Color';
+import { LIGHT_GRAY, WHITE } from '../../constants/Color';
+import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 
 const EditorCard = styled(Card)({
   display: 'flex',
@@ -30,10 +32,21 @@ const EditorContainer = styled(TableContainer)({
   margin: '30px',
 });
 
+const ButtonBox = styled(Box)({
+  display: 'flex',
+  width: '90%',
+  justifyContent: 'right',
+});
+
+const CancelButton = styled(BaseButton)({
+  backgroundColor: WHITE,
+});
+
 const RepairIncompletnessWorksheet = () => {
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useImmer({});
-  const { appData } = useContext(AppContext);
+  const navigate = useNavigate();
+  const { appData, managePatches } = useContext(AppContext);
   const { metadata, data, errorReport } = appData;
   const { column } = useParams();
   const columns = Object.keys(metadata.spreadsheet.columns);
@@ -53,26 +66,49 @@ const RepairIncompletnessWorksheet = () => {
     [column],
   );
   return (
-    <EditorCard>
-      <EditorContainer>
-        <EditorTable stickyHeader>
-          <SheetHeader
-            metadata={metadata}
-            columnOrder={columnOrder}
-            setBatchInput={setBatchInput}
-          />
-          <SheetBody
-            metadata={metadata}
-            data={data}
-            columnOrder={columnOrder}
-            rowFilter={rowFilter}
-            batchInput={batchInput}
-            userInput={userInput}
-            setUserInput={setUserInput}
-          />
-        </EditorTable>
-      </EditorContainer>
-    </EditorCard>
+    <>
+      <EditorCard>
+        <EditorContainer>
+          <EditorTable stickyHeader>
+            <SheetHeader
+              metadata={metadata}
+              columnOrder={columnOrder}
+              setBatchInput={setBatchInput}
+            />
+            <SheetBody
+              metadata={metadata}
+              data={data}
+              columnOrder={columnOrder}
+              rowFilter={rowFilter}
+              batchInput={batchInput}
+              userInput={userInput}
+              setUserInput={setUserInput}
+            />
+          </EditorTable>
+        </EditorContainer>
+      </EditorCard>
+      <ButtonBox>
+        <CancelButton
+          variant="outlined"
+          onClick={() => navigate(`../${REPAIR_INCOMPLENESS_PATH}`)}
+        >
+          Cancel
+        </CancelButton>
+        <BaseButton
+          variant="contained"
+          onClick={() => Object.keys(userInput).map(
+            (row) => managePatches({
+              command: 'CREATE_PATCH',
+              patchOp: 'ADD',
+              value: userInput[row],
+              target: { row, column },
+            }),
+          )}
+        >
+          Save
+        </BaseButton>
+      </ButtonBox>
+    </>
   );
 };
 
