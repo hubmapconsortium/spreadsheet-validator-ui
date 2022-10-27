@@ -12,11 +12,11 @@ import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/
 import { LIGHT_RED } from '../../../constants/Color';
 
 // eslint-disable-next-line react/prop-types, max-len
-const SheetBody = ({ metadata, data, columnOrder, rowFilter, batchInput, userInput, setUserInput }) => {
+const SheetBody = ({ metadata, data, columnOrder, rowOrder, batchInput, userInput, setUserInput }) => {
   const { patches } = useContext(AppContext);
   const { column } = useParams();
   const existingUserInput = useMemo(
-    () => rowFilter
+    () => rowOrder
       .reduce((result, rowIndex) => (
         { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
       ), {}),
@@ -32,12 +32,12 @@ const SheetBody = ({ metadata, data, columnOrder, rowFilter, batchInput, userInp
   if (typeof batchValue !== 'undefined') {
     setUserInput((prevUserInput) => {
       // eslint-disable-next-line no-param-reassign
-      rowFilter.forEach((rowIndex) => { prevUserInput[rowIndex] = batchValue; });
+      rowOrder.forEach((rowIndex) => { prevUserInput[rowIndex] = batchValue; });
     });
   }
   return (
     <TableBody>
-      {rowFilter.map((rowIndex) => {
+      {rowOrder.map((rowIndex) => {
         const handleInputChange = (event) => {
           setUserInput((prevUserInput) => {
             // eslint-disable-next-line no-param-reassign
@@ -108,7 +108,7 @@ SheetBody.propTypes = {
     PropTypes.objectOf(PropTypes.any),
   ).isRequired,
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
-  rowFilter: PropTypes.arrayOf(PropTypes.number).isRequired,
+  rowOrder: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default SheetBody;

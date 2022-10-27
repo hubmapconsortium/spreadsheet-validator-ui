@@ -54,7 +54,7 @@ const RepairIncompletnessWorksheet = () => {
     () => moveToFront(column, columns),
     [column],
   );
-  const rowFilter = useMemo(
+  const rowOrder = useMemo(
     () => getMissingRequiredForColumn(column, errorReport),
     [column],
   );
@@ -79,7 +79,7 @@ const RepairIncompletnessWorksheet = () => {
               metadata={metadata}
               data={data}
               columnOrder={columnOrder}
-              rowFilter={rowFilter}
+              rowOrder={rowOrder}
               batchInput={batchInput}
               userInput={userInput}
               setUserInput={setUserInput}
