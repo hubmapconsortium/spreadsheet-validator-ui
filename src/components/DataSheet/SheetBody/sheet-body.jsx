@@ -1,57 +1,15 @@
 import { useContext, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { FormControl, OutlinedInput, styled, TableBody, TableRow, Tooltip, Typography, Select, MenuItem } from '@mui/material';
+import { FormControl, TableBody, TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
 import SheetCell from '../SheetCell';
+import DropDownSelector from '../DropDownSelector';
+import InputField from '../InputField';
+import WrappedText from '../WrappedText/wrapped-text';
 import AppContext from '../../../pages/AppContext';
 import { getDataTypeForColumn, getPatchValue, getPermissibleValuesForColumn, getTableValue } from '../../../helpers/data-utils';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
-import { LIGHT_RED, WHITE } from '../../../constants/Color';
-
-const CellValue = styled(Typography)({
-  fontSize: '17px',
-});
-
-const DropDownSelector = ({ value, options, onChange }) => (
-  <Select
-    id="test"
-    value={value}
-    sx={{
-      height: '40px',
-      backgroundColor: value === '' ? LIGHT_RED : WHITE,
-    }}
-    onChange={onChange}
-  >
-    {options.map((option) => (
-      <MenuItem key={option.label} value={option.label}>
-        {option.label}
-      </MenuItem>
-    ))}
-  </Select>
-);
-
-const InputField = ({ value, type, onChange }) => (
-  <OutlinedInput
-    hiddenLabel
-    variant="standard"
-    size="small"
-    value={value}
-    type={type}
-    onChange={onChange}
-    sx={{ backgroundColor: value === '' ? LIGHT_RED : WHITE }}
-  />
-);
-
-const WrappedText = ({ text }) => (
-  <Tooltip
-    arrow
-    title={<Typography fontSize={16}>{text}</Typography>}
-    placement="right"
-    enterDelay={1000}
-  >
-    <CellValue noWrap>{text}</CellValue>
-  </Tooltip>
-);
+import { LIGHT_RED } from '../../../constants/Color';
 
 // eslint-disable-next-line react/prop-types, max-len
 const SheetBody = ({ metadata, data, columnOrder, rowFilter, batchInput, userInput, setUserInput }) => {
@@ -99,17 +57,19 @@ const SheetBody = ({ metadata, data, columnOrder, rowFilter, batchInput, userInp
                       {permissibleValues
                         && (
                           <DropDownSelector
-                            value={userInput[rowIndex]}
+                            value={userInput[rowIndex] || ''}
                             options={permissibleValues}
                             onChange={handleInputChange}
+                            colorOnEmpty={LIGHT_RED}
                           />
                         )}
                       {!permissibleValues
                         && (
                           <InputField
-                            value={userInput[rowIndex]}
+                            value={userInput[rowIndex] || ''}
                             type={columnType}
                             onChange={handleInputChange}
+                            colorOnEmpty={LIGHT_RED}
                           />
                         )}
                     </FormControl>
@@ -131,34 +91,6 @@ const SheetBody = ({ metadata, data, columnOrder, rowFilter, batchInput, userInp
   );
 };
 
-DropDownSelector.propTypes = {
-  value: PropTypes.string,
-  options: PropTypes.objectOf(PropTypes.string).isRequired,
-  onChange: PropTypes.func.isRequired,
-};
-
-DropDownSelector.defaultProps = {
-  value: '',
-};
-
-InputField.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
-  onChange: PropTypes.func.isRequired,
-};
-
-InputField.defaultProps = {
-  value: '',
-};
-
-WrappedText.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
-
-WrappedText.defaultProps = {
-  text: '',
-};
-
 SheetBody.propTypes = {
   metadata: PropTypes.shape({
     spreadsheet: PropTypes.shape({
@@ -167,7 +99,7 @@ SheetBody.propTypes = {
         PropTypes.shape({
           label: PropTypes.string.isRequired,
           type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
-          permissibleValues: PropTypes.objectOf(PropTypes.string),
+          permissibleValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
         }),
       ).isRequired,
     }).isRequired,
