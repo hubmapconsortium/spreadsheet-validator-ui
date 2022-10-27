@@ -1,4 +1,5 @@
-import { FormControl, OutlinedInput, IconButton, InputAdornment, styled, TableHead, TableRow, Typography, Select, MenuItem } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { FormControl, OutlinedInput, IconButton, InputAdornment, styled, TableHead, TableRow, TextField, Typography, Autocomplete } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import PropTypes from 'prop-types';
 import SheetCell from '../SheetCell';
@@ -11,7 +12,7 @@ const HeaderLabel = styled(Typography)({
   paddingBottom: '10px',
 });
 
-const FilterTextField = ({ type }) => (
+const FilterInputField = ({ type }) => (
   <FormControl fullWidth>
     <OutlinedInput
       hiddenLabel
@@ -33,90 +34,112 @@ const FilterTextField = ({ type }) => (
   </FormControl>
 );
 
-const DropDownSelector = ({ options, onChange }) => (
-  <Select
-    id="test"
+const SearchableSelector = ({ options, onChange, onKeyPress }) => (
+  <Autocomplete
+    options={options}
     onChange={onChange}
+    onKeyPress={onKeyPress}
     sx={{ height: '40px' }}
-  >
-    {Object.keys(options).map((option) => (
-      <MenuItem value={option}>{option}</MenuItem>
-    ))}
-  </Select>
+    getOptionLabel={(option) => option.label}
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    renderInput={(params) => <TextField {...params} size="small" />}
+  />
 );
 
-const TextField = ({ type, onChange }) => (
+const InputField = ({ type, onChange, onKeyPress }) => (
   <OutlinedInput
     hiddenLabel
     type={type}
     size="small"
     placeholder="Enter value..."
     onChange={onChange}
+    onKeyPress={onKeyPress}
   />
 );
 
-const SheetHeader = ({ metadata, columnOrder, setBatchInput }) => (
-  <TableHead>
-    <TableRow>
-      {columnOrder.map((column, index) => {
-        const columnLabel = getLabelForColumn(column, metadata);
-        const columnType = getDataTypeForColumn(column, metadata);
-        const permissibleValues = getPermissibleValuesForColumn(column, metadata);
-        const handleInputChange = (event) => {
-          const userInput = event.target.value;
-          setBatchInput(userInput);
-          event.preventDefault();
-        };
-        return (
-          <>
-            {index === 0
-              && (
-                <SheetCell align="center" sticky>
-                  <HeaderLabel>{columnLabel}</HeaderLabel>
-                  <FormControl fullWidth>
-                    {permissibleValues
-                      && (
-                        <DropDownSelector
-                          options={permissibleValues}
-                          onChange={handleInputChange}
-                        />
-                      )}
-                    {!permissibleValues
-                      && (
-                        <TextField
-                          type={columnType}
-                          onChange={handleInputChange}
-                        />
-                      )}
-                  </FormControl>
-                </SheetCell>
-              )}
-            {index !== 0
-              && (
-                <SheetCell align="center">
-                  <HeaderLabel>{columnLabel}</HeaderLabel>
-                  <FilterTextField type={columnType} />
-                </SheetCell>
-              )}
-          </>
-        );
-      })}
-    </TableRow>
-  </TableHead>
-);
+const SheetHeader = ({ metadata, columnOrder, setBatchInput }) => {
+  const { column } = useParams();
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      setBatchInput((prevBatchInput) => {
+        // eslint-disable-next-line no-param-reassign
+        prevBatchInput[column] = event.target.value;
+      });
+      event.preventDefault();
+    }
+  };
+  return (
+    <TableHead>
+      <TableRow>
+        {columnOrder.map((columnItem, index) => {
+          const columnLabel = getLabelForColumn(columnItem, metadata);
+          const columnType = getDataTypeForColumn(columnItem, metadata);
+          const permissibleValues = getPermissibleValuesForColumn(columnItem, metadata);
+          return (
+            <>
+              {index === 0
+                && (
+                  <SheetCell align="center" sticky>
+                    <HeaderLabel>{columnLabel}</HeaderLabel>
+                    <FormControl fullWidth>
+                      {permissibleValues
+                        && (
+                          <SearchableSelector
+                            options={permissibleValues}
+                            onKeyPress={handleKeyPress}
+                          />
+                        )}
+                      {!permissibleValues
+                        && (
+                          <InputField
+                            type={columnType}
+                            onKeyPress={handleKeyPress}
+                          />
+                        )}
+                    </FormControl>
+                  </SheetCell>
+                )}
+              {index !== 0
+                && (
+                  <SheetCell align="center">
+                    <HeaderLabel>{columnLabel}</HeaderLabel>
+                    <FilterInputField type={columnType} />
+                  </SheetCell>
+                )}
+            </>
+          );
+        })}
+      </TableRow>
+    </TableHead>
+  );
+};
 
-FilterTextField.propTypes = {
+FilterInputField.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-DropDownSelector.propTypes = {
-  options: PropTypes.objectOf(PropTypes.string).isRequired,
-  onChange: PropTypes.func.isRequired,
+SearchableSelector.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.string),
+  ).isRequired,
+  onChange: PropTypes.func,
+  onKeyPress: PropTypes.func,
 };
 
-TextField.propTypes = {
+SearchableSelector.defaultProps = {
+  onChange: undefined,
+  onKeyPress: undefined,
+};
+
+InputField.propTypes = {
   type: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+  onKeyPress: PropTypes.func,
+};
+
+InputField.defaultProps = {
+  onChange: undefined,
+  onKeyPress: undefined,
 };
 
 SheetHeader.propTypes = {

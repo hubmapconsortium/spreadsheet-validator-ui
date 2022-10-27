@@ -1,9 +1,10 @@
-import { useContext } from 'react';
-import { FormControl, OutlinedInput, MenuItem, Select, styled, TableBody, TableRow, Tooltip, Typography } from '@mui/material';
+import { useContext, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { FormControl, OutlinedInput, styled, TableBody, TableRow, Tooltip, Typography, Select, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
-import AppContext from '../../../pages/AppContext';
 import SheetCell from '../SheetCell';
-import { getDataTypeForColumn, getPermissibleValuesForColumn, getTableValue } from '../../../helpers/data-utils';
+import AppContext from '../../../pages/AppContext';
+import { getDataTypeForColumn, getPatchValue, getPermissibleValuesForColumn, getTableValue } from '../../../helpers/data-utils';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
 import { LIGHT_RED, WHITE } from '../../../constants/Color';
 
@@ -21,15 +22,17 @@ const DropDownSelector = ({ value, options, onChange }) => (
     }}
     onChange={onChange}
   >
-    {Object.keys(options).map((option) => (
-      <MenuItem key={option} value={option}>{option}</MenuItem>
+    {options.map((option) => (
+      <MenuItem key={option.label} value={option.label}>
+        {option.label}
+      </MenuItem>
     ))}
   </Select>
 );
 
-const TextField = ({ value, type, onChange }) => (
+const InputField = ({ value, type, onChange }) => (
   <OutlinedInput
-    hiddenlabel="true"
+    hiddenLabel
     variant="standard"
     size="small"
     value={value}
@@ -52,63 +55,78 @@ const WrappedText = ({ text }) => (
 
 // eslint-disable-next-line react/prop-types, max-len
 const SheetBody = ({ metadata, data, columnOrder, rowFilter, batchInput, userInput, setUserInput }) => {
-  const { managePatches } = useContext(AppContext);
+  const { patches } = useContext(AppContext);
+  const { column } = useParams();
+  const existingUserInput = useMemo(
+    () => rowFilter
+      .reduce((result, rowIndex) => (
+        { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
+      ), {}),
+    [column],
+  );
+  const batchValue = batchInput[column];
+  useEffect(
+    () => {
+      setUserInput(existingUserInput);
+    },
+    [column, batchValue],
+  );
+  if (typeof batchValue !== 'undefined') {
+    setUserInput((prevUserInput) => {
+      // eslint-disable-next-line no-param-reassign
+      rowFilter.forEach((rowIndex) => { prevUserInput[rowIndex] = batchValue; });
+    });
+  }
   return (
     <TableBody>
-      {rowFilter.map((rowIndex) => (
-        <TableRow>
-          {columnOrder.map((columnName, columnIndex) => {
-            const permissibleValues = getPermissibleValuesForColumn(columnName, metadata);
-            const columnType = getDataTypeForColumn(columnName, metadata);
-            const handleInputChange = (event) => {
-              const currInput = event.target.value;
-              managePatches({
-                command: 'CREATE_PATCH',
-                patchOp: 'ADD',
-                value: currInput,
-                target: { row: rowIndex, column: columnName },
-              });
-              setUserInput((prevUserInput) => {
-                // eslint-disable-next-line no-param-reassign
-                prevUserInput[rowIndex] = currInput;
-              });
-              event.preventDefault();
-            };
-            let component;
-            if (columnIndex === 0) {
-              component = (
-                <SheetCell sx={{ zIndex: 998 }} sticky>
-                  <FormControl fullWidth>
-                    {permissibleValues
-                      && (
-                        <DropDownSelector
-                          value={(batchInput !== '') ? batchInput : userInput[rowIndex]}
-                          options={permissibleValues}
-                          onChange={handleInputChange}
-                        />
-                      )}
-                    {!permissibleValues
-                      && (
-                        <TextField
-                          value={(batchInput !== '') ? batchInput : userInput[rowIndex]}
-                          type={columnType}
-                          onChange={handleInputChange}
-                        />
-                      )}
-                  </FormControl>
-                </SheetCell>
-              );
-            } else {
-              component = (
-                <SheetCell align="right">
-                  <WrappedText text={getTableValue(rowIndex, columnName, data)} />
-                </SheetCell>
-              );
-            }
-            return component;
-          })}
-        </TableRow>
-      ))}
+      {rowFilter.map((rowIndex) => {
+        const handleInputChange = (event) => {
+          setUserInput((prevUserInput) => {
+            // eslint-disable-next-line no-param-reassign
+            prevUserInput[rowIndex] = event.target.value;
+          });
+        };
+        return (
+          <TableRow>
+            {columnOrder.map((columnName, columnIndex) => {
+              const permissibleValues = getPermissibleValuesForColumn(columnName, metadata);
+              const columnType = getDataTypeForColumn(columnName, metadata);
+              let component;
+              if (columnIndex === 0) {
+                component = (
+                  <SheetCell sx={{ zIndex: 998 }} sticky>
+                    <FormControl fullWidth>
+                      {permissibleValues
+                        && (
+                          <DropDownSelector
+                            value={userInput[rowIndex]}
+                            options={permissibleValues}
+                            onChange={handleInputChange}
+                          />
+                        )}
+                      {!permissibleValues
+                        && (
+                          <InputField
+                            value={userInput[rowIndex]}
+                            type={columnType}
+                            onChange={handleInputChange}
+                          />
+                        )}
+                    </FormControl>
+                  </SheetCell>
+                );
+              } else {
+                component = (
+                  <SheetCell align="right">
+                    <WrappedText text={getTableValue(rowIndex, columnName, data)} />
+                  </SheetCell>
+                );
+              }
+              return component;
+            })}
+          </TableRow>
+        );
+      })}
     </TableBody>
   );
 };
@@ -123,13 +141,13 @@ DropDownSelector.defaultProps = {
   value: '',
 };
 
-TextField.propTypes = {
+InputField.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-TextField.defaultProps = {
+InputField.defaultProps = {
   value: '',
 };
 

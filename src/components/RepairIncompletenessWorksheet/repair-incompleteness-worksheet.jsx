@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useImmer } from 'use-immer';
 import { useParams } from 'react-router-dom';
 import { styled, Table, TableContainer } from '@mui/material';
@@ -7,13 +7,14 @@ import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import Card from '../../styles/Card';
 import moveToFront from '../../helpers/array-utils';
-import { getMissingRequiredForColumn, getPatchValue } from '../../helpers/data-utils';
+import { getMissingRequiredForColumn } from '../../helpers/data-utils';
 import { LIGHT_GRAY } from '../../constants/Color';
 
 const EditorCard = styled(Card)({
   display: 'flex',
   width: '90%',
   justifyContent: 'center',
+  marginBottom: '25px',
 });
 
 const EditorTable = styled(Table)({
@@ -30,7 +31,9 @@ const EditorContainer = styled(TableContainer)({
 });
 
 const RepairIncompletnessWorksheet = () => {
-  const { appData, patches } = useContext(AppContext);
+  const [userInput, setUserInput] = useImmer({});
+  const [batchInput, setBatchInput] = useImmer({});
+  const { appData } = useContext(AppContext);
   const { metadata, data, errorReport } = appData;
   const { column } = useParams();
   const columns = Object.keys(metadata.spreadsheet.columns);
@@ -42,25 +45,11 @@ const RepairIncompletnessWorksheet = () => {
     () => getMissingRequiredForColumn(column, errorReport),
     [column],
   );
-  const existingUserInput = useMemo(
-    () => rowFilter
-      .reduce((result, rowIndex) => (
-        { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
-      ), {}),
-    [column],
-  );
-  const [userInput, setUserInput] = useImmer({});
   useEffect(
-    () => {
-      setUserInput(existingUserInput);
-    },
-    [column],
-  );
-  const [batchInput, setBatchInput] = useState('');
-  useEffect(
-    () => {
-      setBatchInput('');
-    },
+    () => setBatchInput((prevBatchInput) => {
+      // eslint-disable-next-line no-param-reassign
+      delete prevBatchInput[column];
+    }),
     [column],
   );
   return (
