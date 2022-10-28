@@ -15,8 +15,14 @@ import { LIGHT_RED } from '../../../constants/Color';
 const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUserInput, page, rowsPerPage }) => {
   const { patches } = useContext(AppContext);
   const { column } = useParams();
+  const pagedRows = useMemo(
+    () => (rowsPerPage > 0
+      ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      : data),
+    [data, page, rowsPerPage],
+  );
   // eslint-disable-next-line dot-notation
-  const rowIndexes = data.map((row) => row['_rowid']);
+  const rowIndexes = pagedRows.map((row) => row['_rowid']);
   const existingUserInput = useMemo(
     () => rowIndexes
       .reduce((result, rowIndex) => (
@@ -39,61 +45,58 @@ const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUser
   }
   return (
     <TableBody>
-      {(rowsPerPage > 0
-        ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        : data)
-        .map((row) => {
-          // eslint-disable-next-line dot-notation
-          const rowIndex = row['_rowid'];
-          const handleInputChange = (event) => {
-            setUserInput((prevUserInput) => {
-              // eslint-disable-next-line no-param-reassign
-              prevUserInput[rowIndex] = event.target.value;
-            });
-          };
-          return (
-            <TableRow>
-              {columnOrder.map((columnName, columnIndex) => {
-                const permissibleValues = getPermissibleValuesForColumn(columnName, metadata);
-                const columnType = getDataTypeForColumn(columnName, metadata);
-                let component;
-                if (columnIndex === 0) {
-                  component = (
-                    <SheetCell sx={{ zIndex: 998 }} sticky>
-                      <FormControl fullWidth>
-                        {permissibleValues
-                          && (
-                            <DropDownSelector
-                              value={userInput[rowIndex] || ''}
-                              options={permissibleValues}
-                              onChange={handleInputChange}
-                              colorOnEmpty={LIGHT_RED}
-                            />
-                          )}
-                        {!permissibleValues
-                          && (
-                            <InputField
-                              value={userInput[rowIndex] || ''}
-                              type={columnType}
-                              onChange={handleInputChange}
-                              colorOnEmpty={LIGHT_RED}
-                            />
-                          )}
-                      </FormControl>
-                    </SheetCell>
-                  );
-                } else {
-                  component = (
-                    <SheetCell align="right">
-                      <WrappedText text={row[columnName]} />
-                    </SheetCell>
-                  );
-                }
-                return component;
-              })}
-            </TableRow>
-          );
-        })}
+      {pagedRows.map((row) => {
+        // eslint-disable-next-line dot-notation
+        const rowIndex = row['_rowid'];
+        const handleInputChange = (event) => {
+          setUserInput((prevUserInput) => {
+            // eslint-disable-next-line no-param-reassign
+            prevUserInput[rowIndex] = event.target.value;
+          });
+        };
+        return (
+          <TableRow>
+            {columnOrder.map((columnName, columnIndex) => {
+              const permissibleValues = getPermissibleValuesForColumn(columnName, metadata);
+              const columnType = getDataTypeForColumn(columnName, metadata);
+              let component;
+              if (columnIndex === 0) {
+                component = (
+                  <SheetCell sx={{ zIndex: 998 }} sticky>
+                    <FormControl fullWidth>
+                      {permissibleValues
+                        && (
+                          <DropDownSelector
+                            value={userInput[rowIndex] || ''}
+                            options={permissibleValues}
+                            onChange={handleInputChange}
+                            colorOnEmpty={LIGHT_RED}
+                          />
+                        )}
+                      {!permissibleValues
+                        && (
+                          <InputField
+                            value={userInput[rowIndex] || ''}
+                            type={columnType}
+                            onChange={handleInputChange}
+                            colorOnEmpty={LIGHT_RED}
+                          />
+                        )}
+                    </FormControl>
+                  </SheetCell>
+                );
+              } else {
+                component = (
+                  <SheetCell align="right">
+                    <WrappedText text={row[columnName]} />
+                  </SheetCell>
+                );
+              }
+              return component;
+            })}
+          </TableRow>
+        );
+      })}
     </TableBody>
   );
 };
