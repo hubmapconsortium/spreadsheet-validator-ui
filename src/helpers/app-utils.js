@@ -9,13 +9,13 @@ export default function handlePatchCrud(state, action) {
     if (patchOp === 'ADD') {
       patchGroup[column] = {
         op: 'add',
-        path: `/${column}`,
+        path: `/${row}/${column}`,
         value,
       };
     } else if (patchOp === 'REPLACE') {
       patchGroup[column] = {
         op: 'replace',
-        path: `/${column}`,
+        path: `/${row}/${column}`,
         value,
       };
     }
