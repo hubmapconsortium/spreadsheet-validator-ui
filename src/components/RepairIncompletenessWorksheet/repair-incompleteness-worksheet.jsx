@@ -45,6 +45,7 @@ const CancelButton = styled(BaseButton)({
 const RepairIncompletnessWorksheet = () => {
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useImmer({});
+  const [columnFilter, setColumnFilter] = useImmer({});
   const navigate = useNavigate();
   const { appData, managePatches } = useContext(AppContext);
   const { metadata, data, errorReport } = appData;
@@ -54,15 +55,43 @@ const RepairIncompletnessWorksheet = () => {
     () => moveToFront(column, columns),
     [column],
   );
-  const rowOrder = useMemo(
-    () => getMissingRequiredForColumn(column, errorReport),
-    [column],
+  const filters = columnFilter[column];
+  const badRows = useMemo(
+    () => {
+      const badRowIndexes = getMissingRequiredForColumn(column, errorReport);
+      return badRowIndexes.map((index) => data[index]);
+    },
+    [column, filters],
+  );
+  const tableData = useMemo(
+    () => {
+      let filterResult = badRows;
+      if (typeof filters !== 'undefined') {
+        filterResult = badRows.filter(
+          (row) => filters.every(
+            (filter) => {
+              const cellValue = row[filter.column] || '';
+              const cellValueString = cellValue.toString();
+              return cellValueString.toLowerCase().includes(filter.value.toLowerCase());
+            },
+          ),
+        );
+      }
+      return filterResult;
+    },
+    [column, filters],
   );
   useEffect(
-    () => setBatchInput((prevBatchInput) => {
-      // eslint-disable-next-line no-param-reassign
-      delete prevBatchInput[column];
-    }),
+    () => {
+      setBatchInput((prevBatchInput) => {
+        // eslint-disable-next-line no-param-reassign
+        delete prevBatchInput[column];
+      });
+      setColumnFilter((prevColumnFilter) => {
+        // eslint-disable-next-line no-param-reassign
+        delete prevColumnFilter[column];
+      });
+    },
     [column],
   );
   return (
@@ -74,12 +103,12 @@ const RepairIncompletnessWorksheet = () => {
               metadata={metadata}
               columnOrder={columnOrder}
               setBatchInput={setBatchInput}
+              setColumnFilter={setColumnFilter}
             />
             <SheetBody
               metadata={metadata}
-              data={data}
+              data={tableData}
               columnOrder={columnOrder}
-              rowOrder={rowOrder}
               batchInput={batchInput}
               userInput={userInput}
               setUserInput={setUserInput}

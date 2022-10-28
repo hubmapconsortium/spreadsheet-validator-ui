@@ -7,16 +7,18 @@ import DropDownSelector from '../DropDownSelector';
 import InputField from '../InputField';
 import WrappedText from '../WrappedText/wrapped-text';
 import AppContext from '../../../pages/AppContext';
-import { getDataTypeForColumn, getPatchValue, getPermissibleValuesForColumn, getTableValue } from '../../../helpers/data-utils';
+import { getDataTypeForColumn, getPatchValue, getPermissibleValuesForColumn } from '../../../helpers/data-utils';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
 import { LIGHT_RED } from '../../../constants/Color';
 
 // eslint-disable-next-line react/prop-types, max-len
-const SheetBody = ({ metadata, data, columnOrder, rowOrder, batchInput, userInput, setUserInput }) => {
+const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUserInput }) => {
   const { patches } = useContext(AppContext);
   const { column } = useParams();
+  // eslint-disable-next-line dot-notation
+  const rowIndexes = data.map((row) => row['_rowid']);
   const existingUserInput = useMemo(
-    () => rowOrder
+    () => rowIndexes
       .reduce((result, rowIndex) => (
         { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
       ), {}),
@@ -32,12 +34,14 @@ const SheetBody = ({ metadata, data, columnOrder, rowOrder, batchInput, userInpu
   if (typeof batchValue !== 'undefined') {
     setUserInput((prevUserInput) => {
       // eslint-disable-next-line no-param-reassign
-      rowOrder.forEach((rowIndex) => { prevUserInput[rowIndex] = batchValue; });
+      rowIndexes.forEach((rowIndex) => { prevUserInput[rowIndex] = batchValue; });
     });
   }
   return (
     <TableBody>
-      {rowOrder.map((rowIndex) => {
+      {data.map((row) => {
+        // eslint-disable-next-line dot-notation
+        const rowIndex = row['_rowid'];
         const handleInputChange = (event) => {
           setUserInput((prevUserInput) => {
             // eslint-disable-next-line no-param-reassign
@@ -78,7 +82,7 @@ const SheetBody = ({ metadata, data, columnOrder, rowOrder, batchInput, userInpu
               } else {
                 component = (
                   <SheetCell align="right">
-                    <WrappedText text={getTableValue(rowIndex, columnName, data)} />
+                    <WrappedText text={row[columnName]} />
                   </SheetCell>
                 );
               }
@@ -108,7 +112,6 @@ SheetBody.propTypes = {
     PropTypes.objectOf(PropTypes.any),
   ).isRequired,
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
-  rowOrder: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default SheetBody;

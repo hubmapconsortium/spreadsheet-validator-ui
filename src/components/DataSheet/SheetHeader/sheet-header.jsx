@@ -14,7 +14,7 @@ const HeaderLabel = styled(Typography)({
   paddingBottom: '10px',
 });
 
-const SheetHeader = ({ metadata, columnOrder, setBatchInput }) => {
+const SheetHeader = ({ metadata, columnOrder, setBatchInput, setColumnFilter }) => {
   const { column } = useParams();
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -32,6 +32,24 @@ const SheetHeader = ({ metadata, columnOrder, setBatchInput }) => {
           const columnLabel = getLabelForColumn(columnItem, metadata);
           const columnType = getDataTypeForColumn(columnItem, metadata);
           const permissibleValues = getPermissibleValuesForColumn(columnItem, metadata);
+          const handleFilterChange = (event) => {
+            setColumnFilter((prevColumnFilter) => {
+              const enteredValue = event.target.value;
+              if (!(column in prevColumnFilter)) {
+                // eslint-disable-next-line no-param-reassign
+                prevColumnFilter[column] = [];
+              }
+              const filterGroup = prevColumnFilter[column];
+              const foundFilter = filterGroup.filter((filter) => filter.column === columnLabel);
+              if (foundFilter.length === 0) {
+                const filterSpec = { column: columnLabel, value: enteredValue };
+                filterGroup.push(filterSpec);
+              } else {
+                const filterSpec = foundFilter[0];
+                filterSpec.value = enteredValue;
+              }
+            });
+          };
           return (
             <>
               {index === 0
@@ -61,7 +79,10 @@ const SheetHeader = ({ metadata, columnOrder, setBatchInput }) => {
                 && (
                   <SheetCell align="center">
                     <HeaderLabel>{columnLabel}</HeaderLabel>
-                    <FilterInputField type={columnType} />
+                    <FilterInputField
+                      key={`${columnLabel}-on-${column}-incompleteness`}
+                      onChange={handleFilterChange}
+                    />
                   </SheetCell>
                 )}
             </>
@@ -87,6 +108,7 @@ SheetHeader.propTypes = {
   }).isRequired,
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
   setBatchInput: PropTypes.func.isRequired,
+  setColumnFilter: PropTypes.func.isRequired,
 };
 
 export default SheetHeader;
