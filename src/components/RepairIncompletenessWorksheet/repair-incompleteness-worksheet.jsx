@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, styled, Table, TableContainer } from '@mui/material';
@@ -11,25 +11,25 @@ import moveToFront from '../../helpers/array-utils';
 import { getMissingRequiredForColumn } from '../../helpers/data-utils';
 import { LIGHT_GRAY, WHITE } from '../../constants/Color';
 import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
+import SheetPagination from '../DataSheet/SheetPagination';
 
-const EditorCard = styled(Card)({
-  display: 'flex',
-  width: '90%',
-  justifyContent: 'center',
+const DataSheetCard = styled(Card)({
+  display: 'block',
+  width: '65vw',
+  padding: '30px 30px 5px 30px',
   marginBottom: '25px',
+  overflow: 'hidden',
 });
 
-const EditorTable = styled(Table)({
-  borderRadius: '5px',
-});
-
-const EditorContainer = styled(TableContainer)({
+const SheetTableContainer = styled(TableContainer)({
   border: '2px solid',
   borderColor: LIGHT_GRAY,
   borderRadius: '5px',
   maxHeight: '800px',
-  maxWidth: '70vw',
-  margin: '30px',
+});
+
+const SheetTable = styled(Table)({
+  borderRadius: '5px',
 });
 
 const ButtonBox = styled(Box)({
@@ -43,13 +43,17 @@ const CancelButton = styled(BaseButton)({
 });
 
 const RepairIncompletnessWorksheet = () => {
-  const [userInput, setUserInput] = useImmer({});
-  const [batchInput, setBatchInput] = useImmer({});
-  const [columnFilter, setColumnFilter] = useImmer({});
   const navigate = useNavigate();
   const { appData, managePatches } = useContext(AppContext);
   const { metadata, data, errorReport } = appData;
   const { column } = useParams();
+
+  const [userInput, setUserInput] = useImmer({});
+  const [batchInput, setBatchInput] = useImmer({});
+  const [columnFilter, setColumnFilter] = useImmer({});
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const columns = Object.keys(metadata.spreadsheet.columns);
   const columnOrder = useMemo(
     () => moveToFront(column, columns),
@@ -96,9 +100,9 @@ const RepairIncompletnessWorksheet = () => {
   );
   return (
     <>
-      <EditorCard>
-        <EditorContainer>
-          <EditorTable stickyHeader>
+      <DataSheetCard>
+        <SheetTableContainer>
+          <SheetTable stickyHeader>
             <SheetHeader
               metadata={metadata}
               columnOrder={columnOrder}
@@ -112,10 +116,19 @@ const RepairIncompletnessWorksheet = () => {
               batchInput={batchInput}
               userInput={userInput}
               setUserInput={setUserInput}
+              page={page}
+              rowsPerPage={rowsPerPage}
             />
-          </EditorTable>
-        </EditorContainer>
-      </EditorCard>
+          </SheetTable>
+        </SheetTableContainer>
+        <SheetPagination
+          data={tableData}
+          page={page}
+          setPage={setPage}
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
+        />
+      </DataSheetCard>
       <ButtonBox>
         <CancelButton
           variant="outlined"

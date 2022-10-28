@@ -12,7 +12,7 @@ import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/
 import { LIGHT_RED } from '../../../constants/Color';
 
 // eslint-disable-next-line react/prop-types, max-len
-const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUserInput }) => {
+const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUserInput, page, rowsPerPage }) => {
   const { patches } = useContext(AppContext);
   const { column } = useParams();
   // eslint-disable-next-line dot-notation
@@ -39,58 +39,61 @@ const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUser
   }
   return (
     <TableBody>
-      {data.map((row) => {
-        // eslint-disable-next-line dot-notation
-        const rowIndex = row['_rowid'];
-        const handleInputChange = (event) => {
-          setUserInput((prevUserInput) => {
-            // eslint-disable-next-line no-param-reassign
-            prevUserInput[rowIndex] = event.target.value;
-          });
-        };
-        return (
-          <TableRow>
-            {columnOrder.map((columnName, columnIndex) => {
-              const permissibleValues = getPermissibleValuesForColumn(columnName, metadata);
-              const columnType = getDataTypeForColumn(columnName, metadata);
-              let component;
-              if (columnIndex === 0) {
-                component = (
-                  <SheetCell sx={{ zIndex: 998 }} sticky>
-                    <FormControl fullWidth>
-                      {permissibleValues
-                        && (
-                          <DropDownSelector
-                            value={userInput[rowIndex] || ''}
-                            options={permissibleValues}
-                            onChange={handleInputChange}
-                            colorOnEmpty={LIGHT_RED}
-                          />
-                        )}
-                      {!permissibleValues
-                        && (
-                          <InputField
-                            value={userInput[rowIndex] || ''}
-                            type={columnType}
-                            onChange={handleInputChange}
-                            colorOnEmpty={LIGHT_RED}
-                          />
-                        )}
-                    </FormControl>
-                  </SheetCell>
-                );
-              } else {
-                component = (
-                  <SheetCell align="right">
-                    <WrappedText text={row[columnName]} />
-                  </SheetCell>
-                );
-              }
-              return component;
-            })}
-          </TableRow>
-        );
-      })}
+      {(rowsPerPage > 0
+        ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        : data)
+        .map((row) => {
+          // eslint-disable-next-line dot-notation
+          const rowIndex = row['_rowid'];
+          const handleInputChange = (event) => {
+            setUserInput((prevUserInput) => {
+              // eslint-disable-next-line no-param-reassign
+              prevUserInput[rowIndex] = event.target.value;
+            });
+          };
+          return (
+            <TableRow>
+              {columnOrder.map((columnName, columnIndex) => {
+                const permissibleValues = getPermissibleValuesForColumn(columnName, metadata);
+                const columnType = getDataTypeForColumn(columnName, metadata);
+                let component;
+                if (columnIndex === 0) {
+                  component = (
+                    <SheetCell sx={{ zIndex: 998 }} sticky>
+                      <FormControl fullWidth>
+                        {permissibleValues
+                          && (
+                            <DropDownSelector
+                              value={userInput[rowIndex] || ''}
+                              options={permissibleValues}
+                              onChange={handleInputChange}
+                              colorOnEmpty={LIGHT_RED}
+                            />
+                          )}
+                        {!permissibleValues
+                          && (
+                            <InputField
+                              value={userInput[rowIndex] || ''}
+                              type={columnType}
+                              onChange={handleInputChange}
+                              colorOnEmpty={LIGHT_RED}
+                            />
+                          )}
+                      </FormControl>
+                    </SheetCell>
+                  );
+                } else {
+                  component = (
+                    <SheetCell align="right">
+                      <WrappedText text={row[columnName]} />
+                    </SheetCell>
+                  );
+                }
+                return component;
+              })}
+            </TableRow>
+          );
+        })}
     </TableBody>
   );
 };
@@ -112,6 +115,8 @@ SheetBody.propTypes = {
     PropTypes.objectOf(PropTypes.any),
   ).isRequired,
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
 };
 
 export default SheetBody;
