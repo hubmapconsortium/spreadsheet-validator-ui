@@ -8,7 +8,7 @@ import SheetBody from '../DataSheet/SheetBody';
 import BaseButton from '../../styles/BaseButton';
 import Card from '../../styles/Card';
 import moveToFront from '../../helpers/array-utils';
-import { getMissingRequiredForColumn } from '../../helpers/data-utils';
+import { getMissingRequiredForColumn, getPatchValue } from '../../helpers/data-utils';
 import { LIGHT_GRAY, WHITE } from '../../constants/Color';
 import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 import SheetPagination from '../DataSheet/SheetPagination';
@@ -44,12 +44,13 @@ const CancelButton = styled(BaseButton)({
 
 const RepairIncompletnessWorksheet = () => {
   const navigate = useNavigate();
-  const { appData, managePatches } = useContext(AppContext);
+  const { appData, patches, managePatches } = useContext(AppContext);
   const { metadata, data, errorReport } = appData;
   const { column } = useParams();
 
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useImmer({});
+  const [staleBatch, setStaleBatch] = useState(false);
   const [columnFilter, setColumnFilter] = useImmer({});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -59,14 +60,30 @@ const RepairIncompletnessWorksheet = () => {
     () => moveToFront(column, columns),
     [column],
   );
-  const filters = columnFilter[column];
-  const badRows = useMemo(
-    () => {
-      const badRowIndexes = getMissingRequiredForColumn(column, errorReport);
-      return badRowIndexes.map((index) => data[index]);
-    },
-    [column, filters],
+
+  const badRowIndexes = useMemo(
+    () => getMissingRequiredForColumn(column, errorReport),
+    [column],
   );
+  const existingUserInput = useMemo(
+    () => badRowIndexes
+      .reduce((result, rowIndex) => (
+        { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
+      ), {}),
+    [column],
+  );
+  useEffect(
+    () => {
+      setUserInput(existingUserInput);
+    },
+    [column],
+  );
+
+  const badRows = useMemo(
+    () => badRowIndexes.map((index) => data[index]),
+    [column],
+  );
+  const filters = columnFilter[column];
   const tableData = useMemo(
     () => {
       let filterResult = badRows;
@@ -83,7 +100,7 @@ const RepairIncompletnessWorksheet = () => {
       }
       return filterResult;
     },
-    [column, filters],
+    [column, badRows, filters],
   );
   useEffect(
     () => {
@@ -107,6 +124,7 @@ const RepairIncompletnessWorksheet = () => {
               metadata={metadata}
               columnOrder={columnOrder}
               setBatchInput={setBatchInput}
+              setStaleBatch={setStaleBatch}
               setColumnFilter={setColumnFilter}
             />
             <SheetBody
@@ -118,6 +136,7 @@ const RepairIncompletnessWorksheet = () => {
               setUserInput={setUserInput}
               page={page}
               rowsPerPage={rowsPerPage}
+              staleBatch={staleBatch}
             />
           </SheetTable>
         </SheetTableContainer>

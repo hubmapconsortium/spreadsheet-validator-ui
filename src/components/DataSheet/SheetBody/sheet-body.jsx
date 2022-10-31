@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { FormControl, TableBody, TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -6,14 +6,12 @@ import SheetCell from '../SheetCell';
 import DropDownSelector from '../DropDownSelector';
 import InputField from '../InputField';
 import WrappedText from '../WrappedText/wrapped-text';
-import AppContext from '../../../pages/AppContext';
-import { getDataTypeForColumn, getPatchValue, getPermissibleValuesForColumn } from '../../../helpers/data-utils';
+import { getDataTypeForColumn, getPermissibleValuesForColumn } from '../../../helpers/data-utils';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
 import { LIGHT_RED } from '../../../constants/Color';
 
 // eslint-disable-next-line react/prop-types, max-len
-const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUserInput, page, rowsPerPage }) => {
-  const { patches } = useContext(AppContext);
+const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUserInput, page, rowsPerPage, staleBatch }) => {
   const { column } = useParams();
   const pagedRows = useMemo(
     () => (rowsPerPage > 0
@@ -23,21 +21,8 @@ const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUser
   );
   // eslint-disable-next-line dot-notation
   const rowIndexes = pagedRows.map((row) => row['_rowid']);
-  const existingUserInput = useMemo(
-    () => rowIndexes
-      .reduce((result, rowIndex) => (
-        { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
-      ), {}),
-    [column],
-  );
   const batchValue = batchInput[column];
-  useEffect(
-    () => {
-      setUserInput(existingUserInput);
-    },
-    [column, batchValue],
-  );
-  if (typeof batchValue !== 'undefined') {
+  if (typeof batchValue !== 'undefined' && !staleBatch) {
     setUserInput((prevUserInput) => {
       // eslint-disable-next-line no-param-reassign
       rowIndexes.forEach((rowIndex) => { prevUserInput[rowIndex] = batchValue; });

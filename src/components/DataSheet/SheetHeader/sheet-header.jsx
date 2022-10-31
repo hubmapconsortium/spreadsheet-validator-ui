@@ -14,7 +14,7 @@ const HeaderLabel = styled(Typography)({
   paddingBottom: '10px',
 });
 
-const SheetHeader = ({ metadata, columnOrder, setBatchInput, setColumnFilter }) => {
+const SheetHeader = ({ metadata, columnOrder, setBatchInput, setColumnFilter, setStaleBatch }) => {
   const { column } = useParams();
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -22,6 +22,7 @@ const SheetHeader = ({ metadata, columnOrder, setBatchInput, setColumnFilter }) 
         // eslint-disable-next-line no-param-reassign
         prevBatchInput[column] = event.target.value;
       });
+      setStaleBatch(false);
       event.preventDefault();
     }
   };
@@ -49,6 +50,7 @@ const SheetHeader = ({ metadata, columnOrder, setBatchInput, setColumnFilter }) 
                 filterSpec.value = enteredValue;
               }
             });
+            setStaleBatch(true);
           };
           return (
             <>
@@ -109,6 +111,7 @@ SheetHeader.propTypes = {
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
   setBatchInput: PropTypes.func.isRequired,
   setColumnFilter: PropTypes.func.isRequired,
+  setStaleBatch: PropTypes.func.isRequired,
 };
 
 export default SheetHeader;
