@@ -9,6 +9,10 @@ export const SPREADSHEET_METADATA = {
         label: 'sample_ID',
         type: 'text',
       },
+      section_index_number: {
+        label: 'section_index_number',
+        type: 'number',
+      },
       preparation_medium: {
         label: 'preparation_medium',
         type: 'text',
@@ -137,38 +141,93 @@ export const SPREADSHEET_METADATA = {
 
 export const SPREADSHEET_DATA = [
   {
-    sample_ID: '9OLC.A2',
+    _rowid: 0,
+    sample_ID: '9OLC.A1',
+    section_index_number: 1,
     preparation_medium: 'None',
     preparation_temperature: '4 Celcius',
     preparation_time_value: '1 minute',
     preparation_time_unit: 'min',
     histology_report: null,
   }, {
+    _rowid: 1,
     sample_ID: null,
+    section_index_number: 1,
     preparation_medium: 'None',
     preparation_temperature: '4 Celcius',
     preparation_time_value: '1 min',
     preparation_time_unit: 'min',
     histology_report: 0,
   }, {
+    _rowid: 2,
     sample_ID: null,
+    section_index_number: 2,
     preparation_medium: 'OCT Embedded',
     preparation_temperature: null,
     preparation_time_value: 1.5,
     preparation_time_unit: 'min',
     histology_report: 0,
   }, {
+    _rowid: 3,
     sample_ID: '',
+    section_index_number: 3,
     preparation_medium: 'OCT Embedded',
     preparation_temperature: '24 Celcius',
     preparation_time_value: 1.5,
     preparation_time_unit: 'min',
     histology_report: null,
   }, {
-    sample_ID: '9OLC.J4',
+    _rowid: 4,
+    sample_ID: '9OLC.J21',
+    section_index_number: 21,
     preparation_medium: 'Methanol',
     preparation_temperature: null,
     preparation_time_value: '4 min',
+    preparation_time_unit: 'min',
+    histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
+  }, {
+    _rowid: 5,
+    sample_ID: '9OLC.J22',
+    section_index_number: 22,
+    preparation_medium: 'Methanol',
+    preparation_temperature: null,
+    preparation_time_value: '4 min',
+    preparation_time_unit: 'min',
+    histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
+  }, {
+    _rowid: 6,
+    sample_ID: '9OLC.J23',
+    section_index_number: 23,
+    preparation_medium: 'OCT',
+    preparation_temperature: null,
+    preparation_time_value: '4 min',
+    preparation_time_unit: 'min',
+    histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
+  }, {
+    _rowid: 7,
+    sample_ID: '9OLC.J24',
+    section_index_number: 24,
+    preparation_medium: 'OCT',
+    preparation_temperature: null,
+    preparation_time_value: '4 min',
+    preparation_time_unit: 'min',
+    histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
+  }, {
+    _rowid: 8,
+    sample_ID: '3OAC.M1',
+    section_index_number: 1,
+    preparation_medium: 'OCT',
+    preparation_temperature: 'Dry Ice',
+    preparation_time_value: 5,
+    preparation_time_unit: 'min',
+    histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
+  }, {
+    _rowid: 9,
+    sample_ID: '3OAC.M2',
+    section_index_number: 2,
+    preparation_medium: 'OCT',
+    preparation_temperature: 'Dry Ice',
+    preparation_time_value: 5,
     preparation_time_unit: 'min',
     histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
   },
@@ -177,7 +236,7 @@ export const SPREADSHEET_DATA = [
 export const ERROR_REPORT = {
   missingRequired: {
     sample_ID: [1, 2, 3],
-    preparation_temperature: [2, 4],
+    preparation_temperature: [2, 4, 5, 6, 7],
   },
   notStandardTerm: {
     preparation_medium: [
@@ -266,14 +325,20 @@ export const APP_DATA = {
 export const PATCH_DATA = [
   {},
   {
-    sample_ID: { op: 'add', path: '/sample_ID', value: '9OLC.A3' },
+    sample_ID: { op: 'add', path: '/1/sample_ID/', value: '9OLC.A3' },
   },
   {
-    preparation_temperature: { op: 'add', path: '/preparation_temperature', value: '4 Degrees Celsius' },
+    preparation_temperature: { op: 'add', path: '/2/preparation_temperature', value: '4 Degrees Celsius' },
   },
   {
-    sample_ID: { op: 'add', path: '/sample_ID', value: '9OLC.A5' },
+    sample_ID: { op: 'add', path: '/3/sample_ID', value: '9OLC.A5' },
   },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
   {},
 ];
 
