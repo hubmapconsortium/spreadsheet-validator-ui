@@ -55,6 +55,13 @@ const RepairIncompletnessWorksheet = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const handleUserInput = (event, rowIndex) => {
+    setUserInput((currentUserInput) => {
+      // eslint-disable-next-line no-param-reassign
+      currentUserInput[rowIndex] = event.target.value;
+    });
+  };
+
   const columns = Object.keys(schema.columns);
   const columnOrder = useMemo(
     () => moveToFront(column, columns),
@@ -131,6 +138,7 @@ const RepairIncompletnessWorksheet = () => {
               schema={schema}
               data={tableData}
               columnOrder={columnOrder}
+              handleUserInput={handleUserInput}
               batchInput={batchInput}
               userInput={userInput}
               setUserInput={setUserInput}

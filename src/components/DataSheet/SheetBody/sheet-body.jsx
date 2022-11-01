@@ -11,7 +11,7 @@ import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/
 import { LIGHT_RED } from '../../../constants/Color';
 
 // eslint-disable-next-line react/prop-types, max-len
-const SheetBody = ({ schema, data, columnOrder, batchInput, userInput, setUserInput, page, rowsPerPage, staleBatch }) => {
+const SheetBody = ({ schema, data, columnOrder, handleUserInput, batchInput, userInput, setUserInput, page, rowsPerPage, staleBatch }) => {
   const { column } = useParams();
   const pagedRows = useMemo(
     () => (rowsPerPage > 0
@@ -33,12 +33,6 @@ const SheetBody = ({ schema, data, columnOrder, batchInput, userInput, setUserIn
       {pagedRows.map((row) => {
         // eslint-disable-next-line dot-notation
         const rowIndex = row['_id'];
-        const handleInputChange = (event) => {
-          setUserInput((prevUserInput) => {
-            // eslint-disable-next-line no-param-reassign
-            prevUserInput[rowIndex] = event.target.value;
-          });
-        };
         return (
           <TableRow>
             {columnOrder.map((columnName, columnIndex) => {
@@ -54,7 +48,7 @@ const SheetBody = ({ schema, data, columnOrder, batchInput, userInput, setUserIn
                           <DropDownSelector
                             value={userInput[rowIndex] || ''}
                             options={permissibleValues}
-                            onChange={handleInputChange}
+                            onChange={(e) => handleUserInput(e, rowIndex)}
                             colorOnEmpty={LIGHT_RED}
                           />
                         )}
@@ -63,7 +57,7 @@ const SheetBody = ({ schema, data, columnOrder, batchInput, userInput, setUserIn
                           <InputField
                             value={userInput[rowIndex] || ''}
                             type={columnType}
-                            onChange={handleInputChange}
+                            onChange={(e) => handleUserInput(e, rowIndex)}
                             colorOnEmpty={LIGHT_RED}
                           />
                         )}
@@ -101,6 +95,7 @@ SheetBody.propTypes = {
     PropTypes.objectOf(PropTypes.any),
   ).isRequired,
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
+  handleUserInput: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
 };
