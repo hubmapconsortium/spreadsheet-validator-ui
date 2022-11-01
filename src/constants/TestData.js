@@ -1,145 +1,143 @@
 import { GREEN, RED } from './Color';
 import { ERROR_FOUND, ERROR_NOT_FOUND } from './Status';
 
-export const SPREADSHEET_METADATA = {
-  spreadsheet: {
-    label: 'Tissue Block',
-    columns: {
-      sample_ID: {
-        label: 'sample_ID',
-        type: 'text',
-      },
-      section_index_number: {
-        label: 'section_index_number',
-        type: 'number',
-      },
-      preparation_medium: {
-        label: 'preparation_medium',
-        type: 'text',
-        permissibleValues: [
-          {
-            label: 'PFA 4%',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/PFA4pc-prep',
-          },
-          {
-            label: 'Buffered Formalin (10% NBF)',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/bufferedFormalin-10pcNBF-prep',
-          },
-          {
-            label: 'Non-Buffered Formalin (FOR)',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-BufferedFormalin-FOR-prep',
-          },
-          {
-            label: '1 x PBS',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/1xPBS-prep',
-          },
-          {
-            label: 'OCT',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/OCT',
-          },
-          {
-            label: 'CMC',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/CMC-prep',
-          },
-          {
-            label: 'MACS Tissue Storage Solution',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/maCSTissueStorageSolution-prep',
-          },
-          {
-            label: 'RNALater',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C63348',
-          },
-          {
-            label: 'Methanol',
-            meaning: 'http://purl.bioontology.org/ontology/MESH/D000432',
-          },
-          {
-            label: 'Non-Aldehyde Based Without Acetic Acid (NAA)',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-AldehydeBasedWithoutAceticAcid-NAA',
-          },
-          {
-            label: 'Non-Aldehyde With Acetic Acid (ACA)',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-AldehydeWithAceticAcid-ACA',
-          },
-          {
-            label: 'PAXgene Blood Tissue System',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C126392',
-          },
-          {
-            label: 'Allprotect Tissue Reagent (ALL)',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/allprotectTissueReagent-ALL-prep',
-          },
-          {
-            label: 'None',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41132',
-          }],
-      },
-      preparation_temperature: {
-        label: 'preparation_temperature',
-        type: 'text',
-        permissibleValues: [
-          {
-            label: 'Liquid Nitrogen',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C68796',
-          },
-          {
-            label: 'Liquid Nitrogen Vapor',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C174159',
-          },
-          {
-            label: 'Dry Ice',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C63373',
-          },
-          {
-            label: '4 Degrees Celsius',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185332',
-          },
-          {
-            label: '24 Celsius (Room Temperature)',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/24Celsius-RoomTemperature',
-          },
-          {
-            label: '37 Celsius',
-            meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/37Celsius-PT',
-          },
-          {
-            label: 'Minus 80 Degrees Celsius',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185336',
-          },
-          {
-            label: 'Minus 20 Degrees Celsius',
-            meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185334',
-          }],
-      },
-      preparation_time_value: {
-        label: 'preparation_time_value',
-        type: 'number',
-      },
-      preparation_time_unit: {
-        label: 'preparation_time_unit',
-        type: 'text',
-        permissibleValues: [{
-          label: 'minute',
-          meaning: 'http://purl.obolibrary.org/obo/UO_0000031',
+export const METADATA_SCHEMA = {
+  title: 'Tissue Block',
+  columns: {
+    sample_ID: {
+      label: 'sample_ID',
+      type: 'text',
+    },
+    section_index_number: {
+      label: 'section_index_number',
+      type: 'number',
+    },
+    preparation_medium: {
+      label: 'preparation_medium',
+      type: 'text',
+      permissibleValues: [
+        {
+          label: 'PFA 4%',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/PFA4pc-prep',
         },
         {
-          label: 'hour',
-          meaning: 'http://purl.obolibrary.org/obo/UO_0000032',
+          label: 'Buffered Formalin (10% NBF)',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/bufferedFormalin-10pcNBF-prep',
         },
         {
-          label: 'day',
-          meaning: 'http://purl.obolibrary.org/obo/UO_0000033',
+          label: 'Non-Buffered Formalin (FOR)',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-BufferedFormalin-FOR-prep',
+        },
+        {
+          label: '1 x PBS',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/1xPBS-prep',
+        },
+        {
+          label: 'OCT',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/OCT',
+        },
+        {
+          label: 'CMC',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/CMC-prep',
+        },
+        {
+          label: 'MACS Tissue Storage Solution',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/maCSTissueStorageSolution-prep',
+        },
+        {
+          label: 'RNALater',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C63348',
+        },
+        {
+          label: 'Methanol',
+          meaning: 'http://purl.bioontology.org/ontology/MESH/D000432',
+        },
+        {
+          label: 'Non-Aldehyde Based Without Acetic Acid (NAA)',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-AldehydeBasedWithoutAceticAcid-NAA',
+        },
+        {
+          label: 'Non-Aldehyde With Acetic Acid (ACA)',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-AldehydeWithAceticAcid-ACA',
+        },
+        {
+          label: 'PAXgene Blood Tissue System',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C126392',
+        },
+        {
+          label: 'Allprotect Tissue Reagent (ALL)',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/allprotectTissueReagent-ALL-prep',
+        },
+        {
+          label: 'None',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41132',
         }],
+    },
+    preparation_temperature: {
+      label: 'preparation_temperature',
+      type: 'text',
+      permissibleValues: [
+        {
+          label: 'Liquid Nitrogen',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C68796',
+        },
+        {
+          label: 'Liquid Nitrogen Vapor',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C174159',
+        },
+        {
+          label: 'Dry Ice',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C63373',
+        },
+        {
+          label: '4 Degrees Celsius',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185332',
+        },
+        {
+          label: '24 Celsius (Room Temperature)',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/24Celsius-RoomTemperature',
+        },
+        {
+          label: '37 Celsius',
+          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/37Celsius-PT',
+        },
+        {
+          label: 'Minus 80 Degrees Celsius',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185336',
+        },
+        {
+          label: 'Minus 20 Degrees Celsius',
+          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185334',
+        }],
+    },
+    preparation_time_value: {
+      label: 'preparation_time_value',
+      type: 'number',
+    },
+    preparation_time_unit: {
+      label: 'preparation_time_unit',
+      type: 'text',
+      permissibleValues: [{
+        label: 'minute',
+        meaning: 'http://purl.obolibrary.org/obo/UO_0000031',
       },
-      histology_report: {
-        label: 'histology_report',
-        type: 'text',
+      {
+        label: 'hour',
+        meaning: 'http://purl.obolibrary.org/obo/UO_0000032',
       },
+      {
+        label: 'day',
+        meaning: 'http://purl.obolibrary.org/obo/UO_0000033',
+      }],
+    },
+    histology_report: {
+      label: 'histology_report',
+      type: 'text',
     },
   },
 };
 
-export const SPREADSHEET_DATA = [
+export const METADATA_RECORDS = [
   {
     _id: 0,
     sample_ID: '9OLC.A1',
@@ -317,9 +315,9 @@ export const ERROR_REPORT = {
 };
 
 export const APP_DATA = {
-  metadata: SPREADSHEET_METADATA,
-  data: SPREADSHEET_DATA,
-  errorReport: ERROR_REPORT,
+  schema: METADATA_SCHEMA,
+  data: METADATA_RECORDS,
+  reporting: ERROR_REPORT,
 };
 
 export const PATCH_DATA = [

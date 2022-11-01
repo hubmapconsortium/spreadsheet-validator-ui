@@ -49,10 +49,10 @@ const RepairIcon = styled(ConstructionIcon)({
 const SideBar = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(OVERVIEW);
   const { appData } = useContext(AppContext);
-  const { errorReport } = appData;
+  const { reporting } = appData;
   const getRepairIncompletenessSubMenu = useMemo(
-    () => buildRepairIncompletenessSubMenu(errorReport),
-    [errorReport],
+    () => buildRepairIncompletenessSubMenu(reporting),
+    [reporting],
   );
   return (
     <SideBarContainer>

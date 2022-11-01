@@ -11,7 +11,7 @@ import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/
 import { LIGHT_RED } from '../../../constants/Color';
 
 // eslint-disable-next-line react/prop-types, max-len
-const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUserInput, page, rowsPerPage, staleBatch }) => {
+const SheetBody = ({ schema, data, columnOrder, batchInput, userInput, setUserInput, page, rowsPerPage, staleBatch }) => {
   const { column } = useParams();
   const pagedRows = useMemo(
     () => (rowsPerPage > 0
@@ -42,8 +42,8 @@ const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUser
         return (
           <TableRow>
             {columnOrder.map((columnName, columnIndex) => {
-              const permissibleValues = getPermissibleValuesForColumn(columnName, metadata);
-              const columnType = getDataTypeForColumn(columnName, metadata);
+              const permissibleValues = getPermissibleValuesForColumn(columnName, schema);
+              const columnType = getDataTypeForColumn(columnName, schema);
               let component;
               if (columnIndex === 0) {
                 component = (
@@ -87,17 +87,15 @@ const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUser
 };
 
 SheetBody.propTypes = {
-  metadata: PropTypes.shape({
-    spreadsheet: PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      columns: PropTypes.objectOf(
-        PropTypes.shape({
-          label: PropTypes.string.isRequired,
-          type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
-          permissibleValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
-        }),
-      ).isRequired,
-    }).isRequired,
+  schema: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    columns: PropTypes.objectOf(
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
+        permissibleValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+      }),
+    ).isRequired,
   }).isRequired,
   data: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.any),

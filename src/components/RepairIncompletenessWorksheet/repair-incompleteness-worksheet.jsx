@@ -45,7 +45,7 @@ const CancelButton = styled(BaseButton)({
 const RepairIncompletnessWorksheet = () => {
   const navigate = useNavigate();
   const { appData, patches, managePatches } = useContext(AppContext);
-  const { metadata, data, errorReport } = appData;
+  const { schema, data, reporting } = appData;
   const { column } = useParams();
 
   const [userInput, setUserInput] = useImmer({});
@@ -55,14 +55,14 @@ const RepairIncompletnessWorksheet = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const columns = Object.keys(metadata.spreadsheet.columns);
+  const columns = Object.keys(schema.columns);
   const columnOrder = useMemo(
     () => moveToFront(column, columns),
     [column],
   );
 
   const badRowIndexes = useMemo(
-    () => getMissingRequiredForColumn(column, errorReport),
+    () => getMissingRequiredForColumn(column, reporting),
     [column],
   );
   const existingUserInput = useMemo(
@@ -121,14 +121,14 @@ const RepairIncompletnessWorksheet = () => {
         <SheetTableContainer>
           <SheetTable stickyHeader>
             <SheetHeader
-              metadata={metadata}
+              schema={schema}
               columnOrder={columnOrder}
               setBatchInput={setBatchInput}
               setStaleBatch={setStaleBatch}
               setColumnFilter={setColumnFilter}
             />
             <SheetBody
-              metadata={metadata}
+              schema={schema}
               data={tableData}
               columnOrder={columnOrder}
               batchInput={batchInput}

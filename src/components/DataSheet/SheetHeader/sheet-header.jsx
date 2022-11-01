@@ -14,7 +14,7 @@ const HeaderLabel = styled(Typography)({
   paddingBottom: '10px',
 });
 
-const SheetHeader = ({ metadata, columnOrder, setBatchInput, setColumnFilter, setStaleBatch }) => {
+const SheetHeader = ({ schema, columnOrder, setBatchInput, setColumnFilter, setStaleBatch }) => {
   const { column } = useParams();
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -30,9 +30,9 @@ const SheetHeader = ({ metadata, columnOrder, setBatchInput, setColumnFilter, se
     <TableHead>
       <TableRow>
         {columnOrder.map((columnItem, index) => {
-          const columnLabel = getLabelForColumn(columnItem, metadata);
-          const columnType = getDataTypeForColumn(columnItem, metadata);
-          const permissibleValues = getPermissibleValuesForColumn(columnItem, metadata);
+          const columnLabel = getLabelForColumn(columnItem, schema);
+          const columnType = getDataTypeForColumn(columnItem, schema);
+          const permissibleValues = getPermissibleValuesForColumn(columnItem, schema);
           const handleFilterChange = (event) => {
             setColumnFilter((prevColumnFilter) => {
               const enteredValue = event.target.value;
@@ -96,17 +96,15 @@ const SheetHeader = ({ metadata, columnOrder, setBatchInput, setColumnFilter, se
 };
 
 SheetHeader.propTypes = {
-  metadata: PropTypes.shape({
-    spreadsheet: PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      columns: PropTypes.objectOf(
-        PropTypes.shape({
-          label: PropTypes.string.isRequired,
-          type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
-          permissibleValues: PropTypes.objectOf(PropTypes.string),
-        }),
-      ).isRequired,
-    }).isRequired,
+  schema: PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    columns: PropTypes.objectOf(
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
+        permissibleValues: PropTypes.objectOf(PropTypes.string),
+      }),
+    ).isRequired,
   }).isRequired,
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
   setBatchInput: PropTypes.func.isRequired,
