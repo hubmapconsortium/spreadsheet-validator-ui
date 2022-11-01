@@ -141,7 +141,7 @@ export const SPREADSHEET_METADATA = {
 
 export const SPREADSHEET_DATA = [
   {
-    _rowid: 0,
+    _id: 0,
     sample_ID: '9OLC.A1',
     section_index_number: 1,
     preparation_medium: 'None',
@@ -150,7 +150,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: null,
   }, {
-    _rowid: 1,
+    _id: 1,
     sample_ID: null,
     section_index_number: 1,
     preparation_medium: 'None',
@@ -159,7 +159,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: 0,
   }, {
-    _rowid: 2,
+    _id: 2,
     sample_ID: null,
     section_index_number: 2,
     preparation_medium: 'OCT Embedded',
@@ -168,7 +168,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: 0,
   }, {
-    _rowid: 3,
+    _id: 3,
     sample_ID: '',
     section_index_number: 3,
     preparation_medium: 'OCT Embedded',
@@ -177,7 +177,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: null,
   }, {
-    _rowid: 4,
+    _id: 4,
     sample_ID: '9OLC.J21',
     section_index_number: 21,
     preparation_medium: 'Methanol',
@@ -186,7 +186,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
   }, {
-    _rowid: 5,
+    _id: 5,
     sample_ID: '9OLC.J22',
     section_index_number: 22,
     preparation_medium: 'Methanol',
@@ -195,7 +195,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
   }, {
-    _rowid: 6,
+    _id: 6,
     sample_ID: '9OLC.J23',
     section_index_number: 23,
     preparation_medium: 'OCT',
@@ -204,7 +204,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
   }, {
-    _rowid: 7,
+    _id: 7,
     sample_ID: '9OLC.J24',
     section_index_number: 24,
     preparation_medium: 'OCT',
@@ -213,7 +213,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
   }, {
-    _rowid: 8,
+    _id: 8,
     sample_ID: '3OAC.M1',
     section_index_number: 1,
     preparation_medium: 'OCT',
@@ -222,7 +222,7 @@ export const SPREADSHEET_DATA = [
     preparation_time_unit: 'min',
     histology_report: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
   }, {
-    _rowid: 9,
+    _id: 9,
     sample_ID: '3OAC.M2',
     section_index_number: 2,
     preparation_medium: 'OCT',

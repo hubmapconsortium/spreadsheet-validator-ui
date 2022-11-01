@@ -20,7 +20,7 @@ const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUser
     [data, page, rowsPerPage],
   );
   // eslint-disable-next-line dot-notation
-  const rowIndexes = pagedRows.map((row) => row['_rowid']);
+  const rowIndexes = pagedRows.map((row) => row['_id']);
   const batchValue = batchInput[column];
   if (typeof batchValue !== 'undefined' && !staleBatch) {
     setUserInput((prevUserInput) => {
@@ -32,7 +32,7 @@ const SheetBody = ({ metadata, data, columnOrder, batchInput, userInput, setUser
     <TableBody>
       {pagedRows.map((row) => {
         // eslint-disable-next-line dot-notation
-        const rowIndex = row['_rowid'];
+        const rowIndex = row['_id'];
         const handleInputChange = (event) => {
           setUserInput((prevUserInput) => {
             // eslint-disable-next-line no-param-reassign
