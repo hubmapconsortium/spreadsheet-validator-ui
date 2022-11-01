@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { FormControl, styled, TableHead, TableRow, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import SheetCell from '../SheetCell';
@@ -14,83 +13,74 @@ const HeaderLabel = styled(Typography)({
   paddingBottom: '10px',
 });
 
-const SheetHeader = ({ schema, columnOrder, setBatchInput, setColumnFilter, setStaleBatch }) => {
-  const { column } = useParams();
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      setBatchInput(event.target.value);
-      setStaleBatch(false);
-      event.preventDefault();
-    }
-  };
-  return (
-    <TableHead>
-      <TableRow>
-        {columnOrder.map((columnItem, index) => {
-          const columnLabel = getLabelForColumn(columnItem, schema);
-          const columnType = getDataTypeForColumn(columnItem, schema);
-          const permissibleValues = getPermissibleValuesForColumn(columnItem, schema);
+const SheetHeader = ({ schema, columnOrder, setBatchInput, setColumnFilters, setStaleBatch }) => (
+  <TableHead>
+    <TableRow>
+      {columnOrder.map((columnItem, columnIndex) => {
+        const columnLabel = getLabelForColumn(columnItem, schema);
+        const columnType = getDataTypeForColumn(columnItem, schema);
+        const permissibleValues = getPermissibleValuesForColumn(columnItem, schema);
+        let component;
+        if (columnIndex === 0) {
+          const handleKeyPress = (event) => {
+            if (event.key === 'Enter') {
+              setBatchInput(event.target.value);
+              setStaleBatch(false);
+              event.preventDefault();
+            }
+          };
+          component = (
+            <SheetCell align="center" sticky>
+              <HeaderLabel>{columnLabel}</HeaderLabel>
+              <FormControl fullWidth>
+                {permissibleValues
+                  && (
+                    <SearchableSelector
+                      options={permissibleValues}
+                      onKeyPress={handleKeyPress}
+                    />
+                  )}
+                {!permissibleValues
+                  && (
+                    <InputField
+                      type={columnType}
+                      placeholder="Enter value..."
+                      onKeyPress={handleKeyPress}
+                    />
+                  )}
+              </FormControl>
+            </SheetCell>
+          );
+        } else {
           const handleFilterChange = (event) => {
-            setColumnFilter((prevColumnFilter) => {
+            setColumnFilters((currentFilters) => {
               const enteredValue = event.target.value;
-              if (!(column in prevColumnFilter)) {
-                // eslint-disable-next-line no-param-reassign
-                prevColumnFilter[column] = [];
-              }
-              const filterGroup = prevColumnFilter[column];
-              const foundFilter = filterGroup.filter((filter) => filter.column === columnLabel);
+              const foundFilter = currentFilters.filter((filter) => filter.column === columnLabel);
               if (foundFilter.length === 0) {
-                const filterSpec = { column: columnLabel, value: enteredValue };
-                filterGroup.push(filterSpec);
-              } else {
-                const filterSpec = foundFilter[0];
-                filterSpec.value = enteredValue;
+                const filter = { column: columnLabel, value: enteredValue };
+                currentFilters.push(filter);
+              } else if (foundFilter.length === 1) {
+                const filter = foundFilter[0];
+                filter.value = enteredValue;
               }
             });
             setStaleBatch(true);
           };
-          return (
-            <>
-              {index === 0
-                && (
-                  <SheetCell align="center" sticky>
-                    <HeaderLabel>{columnLabel}</HeaderLabel>
-                    <FormControl fullWidth>
-                      {permissibleValues
-                        && (
-                          <SearchableSelector
-                            options={permissibleValues}
-                            onKeyPress={handleKeyPress}
-                          />
-                        )}
-                      {!permissibleValues
-                        && (
-                          <InputField
-                            type={columnType}
-                            placeholder="Enter value..."
-                            onKeyPress={handleKeyPress}
-                          />
-                        )}
-                    </FormControl>
-                  </SheetCell>
-                )}
-              {index !== 0
-                && (
-                  <SheetCell align="center">
-                    <HeaderLabel>{columnLabel}</HeaderLabel>
-                    <FilterInputField
-                      key={`${columnLabel}-on-${column}-incompleteness`}
-                      onChange={handleFilterChange}
-                    />
-                  </SheetCell>
-                )}
-            </>
+          component = (
+            <SheetCell align="center">
+              <HeaderLabel>{columnLabel}</HeaderLabel>
+              <FilterInputField
+                key={`${columnLabel}-filter-field`}
+                onChange={handleFilterChange}
+              />
+            </SheetCell>
           );
-        })}
-      </TableRow>
-    </TableHead>
-  );
-};
+        }
+        return component;
+      })}
+    </TableRow>
+  </TableHead>
+);
 
 SheetHeader.propTypes = {
   schema: PropTypes.shape({
@@ -105,7 +95,7 @@ SheetHeader.propTypes = {
   }).isRequired,
   columnOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
   setBatchInput: PropTypes.func.isRequired,
-  setColumnFilter: PropTypes.func.isRequired,
+  setColumnFilters: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,
 };
 

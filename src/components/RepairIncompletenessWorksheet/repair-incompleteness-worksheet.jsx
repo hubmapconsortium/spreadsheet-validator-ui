@@ -51,7 +51,7 @@ const RepairIncompletnessWorksheet = () => {
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useState('');
   const [staleBatch, setStaleBatch] = useState(false);
-  const [columnFilter, setColumnFilter] = useImmer({});
+  const [columnFilters, setColumnFilters] = useImmer([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -76,28 +76,22 @@ const RepairIncompletnessWorksheet = () => {
           { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
         ), {});
       setUserInput(existingUserInput);
+      return () => setColumnFilters([]);
     },
     [tableData],
   );
 
-  const filters = columnFilter[column];
   const filteredData = useMemo(
-    () => {
-      let filterResult = tableData;
-      if (typeof filters !== 'undefined') {
-        filterResult = tableData.filter(
-          (row) => filters.every(
-            (filter) => {
-              const cellValue = row[filter.column] || '';
-              const cellValueString = cellValue.toString();
-              return cellValueString.toLowerCase().includes(filter.value.toLowerCase());
-            },
-          ),
-        );
-      }
-      return filterResult;
-    },
-    [tableData, filters],
+    () => tableData.filter(
+      (row) => columnFilters.every(
+        (filter) => {
+          const cellValue = row[filter.column] || '';
+          const cellValueString = cellValue.toString();
+          return cellValueString.toLowerCase().includes(filter.value.toLowerCase());
+        },
+      ),
+    ),
+    [tableData, columnFilters],
   );
 
   useEffect(
@@ -122,15 +116,6 @@ const RepairIncompletnessWorksheet = () => {
     [filteredData, page, rowsPerPage],
   );
 
-  useEffect(
-    () => {
-      setColumnFilter((prevColumnFilter) => {
-        // eslint-disable-next-line no-param-reassign
-        delete prevColumnFilter[column];
-      });
-    },
-    [column],
-  );
   return (
     <>
       <DataSheetCard>
@@ -141,7 +126,7 @@ const RepairIncompletnessWorksheet = () => {
               columnOrder={columnOrder}
               setBatchInput={setBatchInput}
               setStaleBatch={setStaleBatch}
-              setColumnFilter={setColumnFilter}
+              setColumnFilters={setColumnFilters}
             />
             <SheetBody
               schema={schema}
