@@ -55,47 +55,37 @@ const RepairIncompletnessWorksheet = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleUserInput = (event, rowIndex) => {
-    setUserInput((currentUserInput) => {
-      // eslint-disable-next-line no-param-reassign
-      currentUserInput[rowIndex] = event.target.value;
-    });
-  };
-
   const columns = Object.keys(schema.columns);
   const columnOrder = useMemo(
     () => moveToFront(column, columns),
     [column],
   );
 
-  const badRowIndexes = useMemo(
+  const badIndexes = useMemo(
     () => getMissingRequiredForColumn(column, reporting),
     [column],
   );
-  const existingUserInput = useMemo(
-    () => badRowIndexes
-      .reduce((result, rowIndex) => (
-        { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
-      ), {}),
-    [column],
+  const tableData = useMemo(
+    () => badIndexes.map((index) => data[index]),
+    [badIndexes],
   );
   useEffect(
     () => {
+      const existingUserInput = badIndexes
+        .reduce((result, rowIndex) => (
+          { ...result, [rowIndex]: getPatchValue(rowIndex, column, patches) }
+        ), {});
       setUserInput(existingUserInput);
     },
-    [column],
+    [tableData],
   );
 
-  const badRows = useMemo(
-    () => badRowIndexes.map((index) => data[index]),
-    [column],
-  );
   const filters = columnFilter[column];
-  const tableData = useMemo(
+  const filteredData = useMemo(
     () => {
-      let filterResult = badRows;
+      let filterResult = tableData;
       if (typeof filters !== 'undefined') {
-        filterResult = badRows.filter(
+        filterResult = tableData.filter(
           (row) => filters.every(
             (filter) => {
               const cellValue = row[filter.column] || '';
@@ -107,8 +97,31 @@ const RepairIncompletnessWorksheet = () => {
       }
       return filterResult;
     },
-    [column, badRows, filters],
+    [tableData, filters],
   );
+
+  const batchValue = batchInput[column] || '';
+  useEffect(
+    () => {
+      if (batchValue !== '' && !staleBatch) {
+        // eslint-disable-next-line dot-notation
+        const rowIndexes = filteredData.map((row) => row['_id']);
+        setUserInput((prevUserInput) => {
+          // eslint-disable-next-line no-param-reassign
+          rowIndexes.forEach((rowIndex) => { prevUserInput[rowIndex] = batchValue; });
+        });
+      }
+    },
+    [filteredData, batchValue, staleBatch],
+  );
+
+  const pagedData = useMemo(
+    () => (rowsPerPage > 0
+      ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      : filteredData),
+    [filteredData, page, rowsPerPage],
+  );
+
   useEffect(
     () => {
       setBatchInput((prevBatchInput) => {
@@ -136,20 +149,15 @@ const RepairIncompletnessWorksheet = () => {
             />
             <SheetBody
               schema={schema}
-              data={tableData}
+              data={pagedData}
               columnOrder={columnOrder}
-              handleUserInput={handleUserInput}
-              batchInput={batchInput}
               userInput={userInput}
               setUserInput={setUserInput}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              staleBatch={staleBatch}
             />
           </SheetTable>
         </SheetTableContainer>
         <SheetPagination
-          data={tableData}
+          data={filteredData}
           page={page}
           setPage={setPage}
           rowsPerPage={rowsPerPage}
