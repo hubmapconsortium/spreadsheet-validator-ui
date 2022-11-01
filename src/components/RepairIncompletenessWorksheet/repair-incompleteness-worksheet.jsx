@@ -49,7 +49,7 @@ const RepairIncompletnessWorksheet = () => {
   const { column } = useParams();
 
   const [userInput, setUserInput] = useImmer({});
-  const [batchInput, setBatchInput] = useImmer({});
+  const [batchInput, setBatchInput] = useState('');
   const [staleBatch, setStaleBatch] = useState(false);
   const [columnFilter, setColumnFilter] = useImmer({});
   const [page, setPage] = useState(0);
@@ -100,19 +100,19 @@ const RepairIncompletnessWorksheet = () => {
     [tableData, filters],
   );
 
-  const batchValue = batchInput[column] || '';
   useEffect(
     () => {
-      if (batchValue !== '' && !staleBatch) {
+      if (batchInput !== '' && !staleBatch) {
         // eslint-disable-next-line dot-notation
         const rowIndexes = filteredData.map((row) => row['_id']);
         setUserInput((prevUserInput) => {
           // eslint-disable-next-line no-param-reassign
-          rowIndexes.forEach((rowIndex) => { prevUserInput[rowIndex] = batchValue; });
+          rowIndexes.forEach((rowIndex) => { prevUserInput[rowIndex] = batchInput; });
         });
       }
+      return () => setStaleBatch(true);
     },
-    [filteredData, batchValue, staleBatch],
+    [filteredData, batchInput, staleBatch],
   );
 
   const pagedData = useMemo(
@@ -124,10 +124,6 @@ const RepairIncompletnessWorksheet = () => {
 
   useEffect(
     () => {
-      setBatchInput((prevBatchInput) => {
-        // eslint-disable-next-line no-param-reassign
-        delete prevBatchInput[column];
-      });
       setColumnFilter((prevColumnFilter) => {
         // eslint-disable-next-line no-param-reassign
         delete prevColumnFilter[column];

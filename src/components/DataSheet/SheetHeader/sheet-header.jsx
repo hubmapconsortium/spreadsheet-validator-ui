@@ -18,10 +18,7 @@ const SheetHeader = ({ schema, columnOrder, setBatchInput, setColumnFilter, setS
   const { column } = useParams();
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      setBatchInput((prevBatchInput) => {
-        // eslint-disable-next-line no-param-reassign
-        prevBatchInput[column] = event.target.value;
-      });
+      setBatchInput(event.target.value);
       setStaleBatch(false);
       event.preventDefault();
     }
