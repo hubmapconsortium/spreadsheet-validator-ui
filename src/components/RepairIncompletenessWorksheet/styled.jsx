@@ -1,4 +1,4 @@
-import { Box, Card, styled, Table, TableContainer } from '@mui/material';
+import { Box, Card, styled, Table, TableContainer, Typography } from '@mui/material';
 import BaseButton from '../../styles/BaseButton';
 import { LIGHT_GRAY, WHITE } from '../../constants/Color';
 
@@ -19,6 +19,12 @@ export const SheetTableContainer = styled(TableContainer)({
 
 export const SheetTable = styled(Table)({
   borderRadius: '5px',
+});
+
+export const HeaderLabel = styled(Typography)({
+  fontSize: '18px',
+  fontWeight: 'bold',
+  paddingBottom: '10px',
 });
 
 export const ButtonBox = styled(Box)({
