@@ -28,7 +28,7 @@ export const getPatchGroup = (row, patches) => {
   if (typeof patchGroup === 'undefined') {
     mutablePatches[row] = {};
   }
-  return patchGroup;
+  return patches[row];
 };
 
 export const getPatch = (row, column, patches) => getPatchGroup(row, patches)[column];

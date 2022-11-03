@@ -1,6 +1,7 @@
-import { useMemo, useReducer, useState } from 'react';
+import { useReducer, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { Stack } from '@mui/material';
+import PropTypes from 'prop-types';
 import './App.css';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -15,7 +16,6 @@ import SideBar from './components/Sidebar';
 import ContentArea from './components/ContentArea';
 import { handlePatchCrud } from './helpers/app-utils';
 import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from './constants/Router';
-import { PATCH_DATA } from './constants/TestData';
 
 const LandingPageContainer = () => (
   <Stack direction="column">
@@ -24,20 +24,31 @@ const LandingPageContainer = () => (
   </Stack>
 );
 
-// eslint-disable-next-line react/prop-types
-const WorkspaceContainer = ({ appProviderData }) => (
-  <AppContext.Provider value={appProviderData}>
-    <Stack direction="row">
-      <SideBar />
-      <ContentArea />
-    </Stack>
-  </AppContext.Provider>
-);
+const WorkspaceContainer = ({ appData }) => {
+  const [patches, managePatches] = useReducer(handlePatchCrud, []);
+  const appContextData = useMemo(() => ({ appData, patches, managePatches }), [patches]);
+  return (
+    <AppContext.Provider value={appContextData}>
+      <Stack direction="row">
+        <SideBar />
+        <ContentArea />
+      </Stack>
+    </AppContext.Provider>
+  );
+};
+
+WorkspaceContainer.propTypes = {
+  appData: PropTypes.shape({
+    schema: PropTypes.oneOfType([PropTypes.object]).isRequired,
+    data: PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.object]),
+    ).isRequired,
+    reporting: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  }).isRequired,
+};
 
 const App = () => {
-  const [appData, setAppData] = useState({});
-  const [patches, managePatches] = useReducer(handlePatchCrud, PATCH_DATA);
-  const appProviderData = useMemo(() => ({ appData, patches, managePatches }), [appData, patches]);
+  const [appData, setAppData] = useState({ schema: {}, data: [], reporting: {} });
   return (
     <Router>
       <Routes>
@@ -46,7 +57,7 @@ const App = () => {
           <Route path={ABOUT_PATH} element={<About />} />
           <Route path={HELP_PATH} element={<Help />} />
         </Route>
-        <Route element={(<WorkspaceContainer appProviderData={appProviderData} />)}>
+        <Route element={(<WorkspaceContainer appData={appData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
           <Route path={REPAIR_INCOMPLENESS_PATH} element={<RepairIncompleteness />} />
           <Route path={`${REPAIR_INCOMPLENESS_PATH}/:incompleteColumn`} element={<RepairIncompletenessWorkspace />} />
