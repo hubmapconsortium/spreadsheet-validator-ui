@@ -1,4 +1,6 @@
-export default function moveToFront(item, arr) {
+export const moveItemToFront = (item, arr) => arr.sort(
   // eslint-disable-next-line no-nested-ternary
-  return arr.sort((x, y) => (x === item ? -1 : (y === item ? 1 : 0)));
-}
+  (x, y) => (x === item ? -1 : (y === item ? 1 : 0)),
+);
+
+export const extractItems = (indexes, arr) => indexes.map((index) => arr[index]);

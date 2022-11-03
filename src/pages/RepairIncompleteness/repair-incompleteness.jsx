@@ -5,7 +5,7 @@ import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairBadge from '../../components/RepairBadge';
 import Section from '../../styles/Section';
-import { buildRepairIncompletenessBadges } from '../../helpers/data-utils';
+import { buildRepairIncompletenessBadges } from '../../helpers/app-utils';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 
 const RepairBadgeSection = styled(Section)({

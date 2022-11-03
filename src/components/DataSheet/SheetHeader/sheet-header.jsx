@@ -4,7 +4,7 @@ import SheetCell from '../SheetCell';
 import FilterInputField from '../FilterInputField';
 import InputField from '../InputField';
 import SearchableSelector from '../SearchableSelector';
-import { getDataTypeForColumn, getLabelForColumn, getPermissibleValuesForColumn } from '../../../helpers/data-utils';
+import { getDataTypeForColumn, getColumnLabel, getPermissibleValues } from '../../../helpers/data-utils';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
 
 const HeaderLabel = styled(Typography)({
@@ -17,9 +17,9 @@ const SheetHeader = ({ schema, columnOrder, setBatchInput, setColumnFilters, set
   <TableHead>
     <TableRow>
       {columnOrder.map((columnItem, columnIndex) => {
-        const columnLabel = getLabelForColumn(columnItem, schema);
+        const columnLabel = getColumnLabel(columnItem, schema);
         const columnType = getDataTypeForColumn(columnItem, schema);
-        const permissibleValues = getPermissibleValuesForColumn(columnItem, schema);
+        const permissibleValues = getPermissibleValues(columnItem, schema);
         let component;
         if (columnIndex === 0) {
           const handleKeyPress = (event) => {

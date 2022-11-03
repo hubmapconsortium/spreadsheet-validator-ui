@@ -6,7 +6,7 @@ import AppContext from '../../pages/AppContext';
 import NestedMenuItem from '../NestedMenuItem';
 import logo from '../../logo.svg';
 import Container from '../../styles/Container';
-import { buildRepairIncompletenessSubMenu } from '../../helpers/data-utils';
+import { buildRepairIncompletenessSubMenu } from '../../helpers/app-utils';
 import { REPAIR_INCONSISTENCY_SUBMENU_DATA } from '../../constants/TestData';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
 import { OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../../constants/Router';

@@ -13,7 +13,7 @@ import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import SideBar from './components/Sidebar';
 import ContentArea from './components/ContentArea';
-import handlePatchCrud from './helpers/app-utils';
+import { handlePatchCrud } from './helpers/app-utils';
 import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from './constants/Router';
 import { PATCH_DATA } from './constants/TestData';
 

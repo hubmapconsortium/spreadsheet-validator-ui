@@ -4,7 +4,7 @@ import SheetCell from '../SheetCell';
 import DropDownSelector from '../DropDownSelector';
 import InputField from '../InputField';
 import WrappedText from '../WrappedText/wrapped-text';
-import { getDataTypeForColumn, getPermissibleValuesForColumn } from '../../../helpers/data-utils';
+import { getDataTypeForColumn, getPermissibleValues } from '../../../helpers/data-utils';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
 import { LIGHT_RED } from '../../../constants/Color';
 
@@ -13,7 +13,7 @@ const SheetBody = ({ schema, data, columnOrder, userInput, setUserInput }) => (
     {data.map((row) => (
       <TableRow>
         {columnOrder.map((columnName, columnIndex) => {
-          const permissibleValues = getPermissibleValuesForColumn(columnName, schema);
+          const permissibleValues = getPermissibleValues(columnName, schema);
           const columnType = getDataTypeForColumn(columnName, schema);
           let component;
           if (columnIndex === 0) {

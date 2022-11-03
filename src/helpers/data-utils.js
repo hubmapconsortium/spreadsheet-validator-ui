@@ -1,67 +1,36 @@
-import { ERROR_FOUND } from '../constants/Status';
-import { REPAIR_INCOMPLENESS_PATH } from '../constants/Router';
+export const getValue = (row, column, data) => data[row][column];
 
-export function buildRepairIncompletenessSubMenu(reporting) {
-  const { missingRequired } = reporting;
-  const subMenuItems = Object.keys(missingRequired).map((column) => (
-    {
-      title: `Missing ${column}`,
-      status: ERROR_FOUND,
-      navigateTo: `${REPAIR_INCOMPLENESS_PATH}/${column}`,
-    }
-  ));
-  return {
-    title: 'Types of Error',
-    items: subMenuItems,
-  };
-}
+// eslint-disable-next-line dot-notation
+export const getRows = (data) => data.map((row) => row['_id']);
 
-export function buildRepairIncompletenessBadges(reporting) {
-  const { missingRequired } = reporting;
-  const badgeItems = Object.keys(missingRequired).map((column) => (
-    {
-      title: `${column}`,
-      caption: `Value missing in ${missingRequired[column].length} rows.`,
-      status: ERROR_FOUND,
-      navigateTo: `${column}`,
-    }
-  ));
-  return badgeItems;
-}
+export const getColumnSchema = (column, schema) => schema.columns[column];
 
-export function getTableValue(rowIndex, columnName, table) {
-  return table[rowIndex][columnName];
-}
-
-export function getLabelForColumn(column, schema) {
-  return schema.columns[column].label;
-}
-
-export function getPermissibleValuesForColumn(column, schema) {
-  return schema.columns[column].permissibleValues;
-}
+export const getColumnLabel = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema.label;
+};
 
 export function getDataTypeForColumn(column, schema) {
-  return schema.columns[column].type;
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema.type;
 }
 
-export function getMissingRequiredForColumn(column, reporting) {
-  return reporting.missingRequired[column];
-}
+export const getPermissibleValues = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema.permissibleValues;
+};
 
-export function getPatchGroup(rowIndex, patches) {
+export const getMissingRequiredRows = (column, reporting) => reporting.missingRequired[column];
+
+export const getPatchGroup = (row, patches) => {
   const mutablePatches = patches;
-  const patchGroup = patches[rowIndex];
+  const patchGroup = patches[row];
   if (typeof patchGroup === 'undefined') {
-    mutablePatches[rowIndex] = {};
+    mutablePatches[row] = {};
   }
   return patchGroup;
-}
+};
 
-export function getPatch(rowIndex, columnName, patches) {
-  return getPatchGroup(rowIndex, patches)[columnName];
-}
+export const getPatch = (row, column, patches) => getPatchGroup(row, patches)[column];
 
-export function getPatchValue(rowIndex, columnName, patches) {
-  return getPatch(rowIndex, columnName, patches)?.value;
-}
+export const getPatchValue = (row, column, patches) => getPatch(row, column, patches)?.value;
