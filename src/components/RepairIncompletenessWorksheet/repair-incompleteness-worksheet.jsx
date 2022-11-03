@@ -154,14 +154,16 @@ const RepairIncompletnessWorksheet = () => {
         </CancelButton>
         <SaveButton
           variant="contained"
-          onClick={() => Object.keys(userInput).map(
-            (row) => managePatches({
-              command: 'CREATE_PATCH',
-              patchOp: 'ADD',
-              value: userInput[row],
-              target: { row, column: incompleteColumn },
-            }),
-          )}
+          onClick={() => Object.keys(userInput)
+            .filter((row) => userInput[row] && userInput[row] !== '' && true)
+            .map(
+              (row) => managePatches({
+                command: 'CREATE_PATCH',
+                patchOp: 'ADD',
+                value: userInput[row],
+                target: { row, column: incompleteColumn },
+              }),
+            )}
         >
           Save
         </SaveButton>
