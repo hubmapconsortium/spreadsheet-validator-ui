@@ -49,7 +49,7 @@ const App = () => {
         <Route element={(<WorkspaceContainer appProviderData={appProviderData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
           <Route path={REPAIR_INCOMPLENESS_PATH} element={<RepairIncompleteness />} />
-          <Route path={`${REPAIR_INCOMPLENESS_PATH}/:column`} element={<RepairIncompletenessWorkspace />} />
+          <Route path={`${REPAIR_INCOMPLENESS_PATH}/:incompleteColumn`} element={<RepairIncompletenessWorkspace />} />
           <Route path={REPAIR_INCONSISTENCY_PATH} element={<RepairInconsistency />} />
         </Route>
       </Routes>

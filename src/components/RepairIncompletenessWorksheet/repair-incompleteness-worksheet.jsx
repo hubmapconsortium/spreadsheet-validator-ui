@@ -15,7 +15,7 @@ const RepairIncompletnessWorksheet = () => {
   const navigate = useNavigate();
   const { appData, patches, managePatches } = useContext(AppContext);
   const { schema, data, reporting } = appData;
-  const { column } = useParams();
+  const { incompleteColumn } = useParams();
 
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useState('');
@@ -26,13 +26,13 @@ const RepairIncompletnessWorksheet = () => {
 
   const columns = Object.keys(schema.columns);
   const columnOrder = useMemo(
-    () => moveItemToFront(column, columns),
-    [column],
+    () => moveItemToFront(incompleteColumn, columns),
+    [incompleteColumn],
   );
 
   const missingRequiredRows = useMemo(
-    () => getMissingRequiredRows(column, reporting),
-    [column],
+    () => getMissingRequiredRows(incompleteColumn, reporting),
+    [incompleteColumn],
   );
   const tableData = useMemo(
     () => extractItems(missingRequiredRows, data),
@@ -40,7 +40,7 @@ const RepairIncompletnessWorksheet = () => {
   );
   useEffect(
     () => {
-      const existingUserInput = initUserInput(missingRequiredRows, column, patches);
+      const existingUserInput = initUserInput(missingRequiredRows, incompleteColumn, patches);
       setUserInput(existingUserInput);
       return () => setColumnFilters([]);
     },
@@ -114,7 +114,7 @@ const RepairIncompletnessWorksheet = () => {
               command: 'CREATE_PATCH',
               patchOp: 'ADD',
               value: userInput[row],
-              target: { row, column },
+              target: { row, incompleteColumn },
             }),
           )}
         >
