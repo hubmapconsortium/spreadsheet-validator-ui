@@ -1,5 +1,5 @@
 import { GREEN, RED } from './Color';
-import { ERROR_FOUND, ERROR_NOT_FOUND } from './Status';
+import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from './Status';
 
 export const METADATA_SCHEMA = {
   title: 'Tissue Block',
@@ -344,12 +344,12 @@ export const REPAIR_INCONSISTENCY_SUBMENU_DATA = {
   title: 'Types of Error',
   items: [{
     title: 'Value not number type',
-    status: ERROR_FOUND,
+    status: REPAIR_NOT_COMPLETED,
     navigateTo: 'overview',
   },
   {
     title: 'Value not standard term',
-    status: ERROR_NOT_FOUND,
+    status: REPAIR_COMPLETED,
     navigateTo: 'overview',
   }],
 };

@@ -1,2 +1,2 @@
-export const ERROR_FOUND = 'ErrorFound';
-export const ERROR_NOT_FOUND = 'ErrorNotFound';
+export const REPAIR_NOT_COMPLETED = 'RepairNotCompleted';
+export const REPAIR_COMPLETED = 'RepairCompleted';

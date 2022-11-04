@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,6 +9,7 @@ import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import WrappedText from '../DataSheet/WrappedText';
 import SheetPagination from '../DataSheet/SheetPagination';
+import { createAddOperationPatch } from '../../helpers/app-utils';
 import { moveItemToFront, extractItems } from '../../helpers/array-utils';
 import { getMissingRequiredRows, getRows } from '../../helpers/data-utils';
 import HeaderWithBatchInput from './header-with-batch-input';
@@ -19,7 +21,8 @@ import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 
 const RepairIncompletnessWorksheet = () => {
   const navigate = useNavigate();
-  const { appData, patches, managePatches } = useContext(AppContext);
+  // eslint-disable-next-line max-len
+  const { appData, patches, setPatches } = useContext(AppContext);
   const { schema, data, reporting } = appData;
   const { incompleteColumn } = useParams();
 
@@ -154,16 +157,16 @@ const RepairIncompletnessWorksheet = () => {
         </CancelButton>
         <SaveButton
           variant="contained"
-          onClick={() => Object.keys(userInput)
-            .filter((row) => userInput[row] && userInput[row] !== '' && true)
-            .map(
-              (row) => managePatches({
-                command: 'CREATE_PATCH',
-                patchOp: 'ADD',
-                value: userInput[row],
-                target: { row, column: incompleteColumn },
-              }),
-            )}
+          onClick={() => {
+            Object.keys(userInput)
+              .filter((row) => userInput[row] && userInput[row] !== '' && true)
+              .forEach((row) => {
+                const patch = createAddOperationPatch(row, incompleteColumn, userInput[row]);
+                setPatches((existingPatches) => {
+                  existingPatches[row][incompleteColumn] = patch;
+                });
+              });
+          }}
         >
           Save
         </SaveButton>

@@ -6,7 +6,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { ERROR_FOUND, ERROR_NOT_FOUND } from '../../constants/Status';
+import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../../constants/Status';
 import { GREEN, LIGHTER_GRAY, RED } from '../../constants/Color';
 
 const MenuItem = styled(ListItemButton)({
@@ -111,8 +111,8 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu, selectedMenuItem, se
                   }}
                 >
                   <SubMenuItemText primary={subMenuTitle} />
-                  {subMenuItem.status === ERROR_FOUND && <ErrorStatusIcon />}
-                  {subMenuItem.status === ERROR_NOT_FOUND && <NoErrorStatusIcon />}
+                  {subMenuItem.status === REPAIR_NOT_COMPLETED && <ErrorStatusIcon />}
+                  {subMenuItem.status === REPAIR_COMPLETED && <NoErrorStatusIcon />}
                 </SubMenuItem>
               );
             })}
@@ -133,7 +133,7 @@ NestedMenuItem.propTypes = {
       PropTypes.shape({
         title: PropTypes.string.isRequired,
         navigateTo: PropTypes.string.isRequired,
-        status: PropTypes.oneOf([ERROR_NOT_FOUND, ERROR_FOUND]),
+        status: PropTypes.oneOf([REPAIR_NOT_COMPLETED, REPAIR_COMPLETED]),
       }),
     ),
   }),

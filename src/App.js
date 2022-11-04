@@ -1,4 +1,5 @@
-import { useReducer, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useImmer } from 'use-immer';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { Stack } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -14,8 +15,8 @@ import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import SideBar from './components/Sidebar';
 import ContentArea from './components/ContentArea';
-import { handlePatchCrud } from './helpers/app-utils';
 import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from './constants/Router';
+import { generateEmptyObjects } from './helpers/array-utils';
 
 const LandingPageContainer = () => (
   <Stack direction="column">
@@ -25,8 +26,11 @@ const LandingPageContainer = () => (
 );
 
 const WorkspaceContainer = ({ appData }) => {
-  const [patches, managePatches] = useReducer(handlePatchCrud, []);
-  const appContextData = useMemo(() => ({ appData, patches, managePatches }), [patches]);
+  const { data } = appData;
+  const initPatches = generateEmptyObjects(data.length);
+  const [patches, setPatches] = useImmer(initPatches);
+  // eslint-disable-next-line max-len
+  const appContextData = useMemo(() => ({ appData, patches, setPatches }), [patches]);
   return (
     <AppContext.Provider value={appContextData}>
       <Stack direction="row">

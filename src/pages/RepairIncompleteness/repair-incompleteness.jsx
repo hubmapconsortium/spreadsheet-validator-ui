@@ -14,11 +14,11 @@ const RepairBadgeSection = styled(Section)({
 });
 
 const RepairIncompleteness = () => {
-  const { appData } = useContext(AppContext);
+  const { appData, patches } = useContext(AppContext);
   const { reporting } = appData;
   const subtitle = '12 out of 99 metadata rows were incomplete.';
-  const getBadgeData = useMemo(
-    () => buildRepairIncompletenessBadges(reporting),
+  const badgeData = useMemo(
+    () => buildRepairIncompletenessBadges(reporting, patches),
     [reporting],
   );
   return (
@@ -32,7 +32,7 @@ const RepairIncompleteness = () => {
       <DefaultInfoSection />
       <RepairBadgeSection>
         <Grid container spacing={3}>
-          {getBadgeData.map((data) => (
+          {badgeData.map((data) => (
             <Grid item xs={3}>
               <RepairBadge data={data} />
             </Grid>

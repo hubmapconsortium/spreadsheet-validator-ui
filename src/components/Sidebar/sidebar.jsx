@@ -48,11 +48,11 @@ const RepairIcon = styled(ConstructionIcon)({
 
 const SideBar = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(OVERVIEW);
-  const { appData } = useContext(AppContext);
+  const { appData, patches } = useContext(AppContext);
   const { reporting } = appData;
-  const getRepairIncompletenessSubMenu = useMemo(
-    () => buildRepairIncompletenessSubMenu(reporting),
-    [reporting],
+  const repairIncompletenessSubMenu = useMemo(
+    () => buildRepairIncompletenessSubMenu(reporting, patches),
+    [patches],
   );
   return (
     <SideBarContainer>
@@ -72,7 +72,7 @@ const SideBar = () => {
             icon={<RepairIcon />}
             title={REPAIR_INCOMPLETENESS}
             navigateTo={REPAIR_INCOMPLENESS_PATH}
-            subMenu={getRepairIncompletenessSubMenu}
+            subMenu={repairIncompletenessSubMenu}
             selectedMenuItem={selectedMenuItem}
             setSelectedMenuItem={setSelectedMenuItem}
           />

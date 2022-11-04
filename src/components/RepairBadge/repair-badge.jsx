@@ -3,7 +3,7 @@ import { Box, Button, Stack, styled, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PropTypes from 'prop-types';
 import { BLACK, DARK_GRAY, GREEN, LIGHT_GREEN, LIGHT_RED, RED, WHITE } from '../../constants/Color';
-import { ERROR_FOUND, ERROR_NOT_FOUND } from '../../constants/Status';
+import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../../constants/Status';
 
 const BadgeButton = styled(Button)({
   border: '6px solid',
@@ -89,7 +89,7 @@ const RepairBadge = ({ data }) => {
   const repairStatus = data.status;
   return (
     <>
-      {repairStatus === ERROR_FOUND && (
+      {repairStatus === REPAIR_NOT_COMPLETED && (
         <RedBadgeButton onClick={() => navigate(data.navigateTo)}>
           <Stack direction="column" alignItems="center" spacing={0}>
             <Title title={data.title} />
@@ -97,7 +97,7 @@ const RepairBadge = ({ data }) => {
           </Stack>
         </RedBadgeButton>
       )}
-      {repairStatus === ERROR_NOT_FOUND && (
+      {repairStatus === REPAIR_COMPLETED && (
         <GreenBadgeButton onClick={() => navigate(data.navigateTo)}>
           <Stack direction="column" alignItems="center" spacing={0}>
             <Title title={data.title} />
@@ -113,7 +113,7 @@ RepairBadge.propTypes = {
   data: PropTypes.shape({
     title: PropTypes.string.isRequired,
     caption: PropTypes.string.isRequired,
-    status: PropTypes.oneOf([ERROR_NOT_FOUND, ERROR_FOUND]).isRequired,
+    status: PropTypes.oneOf([REPAIR_NOT_COMPLETED, REPAIR_COMPLETED]).isRequired,
     navigateTo: PropTypes.string.isRequired,
   }).isRequired,
 };
