@@ -1,4 +1,4 @@
-export const getValue = (row, column, data) => data[row][column];
+export const getDataValue = (row, column, data) => data[row][column];
 
 // eslint-disable-next-line dot-notation
 export const getRows = (data) => data.map((row) => row['_id']);
@@ -34,3 +34,12 @@ export const getPatchGroup = (row, patches) => {
 export const getPatch = (row, column, patches) => getPatchGroup(row, patches)[column];
 
 export const getPatchValue = (row, column, patches) => getPatch(row, column, patches)?.value;
+
+export const getEffectiveValue = (row, column, data, patches) => {
+  // eslint-disable-next-line dot-notation
+  let value = getPatchValue(row, column, patches);
+  if (!value) {
+    value = getDataValue(row, column, data);
+  }
+  return value;
+};

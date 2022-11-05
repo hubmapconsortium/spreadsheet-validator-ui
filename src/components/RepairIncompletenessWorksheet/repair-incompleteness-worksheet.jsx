@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,7 +10,7 @@ import WrappedText from '../DataSheet/WrappedText';
 import SheetPagination from '../DataSheet/SheetPagination';
 import { createAddOperationPatch } from '../../helpers/app-utils';
 import { moveItemToFront, extractItems } from '../../helpers/array-utils';
-import { getMissingRequiredRows, getRows } from '../../helpers/data-utils';
+import { getMissingRequiredRows, getRows, getEffectiveValue } from '../../helpers/data-utils';
 import HeaderWithBatchInput from './header-with-batch-input';
 import HeaderWithFilter from './header-with-filter';
 import EditableCell from './editable-cell';
@@ -115,11 +114,12 @@ const RepairIncompletnessWorksheet = () => {
                 <TableRow>
                   {columnOrder.map((column, index) => {
                     let component;
+                    // eslint-disable-next-line dot-notation
+                    const row = rowData['_id'];
                     if (index === 0) {
                       component = (
                         <EditableCell
-                          // eslint-disable-next-line dot-notation
-                          row={rowData['_id']}
+                          row={row}
                           column={column}
                           schema={schema}
                           userInput={userInput}
@@ -129,7 +129,9 @@ const RepairIncompletnessWorksheet = () => {
                     } else {
                       component = (
                         <SheetCell align="right">
-                          <WrappedText text={rowData[column]} />
+                          <WrappedText
+                            text={getEffectiveValue(row, column, data, patches)}
+                          />
                         </SheetCell>
                       );
                     }
@@ -163,6 +165,7 @@ const RepairIncompletnessWorksheet = () => {
               .forEach((row) => {
                 const patch = createAddOperationPatch(row, incompleteColumn, userInput[row]);
                 setPatches((existingPatches) => {
+                  // eslint-disable-next-line no-param-reassign
                   existingPatches[row][incompleteColumn] = patch;
                 });
               });
