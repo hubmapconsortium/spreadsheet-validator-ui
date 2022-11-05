@@ -6,8 +6,7 @@ import AppContext from '../../pages/AppContext';
 import NestedMenuItem from '../NestedMenuItem';
 import logo from '../../logo.svg';
 import Container from '../../styles/Container';
-import { buildRepairIncompletenessSubMenu } from '../../helpers/app-utils';
-import { REPAIR_INCONSISTENCY_SUBMENU_DATA } from '../../constants/TestData';
+import { buildRepairIncompletenessSubMenu, buildRepairInconsistencySubMenu } from '../../helpers/app-utils';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
 import { OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../../constants/Router';
 
@@ -54,6 +53,10 @@ const SideBar = () => {
     () => buildRepairIncompletenessSubMenu(reporting, patches),
     [patches],
   );
+  const repairInconsistencySubMenu = useMemo(
+    () => buildRepairInconsistencySubMenu(reporting, patches),
+    [patches],
+  );
   return (
     <SideBarContainer>
       <LogoSection>
@@ -80,7 +83,7 @@ const SideBar = () => {
             icon={<RepairIcon />}
             title={REPAIR_INCONSISTENCY}
             navigateTo={REPAIR_INCONSISTENCY_PATH}
-            subMenu={REPAIR_INCONSISTENCY_SUBMENU_DATA}
+            subMenu={repairInconsistencySubMenu}
             selectedMenuItem={selectedMenuItem}
             setSelectedMenuItem={setSelectedMenuItem}
           />

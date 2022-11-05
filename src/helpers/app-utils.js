@@ -1,11 +1,11 @@
-import { REPAIR_INCOMPLENESS_PATH } from '../constants/Router';
+import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 
 const checkPatchNotUndefined = (row, column, patches) => (
-  patches[row] && patches[row][column] && patches[row][column].value && true
+  !!patches[row] && !!patches[row][column] && !!patches[row][column].value
 );
 
-const determineRepairStatus = (rows, column, patches) => (
+const determineRepairIncompletenessStatus = (rows, column, patches) => (
   rows.map(
     (row) => checkPatchNotUndefined(row, column, patches),
   ).reduce(
@@ -19,10 +19,53 @@ export const buildRepairIncompletenessSubMenu = (reporting, patches) => {
     const rows = missingRequired[column];
     return ({
       title: `Missing ${column}`,
-      status: determineRepairStatus(rows, column, patches),
+      status: determineRepairIncompletenessStatus(rows, column, patches),
       navigateTo: `${REPAIR_INCOMPLENESS_PATH}/${column}`,
     });
   });
+  return {
+    title: 'Types of Error',
+    items: subMenuItems,
+  };
+};
+
+export const determineRepairInconsistencyStatus = (inconsistencyReporting, patches) => {
+  const columns = Object.keys(inconsistencyReporting);
+  return columns.map((column) => {
+    const reports = inconsistencyReporting[column];
+    return reports.map((report) => {
+      const { row } = report;
+      return checkPatchNotUndefined(row, column, patches);
+    });
+  }).flat(1).reduce(
+    (cache, value) => cache && value,
+  ) ? REPAIR_COMPLETED : REPAIR_NOT_COMPLETED;
+};
+
+export const buildRepairInconsistencySubMenu = (reporting, patches) => {
+  const { notStandardTerm, notNumberType, notStringType } = reporting;
+  const subMenuItems = [];
+  if (notStandardTerm) {
+    subMenuItems.push({
+      title: 'Value not standard term',
+      status: determineRepairInconsistencyStatus(notStandardTerm, patches),
+      navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notStandardTerm`,
+    });
+  }
+  if (notNumberType) {
+    subMenuItems.push({
+      title: 'Value not number type',
+      status: determineRepairInconsistencyStatus(notNumberType, patches),
+      navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notNumberType`,
+    });
+  }
+  if (notStringType) {
+    subMenuItems.push({
+      title: 'Value not string type',
+      status: determineRepairInconsistencyStatus(notStringType, patches),
+      navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notStringType`,
+    });
+  }
   return {
     title: 'Types of Error',
     items: subMenuItems,
@@ -36,7 +79,7 @@ export const buildRepairIncompletenessBadges = (reporting, patches) => {
     return ({
       title: column,
       caption: `Value missing in ${rows.length} rows.`,
-      status: determineRepairStatus(rows, column, patches),
+      status: determineRepairIncompletenessStatus(rows, column, patches),
       navigateTo: column,
     });
   });
