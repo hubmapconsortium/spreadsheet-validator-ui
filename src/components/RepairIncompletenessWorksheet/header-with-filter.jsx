@@ -12,8 +12,8 @@ const HeaderWithFilter = ({ column, schema, setColumnFilters, setStaleBatch }) =
   const [filterEnabled, setFilterEnabled] = useState(true);
   const columnLabel = getColumnLabel(column, schema);
   const handleFilterChange = (event) => {
+    const enteredValue = event.target.value;
     setColumnFilters((currentFilters) => {
-      const enteredValue = event.target.value;
       const foundFilter = currentFilters.filter(
         (filter) => filter.column === columnLabel,
       );
@@ -29,8 +29,9 @@ const HeaderWithFilter = ({ column, schema, setColumnFilters, setStaleBatch }) =
       }
     });
     setStaleBatch(true);
+    event.preventDefault();
   };
-  const handleFilterInconClick = () => {
+  const handleFilterInconClick = (event) => {
     setFilterEnabled(!filterEnabled);
     setColumnFilters((currentFilters) => {
       const foundFilter = currentFilters.filter(
@@ -42,6 +43,7 @@ const HeaderWithFilter = ({ column, schema, setColumnFilters, setStaleBatch }) =
       }
     });
     setStaleBatch(true);
+    event.preventDefault();
   };
   return (
     <SheetCell align="center">
