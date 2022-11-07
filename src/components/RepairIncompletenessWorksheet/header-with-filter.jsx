@@ -52,8 +52,7 @@ const HeaderWithFilter = ({ column, schema, setColumnFilters, setStaleBatch }) =
         endAdornment={(
           <InputAdornment position="end">
             <IconButton edge="end" onClick={handleFilterInconClick}>
-              {filterEnabled && <FilterAltIcon />}
-              {!filterEnabled && <FilterAltOffIcon />}
+              {filterEnabled ? <FilterAltIcon /> : <FilterAltOffIcon />}
             </IconButton>
           </InputAdornment>
         )}
