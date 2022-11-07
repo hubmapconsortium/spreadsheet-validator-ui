@@ -9,13 +9,13 @@ export const initUserInput = (rows, column, patches) => rows
   ), {});
 
 export const getFilteredData = (data, filters) => data.filter(
-  (row) => filters.every(
-    (filter) => {
+  (row) => filters
+    .filter((filter) => filter.enabled)
+    .every((filter) => {
       const cellValue = row[filter.column] || '';
       const cellValueString = cellValue.toString();
       return cellValueString.toLowerCase().includes(filter.value.toLowerCase());
-    },
-  ),
+    }),
 );
 
 export const getPagedData = (data, page, rowsPerPage) => (

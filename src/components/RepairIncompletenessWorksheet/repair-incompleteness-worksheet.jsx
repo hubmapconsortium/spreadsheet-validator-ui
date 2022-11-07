@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { TableRow } from '@mui/material';
 import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
@@ -18,12 +18,11 @@ import { ButtonBox, CancelButton, DataSheetCard, SaveButton, SheetTable, SheetTa
 import { getFilteredData, getPagedData, initUserInput } from './function';
 import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 
-const RepairIncompletnessWorksheet = () => {
+// eslint-disable-next-line react/prop-types
+const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
   const navigate = useNavigate();
-  // eslint-disable-next-line max-len
   const { appData, patches, setPatches } = useContext(AppContext);
   const { schema, data, reporting } = appData;
-  const { incompleteColumn } = useParams();
 
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useState('');
@@ -52,7 +51,7 @@ const RepairIncompletnessWorksheet = () => {
       setUserInput(existingUserInput);
       return () => setColumnFilters([]);
     },
-    [tableData],
+    [incompleteColumn, patches],
   );
 
   const filteredData = useMemo(

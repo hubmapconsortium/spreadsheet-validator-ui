@@ -15,9 +15,9 @@ const WorkspaceArea = styled(Box)({
 const RepairIncompletenessWorkspace = () => {
   const { appData } = useContext(AppContext);
   const { reporting } = appData;
-  const { column } = useParams();
-  const totalBadRows = reporting.missingRequired[column]?.length;
-  const subtitle = `${totalBadRows} rows were missing the ${column} value.`;
+  const { incompleteColumn } = useParams();
+  const totalBadRows = reporting.missingRequired[incompleteColumn]?.length;
+  const subtitle = `${totalBadRows} rows were missing the ${incompleteColumn} value.`;
   return (
     <WorkspaceArea>
       <Section>
@@ -27,7 +27,7 @@ const RepairIncompletenessWorkspace = () => {
         />
       </Section>
       <DefaultInfoSection />
-      <RepairIncompletnessWorksheet />
+      <RepairIncompletnessWorksheet incompleteColumn={incompleteColumn} />
     </WorkspaceArea>
   );
 };
