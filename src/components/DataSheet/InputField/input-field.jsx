@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
 import { WHITE } from '../../../constants/Color';
 
-const InputField = ({ value, type, placeholder, onChange, onKeyPress, colorOnEmpty }) => (
+const InputField = (
+  { value, type, placeholder, onChange, onKeyPress, colorOnEmpty, endAdornment },
+) => (
   <OutlinedInput
-    hiddenLabel
     size="small"
     value={value}
     type={type}
@@ -13,6 +14,7 @@ const InputField = ({ value, type, placeholder, onChange, onKeyPress, colorOnEmp
     onChange={onChange}
     onKeyPress={onKeyPress}
     sx={{ backgroundColor: value === '' ? colorOnEmpty : WHITE }}
+    endAdornment={endAdornment}
   />
 );
 
@@ -23,6 +25,7 @@ InputField.propTypes = {
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
   colorOnEmpty: PropTypes.string,
+  endAdornment: PropTypes.func,
 };
 
 InputField.defaultProps = {
@@ -31,6 +34,7 @@ InputField.defaultProps = {
   onChange: undefined,
   onKeyPress: undefined,
   colorOnEmpty: WHITE,
+  endAdornment: undefined,
 };
 
 export default InputField;

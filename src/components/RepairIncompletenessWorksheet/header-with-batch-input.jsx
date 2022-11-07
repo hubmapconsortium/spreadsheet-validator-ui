@@ -1,4 +1,6 @@
-import { FormControl } from '@mui/material';
+import { useState } from 'react';
+import { FormControl, InputAdornment } from '@mui/material';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import PropTypes from 'prop-types';
 import InputField from '../DataSheet/InputField';
 import SearchableSelector from '../DataSheet/SearchableSelector';
@@ -7,6 +9,7 @@ import { HeaderLabel } from './styled';
 import { getColumnLabel, getDataTypeForColumn, getPermissibleValues } from '../../helpers/data-utils';
 
 const HeaderWithBatchInput = ({ column, schema, setBatchInput, setStaleBatch }) => {
+  const [userTyping, setUserTyping] = useState(false);
   const columnLabel = getColumnLabel(column, schema);
   const columnType = getDataTypeForColumn(column, schema);
   const permissibleValues = getPermissibleValues(column, schema);
@@ -33,7 +36,13 @@ const HeaderWithBatchInput = ({ column, schema, setBatchInput, setStaleBatch }) 
             <InputField
               type={columnType}
               placeholder="Enter value..."
+              onChange={(e) => setUserTyping(e.target.value !== '')}
               onKeyPress={handleKeyPress}
+              endAdornment={userTyping && (
+                <InputAdornment position="end">
+                  <KeyboardReturnIcon />
+                </InputAdornment>
+              )}
             />
           )}
       </FormControl>
