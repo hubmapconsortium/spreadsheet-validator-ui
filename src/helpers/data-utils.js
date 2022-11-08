@@ -10,10 +10,10 @@ export const getColumnLabel = (column, schema) => {
   return columnSchema.label;
 };
 
-export function getDataTypeForColumn(column, schema) {
+export const getColumnType = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
   return columnSchema.type;
-}
+};
 
 export const getPermissibleValues = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);

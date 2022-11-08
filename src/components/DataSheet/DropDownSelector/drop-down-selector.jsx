@@ -4,7 +4,6 @@ import { WHITE } from '../../../constants/Color';
 
 const DropDownSelector = ({ value, options, onChange, colorOnEmpty }) => (
   <Select
-    id="test"
     value={value}
     sx={{
       height: '40px',

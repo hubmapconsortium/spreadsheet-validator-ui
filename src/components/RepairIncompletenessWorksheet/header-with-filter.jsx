@@ -5,21 +5,19 @@ import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import PropTypes from 'prop-types';
 import FilterInputField from '../DataSheet/FilterInputField';
 import SheetCell from '../DataSheet/SheetCell';
-import { getColumnLabel } from '../../helpers/data-utils';
 import { HeaderLabel } from './styled';
 
-const HeaderWithFilter = ({ column, schema, setColumnFilters, setStaleBatch }) => {
+const HeaderWithFilter = ({ label, setColumnFilters, setStaleBatch }) => {
   const [filterEnabled, setFilterEnabled] = useState(true);
-  const columnLabel = getColumnLabel(column, schema);
   const handleFilterChange = (event) => {
     const enteredValue = event.target.value;
     setColumnFilters((currentFilters) => {
       const foundFilter = currentFilters.filter(
-        (filter) => filter.column === columnLabel,
+        (filter) => filter.column === label,
       );
       if (foundFilter.length === 0) {
         currentFilters.push({
-          column: columnLabel,
+          column: label,
           value: enteredValue,
           enabled: true,
         });
@@ -35,7 +33,7 @@ const HeaderWithFilter = ({ column, schema, setColumnFilters, setStaleBatch }) =
     setFilterEnabled(!filterEnabled);
     setColumnFilters((currentFilters) => {
       const foundFilter = currentFilters.filter(
-        (filter) => filter.column === columnLabel,
+        (filter) => filter.column === label,
       );
       if (foundFilter.length === 1) {
         const filter = foundFilter[0];
@@ -47,9 +45,9 @@ const HeaderWithFilter = ({ column, schema, setColumnFilters, setStaleBatch }) =
   };
   return (
     <SheetCell align="center">
-      <HeaderLabel>{columnLabel}</HeaderLabel>
+      <HeaderLabel>{label}</HeaderLabel>
       <FilterInputField
-        key={`${columnLabel}-filter-field`}
+        key={`${label}-filter-field`}
         onChange={handleFilterChange}
         endAdornment={(
           <InputAdornment position="end">
@@ -64,11 +62,7 @@ const HeaderWithFilter = ({ column, schema, setColumnFilters, setStaleBatch }) =
 };
 
 HeaderWithFilter.propTypes = {
-  column: PropTypes.string.isRequired,
-  schema: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    columns: PropTypes.objectOf(PropTypes.string).isRequired,
-  }).isRequired,
+  label: PropTypes.func.isRequired,
   setColumnFilters: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,
 };

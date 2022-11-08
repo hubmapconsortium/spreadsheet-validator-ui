@@ -10,7 +10,7 @@ import WrappedText from '../DataSheet/WrappedText';
 import SheetPagination from '../DataSheet/SheetPagination';
 import { createAddOperationPatch } from '../../helpers/app-utils';
 import { moveItemToFront, extractItems } from '../../helpers/array-utils';
-import { getMissingRequiredRows, getRows, getEffectiveValue } from '../../helpers/data-utils';
+import { getMissingRequiredRows, getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues } from '../../helpers/data-utils';
 import HeaderWithBatchInput from './header-with-batch-input';
 import HeaderWithFilter from './header-with-filter';
 import EditableCell from './editable-cell';
@@ -89,8 +89,9 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
                 if (index === 0) {
                   component = (
                     <HeaderWithBatchInput
-                      column={column}
-                      schema={schema}
+                      label={getColumnLabel(column, schema)}
+                      type={getColumnType(column, schema)}
+                      permissibleValues={getPermissibleValues(column, schema)}
                       setBatchInput={setBatchInput}
                       setStaleBatch={setStaleBatch}
                     />
@@ -98,8 +99,7 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
                 } else {
                   component = (
                     <HeaderWithFilter
-                      column={column}
-                      schema={schema}
+                      label={getColumnLabel(column, schema)}
                       setColumnFilters={setColumnFilters}
                       setStaleBatch={setStaleBatch}
                     />
@@ -119,8 +119,8 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
                       component = (
                         <EditableCell
                           row={row}
-                          column={column}
-                          schema={schema}
+                          type={getColumnType(column, schema)}
+                          permissibleValues={getPermissibleValues(column, schema)}
                           userInput={userInput}
                           setUserInput={setUserInput}
                         />

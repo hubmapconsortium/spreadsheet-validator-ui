@@ -25,7 +25,7 @@ InputField.propTypes = {
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
   colorOnEmpty: PropTypes.string,
-  endAdornment: PropTypes.func,
+  endAdornment: PropTypes.objectOf(PropTypes.string),
 };
 
 InputField.defaultProps = {
