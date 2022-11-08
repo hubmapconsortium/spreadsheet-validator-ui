@@ -4,9 +4,10 @@ import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/
 import { WHITE } from '../../../constants/Color';
 
 const InputField = (
-  { value, type, placeholder, onChange, onKeyPress, colorOnEmpty, endAdornment },
+  { key, value, type, placeholder, onChange, onKeyPress, colorOnEmpty, endAdornment },
 ) => (
   <OutlinedInput
+    key={key}
     size="small"
     value={value}
     type={type}
@@ -19,6 +20,7 @@ const InputField = (
 );
 
 InputField.propTypes = {
+  key: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
   placeholder: PropTypes.string,
@@ -29,6 +31,7 @@ InputField.propTypes = {
 };
 
 InputField.defaultProps = {
+  key: undefined,
   value: undefined,
   placeholder: undefined,
   onChange: undefined,

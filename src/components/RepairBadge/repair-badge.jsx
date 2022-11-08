@@ -90,7 +90,12 @@ const RepairBadge = ({ data }) => {
   return (
     <>
       {repairStatus === REPAIR_NOT_COMPLETED && (
-        <RedBadgeButton onClick={() => navigate(data.navigateTo)}>
+        <RedBadgeButton onClick={() => {
+          navigate(data.navigateTo, {
+            state: { id: data.id },
+          });
+        }}
+        >
           <Stack direction="column" alignItems="center" spacing={0}>
             <Title title={data.title} />
             <Caption caption={data.caption} />
@@ -111,6 +116,7 @@ const RepairBadge = ({ data }) => {
 
 RepairBadge.propTypes = {
   data: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     caption: PropTypes.string.isRequired,
     status: PropTypes.oneOf([REPAIR_NOT_COMPLETED, REPAIR_COMPLETED]).isRequired,

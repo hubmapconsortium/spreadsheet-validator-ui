@@ -15,9 +15,10 @@ const determineRepairIncompletenessStatus = (rows, column, patches) => (
 
 export const buildRepairIncompletenessSubMenu = (reporting, patches) => {
   const { missingRequired } = reporting;
-  const subMenuItems = Object.keys(missingRequired).map((column) => {
+  const subMenuItems = Object.keys(missingRequired).map((column, index) => {
     const rows = missingRequired[column];
     return ({
+      id: `incomplete-error-${index}`,
       title: `Missing ${column}`,
       status: determineRepairIncompletenessStatus(rows, column, patches),
       navigateTo: `${REPAIR_INCOMPLENESS_PATH}/${column}`,
@@ -47,6 +48,7 @@ export const buildRepairInconsistencySubMenu = (reporting, patches) => {
   const subMenuItems = [];
   if (notStandardTerm) {
     subMenuItems.push({
+      id: 'not-standard-term-error',
       title: 'Value not standard term',
       status: determineRepairInconsistencyStatus(notStandardTerm, patches),
       navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notStandardTerm`,
@@ -54,6 +56,7 @@ export const buildRepairInconsistencySubMenu = (reporting, patches) => {
   }
   if (notNumberType) {
     subMenuItems.push({
+      id: 'not-number-type-error',
       title: 'Value not number type',
       status: determineRepairInconsistencyStatus(notNumberType, patches),
       navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notNumberType`,
@@ -61,6 +64,7 @@ export const buildRepairInconsistencySubMenu = (reporting, patches) => {
   }
   if (notStringType) {
     subMenuItems.push({
+      id: 'not-string-type-error',
       title: 'Value not string type',
       status: determineRepairInconsistencyStatus(notStringType, patches),
       navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notStringType`,
@@ -74,9 +78,10 @@ export const buildRepairInconsistencySubMenu = (reporting, patches) => {
 
 export const buildRepairIncompletenessBadges = (reporting, patches) => {
   const { missingRequired } = reporting;
-  const badgeItems = Object.keys(missingRequired).map((column) => {
+  const badgeItems = Object.keys(missingRequired).map((column, index) => {
     const rows = missingRequired[column];
     return ({
+      id: `incomplete-error-${index}`,
       title: column,
       caption: `Value missing in ${rows.length} rows.`,
       status: determineRepairIncompletenessStatus(rows, column, patches),

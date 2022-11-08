@@ -7,7 +7,7 @@ import FilterInputField from '../DataSheet/FilterInputField';
 import SheetCell from '../DataSheet/SheetCell';
 import { HeaderLabel } from './styled';
 
-const HeaderWithFilter = ({ label, setColumnFilters, setStaleBatch }) => {
+const HeaderWithFilter = ({ key, label, setColumnFilters, setStaleBatch }) => {
   const [filterEnabled, setFilterEnabled] = useState(true);
   const handleFilterChange = (event) => {
     const enteredValue = event.target.value;
@@ -47,7 +47,7 @@ const HeaderWithFilter = ({ label, setColumnFilters, setStaleBatch }) => {
     <SheetCell align="center">
       <HeaderLabel>{label}</HeaderLabel>
       <FilterInputField
-        key={`${label}-filter-field`}
+        key={`${key}-column-filter-field`}
         onChange={handleFilterChange}
         endAdornment={(
           <InputAdornment position="end">
@@ -62,6 +62,7 @@ const HeaderWithFilter = ({ label, setColumnFilters, setStaleBatch }) => {
 };
 
 HeaderWithFilter.propTypes = {
+  key: PropTypes.string.isRequired,
   label: PropTypes.func.isRequired,
   setColumnFilters: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,

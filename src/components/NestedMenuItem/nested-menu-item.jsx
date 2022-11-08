@@ -105,7 +105,9 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu, selectedMenuItem, se
                   key={subMenuTitle}
                   selected={subMenuTitle === selectedMenuItem}
                   onClick={() => {
-                    navigate(subMenuItem.navigateTo);
+                    navigate(subMenuItem.navigateTo, {
+                      state: { id: subMenuItem.id },
+                    });
                     setParentMenuSelected(false);
                     setSelectedMenuItem(subMenuTitle);
                   }}

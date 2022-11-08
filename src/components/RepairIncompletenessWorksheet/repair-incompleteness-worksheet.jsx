@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TableRow } from '@mui/material';
 import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
@@ -21,6 +21,8 @@ import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 // eslint-disable-next-line react/prop-types
 const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id: errorId } = location.state;
   const { appData, patches, setPatches } = useContext(AppContext);
   const { schema, data, reporting } = appData;
 
@@ -89,6 +91,7 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
                 if (index === 0) {
                   component = (
                     <HeaderWithBatchInput
+                      key={`${errorId}-${column}`}
                       label={getColumnLabel(column, schema)}
                       type={getColumnType(column, schema)}
                       permissibleValues={getPermissibleValues(column, schema)}
@@ -99,6 +102,7 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
                 } else {
                   component = (
                     <HeaderWithFilter
+                      key={`${errorId}-${column}`}
                       label={getColumnLabel(column, schema)}
                       setColumnFilters={setColumnFilters}
                       setStaleBatch={setStaleBatch}
