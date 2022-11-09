@@ -23,14 +23,14 @@ const RepairIncompleteness = () => {
   );
   const badges = useMemo(
     () => buildRepairIncompletenessBadges(reporting, patches),
-    [reporting],
+    [patches],
   );
   return (
     <>
       <Section>
         <PageTitle
           title={REPAIR_INCOMPLETENESS}
-          subtitle={`${totalMissingRequired} metadata required values were missing.`}
+          subtitle={`${totalMissingRequired} required values are missing from the metadata records.`}
         />
       </Section>
       <DefaultInfoSection />

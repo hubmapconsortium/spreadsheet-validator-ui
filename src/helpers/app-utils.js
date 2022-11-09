@@ -84,7 +84,7 @@ export const buildRepairIncompletenessBadges = (reporting, patches) => {
     return ({
       id: `incomplete-error-${index}`,
       title: column,
-      caption: `Value missing in ${rows.length} rows.`,
+      caption: `${rows.length} records are incomplete`,
       status: determineRepairIncompletenessStatus(rows, column, patches),
       navigateTo: column,
     });
