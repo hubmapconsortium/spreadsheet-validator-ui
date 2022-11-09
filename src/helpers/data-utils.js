@@ -32,6 +32,31 @@ export const getMissingRequiredRows = (column, reporting) => {
   return missingRequired[column];
 };
 
+export const getNotStandardTermReporting = (reporting) => reporting.notStandardTerm || {};
+
+export const getTotalNotStandardTerm = (reporting) => {
+  const notStandardTermReporting = getNotStandardTermReporting(reporting);
+  return Object.values(notStandardTermReporting).flat().length;
+};
+
+export const getNotNumberTypeReporting = (reporting) => reporting.notNumberType || {};
+
+export const getTotalNotNumberType = (reporting) => {
+  const notNumberTypeReporting = getNotNumberTypeReporting(reporting);
+  return Object.values(notNumberTypeReporting).flat().length;
+};
+
+export const getNotStringTypeReporting = (reporting) => reporting.notStringType || {};
+
+export const getTotalNotStringType = (reporting) => {
+  const notStringTypeReporting = getNotStringTypeReporting(reporting);
+  return Object.values(notStringTypeReporting).flat().length;
+};
+
+export const getTotalInconsistency = (reporting) => getTotalNotStandardTerm(reporting)
+  + getTotalNotNumberType(reporting)
+  + getTotalNotStringType(reporting);
+
 export const getPatchGroup = (row, patches) => {
   const mutablePatches = patches;
   const patchGroup = patches[row];

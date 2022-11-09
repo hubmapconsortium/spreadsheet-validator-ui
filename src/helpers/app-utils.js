@@ -1,5 +1,6 @@
 import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
+import { getTotalNotNumberType, getTotalNotStandardTerm, getTotalNotStringType } from './data-utils';
 
 const checkPatchNotUndefined = (row, column, patches) => (
   !!patches[row] && !!patches[row][column] && !!patches[row][column].value
@@ -88,6 +89,42 @@ export const buildRepairIncompletenessBadges = (reporting, patches) => {
       navigateTo: column,
     });
   });
+  return badgeItems;
+};
+
+export const buildRepairInconsistencyBadges = (reporting, patches) => {
+  const { notStandardTerm, notNumberType, notStringType } = reporting;
+  const badgeItems = [];
+  if (notStandardTerm) {
+    const totalErrors = getTotalNotStandardTerm(reporting);
+    badgeItems.push({
+      id: 'not-standard-term-error',
+      title: 'Value is not a standard term',
+      caption: `${totalErrors} values are inconsistent`,
+      status: determineRepairInconsistencyStatus(notStandardTerm, patches),
+      navigateTo: 'notStandardTerm',
+    });
+  }
+  if (notNumberType) {
+    const totalErrors = getTotalNotNumberType(reporting);
+    badgeItems.push({
+      id: 'not-number-type-error',
+      title: 'Value is not a number type',
+      caption: `${totalErrors} values are inconsistent`,
+      status: determineRepairInconsistencyStatus(notNumberType, patches),
+      navigateTo: 'notNumberType',
+    });
+  }
+  if (notStringType) {
+    const totalErrors = getTotalNotStringType(reporting);
+    badgeItems.push({
+      id: 'not-string-type-error',
+      title: 'Value is not a string type',
+      caption: `${totalErrors} values are inconsistent`,
+      status: determineRepairInconsistencyStatus(notStringType, patches),
+      navigateTo: 'notStringType',
+    });
+  }
   return badgeItems;
 };
 
