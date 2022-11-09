@@ -5,6 +5,7 @@ import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairBadge from '../../components/RepairBadge';
 import Section from '../../styles/Section';
+import { getTotalMissingRequired } from '../../helpers/data-utils';
 import { buildRepairIncompletenessBadges } from '../../helpers/app-utils';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 
@@ -16,8 +17,11 @@ const RepairBadgeSection = styled(Section)({
 const RepairIncompleteness = () => {
   const { appData, patches } = useContext(AppContext);
   const { reporting } = appData;
-  const subtitle = '12 out of 99 metadata rows were incomplete.';
-  const badgeData = useMemo(
+  const totalMissingRequired = useMemo(
+    () => getTotalMissingRequired(reporting),
+    [reporting],
+  );
+  const badges = useMemo(
     () => buildRepairIncompletenessBadges(reporting, patches),
     [reporting],
   );
@@ -26,15 +30,15 @@ const RepairIncompleteness = () => {
       <Section>
         <PageTitle
           title={REPAIR_INCOMPLETENESS}
-          subtitle={subtitle}
+          subtitle={`${totalMissingRequired} metadata required values were missing.`}
         />
       </Section>
       <DefaultInfoSection />
       <RepairBadgeSection>
         <Grid container spacing={3}>
-          {badgeData.map((data) => (
+          {badges.map((badge) => (
             <Grid item xs={3}>
-              <RepairBadge data={data} />
+              <RepairBadge data={badge} />
             </Grid>
           ))}
         </Grid>

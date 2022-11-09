@@ -20,7 +20,17 @@ export const getPermissibleValues = (column, schema) => {
   return columnSchema.permissibleValues;
 };
 
-export const getMissingRequiredRows = (column, reporting) => reporting.missingRequired[column];
+export const getMissingRequiredReporting = (reporting) => reporting.missingRequired;
+
+export const getTotalMissingRequired = (reporting) => {
+  const missingRequired = getMissingRequiredReporting(reporting);
+  return Object.values(missingRequired).flat().length;
+};
+
+export const getMissingRequiredRows = (column, reporting) => {
+  const missingRequired = getMissingRequiredReporting(reporting);
+  return missingRequired[column];
+};
 
 export const getPatchGroup = (row, patches) => {
   const mutablePatches = patches;
