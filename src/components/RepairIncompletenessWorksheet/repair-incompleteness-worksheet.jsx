@@ -120,13 +120,18 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
                     // eslint-disable-next-line dot-notation
                     const row = rowData['_id'];
                     if (index === 0) {
+                      const handleInputChange = (event) => {
+                        setUserInput((currentUserInput) => {
+                          // eslint-disable-next-line no-param-reassign
+                          currentUserInput[row] = event.target.value;
+                        });
+                      };
                       component = (
                         <EditableCell
-                          row={row}
+                          value={userInput[row] || ''}
                           type={getColumnType(column, schema)}
                           permissibleValues={getPermissibleValues(column, schema)}
-                          userInput={userInput}
-                          setUserInput={setUserInput}
+                          handleInputChange={handleInputChange}
                         />
                       );
                     } else {

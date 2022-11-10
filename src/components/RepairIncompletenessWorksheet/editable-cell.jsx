@@ -6,47 +6,39 @@ import SheetCell from '../DataSheet/SheetCell';
 import { LIGHT_RED } from '../../constants/Color';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
 
-const EditableCell = ({ row, type, permissibleValues, userInput, setUserInput }) => {
-  const handleUserInput = (event) => {
-    setUserInput((currentUserInput) => {
-      // eslint-disable-next-line no-param-reassign
-      currentUserInput[row] = event.target.value;
-    });
-  };
-  return (
-    <SheetCell sx={{ zIndex: 998 }} sticky>
-      <FormControl fullWidth>
-        {permissibleValues
-          ? (
-            <DropDownSelector
-              value={userInput[row] || ''}
-              options={permissibleValues}
-              onChange={handleUserInput}
-              colorOnEmpty={LIGHT_RED}
-            />
-          )
-          : (
-            <InputField
-              value={userInput[row] || ''}
-              type={type}
-              onChange={handleUserInput}
-              colorOnEmpty={LIGHT_RED}
-            />
-          )}
-      </FormControl>
-    </SheetCell>
-  );
-};
+const EditableCell = ({ value, type, permissibleValues, handleInputChange }) => (
+  <SheetCell sx={{ zIndex: 998 }} sticky>
+    <FormControl fullWidth>
+      {permissibleValues
+        ? (
+          <DropDownSelector
+            value={value}
+            options={permissibleValues}
+            onChange={handleInputChange}
+            colorOnEmpty={LIGHT_RED}
+          />
+        )
+        : (
+          <InputField
+            value={value}
+            type={type}
+            onChange={handleInputChange}
+            colorOnEmpty={LIGHT_RED}
+          />
+        )}
+    </FormControl>
+  </SheetCell>
+);
 
 EditableCell.propTypes = {
-  row: PropTypes.number.isRequired,
+  value: PropTypes.string,
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
-  userInput: PropTypes.objectOf(PropTypes.string).isRequired,
-  setUserInput: PropTypes.func.isRequired,
+  handleInputChange: PropTypes.func.isRequired,
 };
 
 EditableCell.defaultProps = {
+  value: '',
   type: TEXT,
   permissibleValues: undefined,
 };
