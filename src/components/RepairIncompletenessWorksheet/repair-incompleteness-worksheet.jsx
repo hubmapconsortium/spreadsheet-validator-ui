@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TableRow } from '@mui/material';
+import PropTypes from 'prop-types';
 import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
@@ -18,7 +19,6 @@ import { ButtonBox, CancelButton, DataSheetCard, SaveButton, SheetTable, SheetTa
 import { getFilteredData, getPagedData, initUserInput } from './function';
 import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 
-// eslint-disable-next-line react/prop-types
 const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -179,6 +179,10 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
       </ButtonBox>
     </>
   );
+};
+
+RepairIncompletnessWorksheet.propTypes = {
+  incompleteColumn: PropTypes.string.isRequired,
 };
 
 export default RepairIncompletnessWorksheet;
