@@ -128,6 +128,30 @@ export const buildRepairInconsistencyBadges = (reporting, patches) => {
   return badgeItems;
 };
 
+export const buildRepairInconsistencyTableData = (inconsistencyReporting) => {
+  const targetColumns = Object.keys(inconsistencyReporting);
+  return targetColumns.map(
+    (column) => {
+      const evaluationByColumn = inconsistencyReporting[column];
+      return evaluationByColumn.reduce((groups, item) => {
+        const { value } = item;
+        const { suggestion } = item;
+        const key = `${column}-${value}`;
+        const group = (groups[key] || {
+          column,
+          value,
+          suggestion,
+          rows: [],
+        });
+        group.rows.push(item.row);
+        // eslint-disable-next-line no-param-reassign
+        groups[key] = group;
+        return groups;
+      }, {});
+    },
+  ).map((item) => Object.values(item)).flat();
+};
+
 export const createAddOperationPatch = (row, column, value) => ({
   op: 'add',
   path: `/${row}/${column}`,

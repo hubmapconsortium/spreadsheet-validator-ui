@@ -5,5 +5,8 @@ export const moveItemToFront = (item, arr) => arr.sort(
 
 export const extractItems = (indexes, arr) => indexes.map((index) => arr[index]);
 
+export const generateFalses = (size) => Array
+  .from({ length: size }, () => (false));
+
 export const generateEmptyObjects = (size) => Array
   .from({ length: size }, () => ({}));

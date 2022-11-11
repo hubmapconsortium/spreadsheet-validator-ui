@@ -34,7 +34,7 @@ const RepairInconsistencyWorkspace = () => {
         />
       </Section>
       <DefaultInfoSection />
-      <RepairInconsistencyWorksheet />
+      <RepairInconsistencyWorksheet inconsistencyType={inconsistencyType} />
     </WorkspaceArea>
   );
 };
