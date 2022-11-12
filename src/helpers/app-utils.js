@@ -128,7 +128,7 @@ export const buildRepairInconsistencyBadges = (reporting, patches) => {
   return badgeItems;
 };
 
-export const buildRepairInconsistencyTableData = (inconsistencyReporting) => {
+export const buildInconsistencySummaryData = (inconsistencyReporting) => {
   const targetColumns = Object.keys(inconsistencyReporting);
   return targetColumns.map(
     (column) => {

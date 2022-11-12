@@ -9,9 +9,9 @@ const SheetCell = styled(TableCell, {
     top: 0,
     left: 0,
     zIndex: 999,
+    minWidth: '180px',
   }),
   background: WHITE,
-  minWidth: '180px',
   maxWidth: '300px',
 }));
 

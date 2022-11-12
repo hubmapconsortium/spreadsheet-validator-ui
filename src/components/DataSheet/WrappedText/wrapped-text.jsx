@@ -5,23 +5,25 @@ const CellValue = styled(Typography)({
   fontSize: '17px',
 });
 
-const WrappedText = ({ text }) => (
+const WrappedText = ({ text, color }) => (
   <Tooltip
     arrow
     title={<Typography fontSize={16}>{text}</Typography>}
     placement="right"
     enterDelay={1000}
   >
-    <CellValue noWrap>{text}</CellValue>
+    <CellValue color={color} noWrap>{text}</CellValue>
   </Tooltip>
 );
 
 WrappedText.propTypes = {
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  color: PropTypes.string,
 };
 
 WrappedText.defaultProps = {
   text: '',
+  color: undefined,
 };
 
 export default WrappedText;
