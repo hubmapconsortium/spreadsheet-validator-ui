@@ -2,6 +2,12 @@ import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../constant
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 import { getTotalNotNumberType, getTotalNotStandardTerm, getTotalNotStringType } from './data-utils';
 
+export const getPagedData = (data, page, rowsPerPage) => (
+  (rowsPerPage > 0
+    ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    : data)
+);
+
 const checkPatchNotUndefined = (row, column, patches) => (
   !!patches[row] && !!patches[row][column] && !!patches[row][column].value
 );

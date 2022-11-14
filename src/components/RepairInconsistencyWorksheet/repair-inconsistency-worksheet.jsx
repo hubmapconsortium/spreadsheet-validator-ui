@@ -4,18 +4,25 @@ import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
+import SheetPagination from '../DataSheet/SheetPagination';
+import { buildInconsistencySummaryData, getPagedData } from '../../helpers/app-utils';
 import HeaderWithCheckbox from './header-with-checkbox';
 import { DataSheetCard, HeaderLabel, SheetTable, SheetTableContainer } from './styled';
-import { buildInconsistencySummaryData } from '../../helpers/app-utils';
 import CollapsibleTableRow from './collapsible-table-row';
 
 const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
   const { appData, patches } = useContext(AppContext);
   const { data, schema, reporting } = appData;
   const [userInput, setUserInput] = useState({});
-  const inconsistencySummaryData = useMemo(
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const tableData = useMemo(
     () => buildInconsistencySummaryData(reporting[inconsistencyType]),
     [inconsistencyType],
+  );
+  const pagedData = useMemo(
+    () => getPagedData(tableData, page, rowsPerPage),
+    [tableData, page, rowsPerPage],
   );
   return (
     <DataSheetCard>
@@ -40,7 +47,7 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
             />
           </SheetHeader>
           <SheetBody>
-            {inconsistencySummaryData.map((summaryItem) => (
+            {pagedData.map((summaryItem) => (
               <CollapsibleTableRow
                 key={`${summaryItem.column}-${summaryItem.value}`}
                 summaryData={summaryItem}
@@ -54,6 +61,13 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
           </SheetBody>
         </SheetTable>
       </SheetTableContainer>
+      <SheetPagination
+        data={tableData}
+        page={page}
+        setPage={setPage}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+      />
     </DataSheetCard>
   );
 };

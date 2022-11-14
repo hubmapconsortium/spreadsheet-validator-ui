@@ -9,14 +9,14 @@ import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import WrappedText from '../DataSheet/WrappedText';
 import SheetPagination from '../DataSheet/SheetPagination';
-import { createAddOperationPatch } from '../../helpers/app-utils';
+import { createAddOperationPatch, getPagedData } from '../../helpers/app-utils';
 import { moveItemToFront, extractItems } from '../../helpers/array-utils';
 import { getMissingRequiredRows, getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues } from '../../helpers/data-utils';
 import HeaderWithBatchInput from './header-with-batch-input';
 import HeaderWithFilter from './header-with-filter';
 import EditableCell from './editable-cell';
 import { ButtonBox, CancelButton, DataSheetCard, SaveButton, SheetTable, SheetTableContainer } from './styled';
-import { getFilteredData, getPagedData, initUserInput } from './function';
+import { getFilteredData, initUserInput } from './function';
 import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 
 const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {

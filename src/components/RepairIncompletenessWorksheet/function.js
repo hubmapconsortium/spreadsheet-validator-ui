@@ -17,9 +17,3 @@ export const getFilteredData = (data, filters) => data.filter(
       return cellValueString.toLowerCase().includes(filter.value.toLowerCase());
     }),
 );
-
-export const getPagedData = (data, page, rowsPerPage) => (
-  (rowsPerPage > 0
-    ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    : data)
-);
