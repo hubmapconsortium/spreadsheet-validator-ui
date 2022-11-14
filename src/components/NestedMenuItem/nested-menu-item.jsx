@@ -113,8 +113,8 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu, selectedMenuItem, se
                   }}
                 >
                   <SubMenuItemText primary={subMenuTitle} />
-                  {subMenuItem.status === REPAIR_NOT_COMPLETED && <ErrorStatusIcon />}
-                  {subMenuItem.status === REPAIR_COMPLETED && <NoErrorStatusIcon />}
+                  {subMenuItem.status === REPAIR_NOT_COMPLETED && <ErrorStatusIcon fontSize="large" />}
+                  {subMenuItem.status === REPAIR_COMPLETED && <NoErrorStatusIcon fontSize="large" />}
                 </SubMenuItem>
               );
             })}

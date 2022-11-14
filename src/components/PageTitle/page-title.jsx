@@ -2,13 +2,11 @@ import { styled, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const Title = styled(Typography)({
-  fontFamily: 'Roboto',
   fontSize: '32pt',
   fontWeight: 'bold',
 });
 
 const SubTitle = styled(Typography)({
-  fontFamily: 'Roboto',
   fontSize: '17pt',
 });
 

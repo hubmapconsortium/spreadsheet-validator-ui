@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { BLUE } from '../../constants/Color';
 
 const InfoText = styled(Typography)({
-  fontFamily: 'Roboto',
   fontSize: '14pt',
 });
 

@@ -20,13 +20,11 @@ const ChartSection = styled(Section)({
 });
 
 const Title = styled(Typography)({
-  fontFamily: 'Roboto',
   fontSize: '24pt',
   fontWeight: 'bold',
 });
 
 const SubTitle = styled(Typography)({
-  fontFamily: 'Roboto',
   fontSize: '17pt',
   color: DARK_GRAY,
 });

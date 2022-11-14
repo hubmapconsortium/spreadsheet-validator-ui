@@ -33,12 +33,12 @@ const generatePlugins = (data) => [{
     const { ctx } = chart;
     const fontSize = (height / 200).toFixed(2);
     ctx.restore();
-    ctx.font = `${0.85 * fontSize}em Helvetica`; // Title font
+    ctx.font = `${0.85 * fontSize}em Lato`; // Title font
     const textTitle = numberWithCommas(data.innerTextTitle);
     const textTitleX = Math.round((width - ctx.measureText(textTitle).width) / 2);
     const textTitleY = (height / 2) - 55;
     ctx.fillText(textTitle, textTitleX, textTitleY);
-    ctx.font = `${0.70 * fontSize}em Roboto`; // Subtitle font
+    ctx.font = `${0.70 * fontSize}em Lato`; // Subtitle font
     const textSubtitle = data.innerTextSubtitle;
     const textSubtitleX = Math.round((width - ctx.measureText(textSubtitle).width) / 2);
     const textSubtitleY = (height / 2) - 10;
