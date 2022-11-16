@@ -145,7 +145,7 @@ export const METADATA_RECORDS = [
     preparation_medium: 'None',
     preparation_temperature: '4 Celcius',
     preparation_time_value: '1 minute',
-    preparation_time_unit: 'min',
+    preparation_time_unit: '',
     histology_report: null,
   }, {
     _id: 1,
@@ -163,7 +163,7 @@ export const METADATA_RECORDS = [
     preparation_medium: 'OCT Embedded',
     preparation_temperature: null,
     preparation_time_value: 1.5,
-    preparation_time_unit: 'min',
+    preparation_time_unit: '',
     histology_report: 0,
   }, {
     _id: 3,
@@ -235,6 +235,7 @@ export const ERROR_REPORT = {
   missingRequired: {
     sample_ID: [1, 2, 3],
     preparation_temperature: [2, 4, 5, 6, 7],
+    preparation_time_unit: [0, 2],
   },
   notStandardTerm: {
     preparation_medium: [
@@ -263,15 +264,7 @@ export const ERROR_REPORT = {
       }],
     preparation_time_unit: [
       {
-        row: 0,
-        value: 'min',
-        suggestion: 'minute',
-      }, {
         row: 1,
-        value: 'min',
-        suggestion: 'minute',
-      }, {
-        row: 2,
         value: 'min',
         suggestion: 'minute',
       }, {
