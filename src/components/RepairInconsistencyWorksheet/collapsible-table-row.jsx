@@ -23,7 +23,6 @@ const printFrequency = (rows) => {
 
 // eslint-disable-next-line max-len
 const CollapsibleTableRow = ({ summaryData, sheetData, schema, userInput, setUserInput }) => {
-  console.log(userInput);
   const [open, setOpen] = useState(false);
   const { key } = summaryData;
   return (

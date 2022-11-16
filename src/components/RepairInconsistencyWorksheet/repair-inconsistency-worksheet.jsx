@@ -38,7 +38,6 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
     () => getPagedData(tableData, page, rowsPerPage),
     [tableData, page, rowsPerPage],
   );
-  console.log(patches);
   return (
     <>
       <DataSheetCard>
