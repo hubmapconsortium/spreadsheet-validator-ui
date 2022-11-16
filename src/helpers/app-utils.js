@@ -8,7 +8,7 @@ export const getPagedData = (data, page, rowsPerPage) => (
     : data)
 );
 
-const checkPatchNotUndefined = (row, column, patches) => (
+export const checkPatchNotUndefined = (row, column, patches) => (
   !!patches[row] && !!patches[row][column] && !!patches[row][column].value
 );
 
@@ -144,6 +144,7 @@ export const buildInconsistencySummaryData = (inconsistencyReporting) => {
         const { suggestion } = item;
         const key = `${column}-${value}`;
         const group = (groups[key] || {
+          key,
           column,
           value,
           suggestion,

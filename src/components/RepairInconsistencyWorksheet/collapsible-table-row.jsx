@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { Box, Checkbox, Collapse, IconButton, styled, TableRow, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -22,10 +21,11 @@ const printFrequency = (rows) => {
   return (frequency === 1) ? `(${frequency} cell)` : `(${frequency} cells)`;
 };
 
-const CollapsibleTableRow = (
-  { key, summaryData, sheetData, schema, patches, userInput, setUserInput },
-) => {
+// eslint-disable-next-line max-len
+const CollapsibleTableRow = ({ summaryData, sheetData, schema, userInput, setUserInput }) => {
+  console.log(userInput);
   const [open, setOpen] = useState(false);
+  const { key } = summaryData;
   return (
     <>
       <TableRow>
@@ -58,21 +58,39 @@ const CollapsibleTableRow = (
         </SheetCell>
         <SheetCell>
           <EditableCell
-            value={summaryData.suggestion}
+            value={userInput?.value}
             type={getColumnType(summaryData.column, schema)}
             permissibleValues={getPermissibleValues(summaryData.column, schema)}
+            handleInputChange={(event) => {
+              const userValue = event.target.value;
+              setUserInput((currentUserInput) => {
+                // eslint-disable-next-line no-param-reassign
+                currentUserInput[key] = {
+                  column: summaryData.column,
+                  value: userValue,
+                  rows: summaryData.rows,
+                  approved: true,
+                };
+              });
+            }}
           />
         </SheetCell>
         <SheetCell align="center">
           <Checkbox
             key={key}
             onChange={(event) => {
-              setUserInput({
-                ...userInput,
-                [key]: event.target.checked,
+              const approved = event.target.checked;
+              setUserInput((currentUserInput) => {
+                // eslint-disable-next-line no-param-reassign
+                currentUserInput[key] = {
+                  column: summaryData.column,
+                  value: userInput?.value,
+                  rows: summaryData.rows,
+                  approved,
+                };
               });
             }}
-            checked={userInput[key]}
+            checked={userInput?.approved || false}
           />
         </SheetCell>
       </TableRow>
@@ -126,8 +144,8 @@ const CollapsibleTableRow = (
 };
 
 CollapsibleTableRow.propTypes = {
-  key: PropTypes.string.isRequired,
   summaryData: PropTypes.shape({
+    key: PropTypes.string.isRequired,
     column: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     suggestion: PropTypes.string,
@@ -135,8 +153,12 @@ CollapsibleTableRow.propTypes = {
   }).isRequired,
   sheetData: PropTypes.objectOf(PropTypes.string).isRequired,
   schema: PropTypes.objectOf(PropTypes.string).isRequired,
-  patches: PropTypes.objectOf(PropTypes.string).isRequired,
-  userInput: PropTypes.objectOf(PropTypes.string).isRequired,
+  userInput: PropTypes.shape({
+    column: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    rows: PropTypes.arrayOf(PropTypes.number).isRequired,
+    approved: PropTypes.bool.isRequired,
+  }).isRequired,
   setUserInput: PropTypes.func.isRequired,
 };
 

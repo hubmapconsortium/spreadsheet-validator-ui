@@ -28,7 +28,7 @@ const EditableCell = ({ value, type, permissibleValues, handleInputChange }) => 
 );
 
 EditableCell.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
   handleInputChange: PropTypes.func.isRequired,
