@@ -1,3 +1,4 @@
+import * as jsonpatch from 'fast-json-patch';
 import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 import { getTotalNotNumberType, getTotalNotStandardTerm, getTotalNotStringType } from './data-utils';
@@ -12,12 +13,18 @@ export const checkPatchNotUndefined = (row, column, patches) => (
   !!patches[row] && !!patches[row][column] && !!patches[row][column].value
 );
 
-const determineRepairIncompletenessStatus = (rows, column, patches) => (
+const isRepairIncompletenessCompleted = (rows, column, patches) => (
   rows.map(
     (row) => checkPatchNotUndefined(row, column, patches),
   ).reduce(
     (cache, value) => cache && value,
-  ) ? REPAIR_COMPLETED : REPAIR_NOT_COMPLETED
+  )
+);
+
+const determineRepairIncompletenessStatus = (rows, column, patches) => (
+  isRepairIncompletenessCompleted(rows, column, patches)
+    ? REPAIR_COMPLETED
+    : REPAIR_NOT_COMPLETED
 );
 
 export const buildRepairIncompletenessSubMenu = (reporting, patches) => {
@@ -37,7 +44,7 @@ export const buildRepairIncompletenessSubMenu = (reporting, patches) => {
   };
 };
 
-export const determineRepairInconsistencyStatus = (inconsistencyReporting, patches) => {
+const isRepairInconsistencyCompleted = (inconsistencyReporting, patches) => {
   const columns = Object.keys(inconsistencyReporting);
   return columns.map((column) => {
     const reports = inconsistencyReporting[column];
@@ -47,8 +54,14 @@ export const determineRepairInconsistencyStatus = (inconsistencyReporting, patch
     });
   }).flat(1).reduce(
     (cache, value) => cache && value,
-  ) ? REPAIR_COMPLETED : REPAIR_NOT_COMPLETED;
+  );
 };
+
+const determineRepairInconsistencyStatus = (inconsistencyReporting, patches) => (
+  isRepairInconsistencyCompleted(inconsistencyReporting, patches)
+    ? REPAIR_COMPLETED
+    : REPAIR_NOT_COMPLETED
+);
 
 export const buildRepairInconsistencySubMenu = (reporting, patches) => {
   const { notStandardTerm, notNumberType, notStringType } = reporting;
@@ -159,6 +172,33 @@ export const buildInconsistencySummaryData = (inconsistencyReporting) => {
   ).map((item) => Object.values(item)).flat();
 };
 
+export const determineOverallRepairStatus = (reporting, patches) => {
+  const { missingRequired, notStandardTerm, notNumberType, notStringType } = reporting;
+  let completed = true;
+  if (missingRequired) {
+    completed = completed && Object.keys(missingRequired).map((column) => {
+      const rows = missingRequired[column];
+      return isRepairIncompletenessCompleted(rows, column, patches);
+    }).reduce(
+      (cache, value) => cache && value,
+    );
+    if (!completed) return REPAIR_NOT_COMPLETED;
+  }
+  if (notStandardTerm) {
+    completed = completed && isRepairInconsistencyCompleted(notStandardTerm, patches);
+    if (!completed) return REPAIR_NOT_COMPLETED;
+  }
+  if (notNumberType) {
+    completed = completed && isRepairInconsistencyCompleted(notNumberType, patches);
+    if (!completed) return REPAIR_NOT_COMPLETED;
+  }
+  if (notStringType) {
+    completed = completed && isRepairInconsistencyCompleted(notStringType, patches);
+    if (!completed) return REPAIR_NOT_COMPLETED;
+  }
+  return REPAIR_COMPLETED;
+};
+
 export const createAddOperationPatch = (row, column, value) => ({
   op: 'add',
   path: `/${row}/${column}`,
@@ -170,3 +210,11 @@ export const createReplaceOperationPatch = (row, column, value) => ({
   path: `/${row}/${column}`,
   value,
 });
+
+export const generateNewSpreadsheet = (data, patches) => {
+  const patchArray = patches.map((patch) => (Object.values(patch))).flat();
+  const patchedData = jsonpatch.applyPatch(data, patchArray).newDocument;
+  return `data:text/json;chatset=utf-8,${encodeURIComponent(
+    JSON.stringify(patchedData, null, 2),
+  )}`;
+};

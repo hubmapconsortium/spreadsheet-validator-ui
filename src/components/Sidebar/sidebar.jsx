@@ -1,14 +1,15 @@
-import { useContext, useMemo, useState } from 'react';
-import { Box, List, styled } from '@mui/material';
+import { useContext, useMemo, useState, useEffect } from 'react';
+import { Box, Button, List, styled } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import AppContext from '../../pages/AppContext';
 import NestedMenuItem from '../NestedMenuItem';
 import logo from '../../logo.svg';
 import Container from '../../styles/Container';
-import { buildRepairIncompletenessSubMenu, buildRepairInconsistencySubMenu } from '../../helpers/app-utils';
+import { buildRepairIncompletenessSubMenu, buildRepairInconsistencySubMenu, determineOverallRepairStatus, generateNewSpreadsheet } from '../../helpers/app-utils';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
 import { OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../../constants/Router';
+import { REPAIR_NOT_COMPLETED } from '../../constants/Status';
 
 const SideBarContainer = styled(Container)({
   width: '380px',
@@ -31,6 +32,13 @@ const MenuSection = styled(Box)({
   width: '340px',
 });
 
+const ButtonSection = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  padding: '20px',
+  width: '340px',
+});
+
 const NestedMenu = styled(List)({
   color: 'rgb(0, 0, 0, 0.60)',
 });
@@ -47,14 +55,22 @@ const RepairIcon = styled(ConstructionIcon)({
 
 const SideBar = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(OVERVIEW);
+  const [disabled, setDisabled] = useState(true);
   const { appData, patches } = useContext(AppContext);
-  const { reporting } = appData;
+  const { data, reporting } = appData;
   const repairIncompletenessSubMenu = useMemo(
     () => buildRepairIncompletenessSubMenu(reporting, patches),
     [patches],
   );
   const repairInconsistencySubMenu = useMemo(
     () => buildRepairInconsistencySubMenu(reporting, patches),
+    [patches],
+  );
+  useEffect(
+    () => {
+      const status = determineOverallRepairStatus(reporting, patches);
+      setDisabled(status === REPAIR_NOT_COMPLETED);
+    },
     [patches],
   );
   return (
@@ -89,6 +105,22 @@ const SideBar = () => {
           />
         </NestedMenu>
       </MenuSection>
+      <ButtonSection>
+        <Button
+          variant="contained"
+          size="large"
+          disabled={disabled}
+          onClick={() => {
+            const jsonString = generateNewSpreadsheet(data, patches);
+            const link = document.createElement('a');
+            link.href = jsonString;
+            link.download = 'patched.json';
+            link.click();
+          }}
+        >
+          Generate New Spreadsheet
+        </Button>
+      </ButtonSection>
     </SideBarContainer>
   );
 };
