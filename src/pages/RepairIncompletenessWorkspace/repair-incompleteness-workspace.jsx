@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, styled } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
@@ -19,16 +20,18 @@ const RepairIncompletenessWorkspace = () => {
   const totalBadRows = reporting.missingRequired[incompleteColumn]?.length;
   const subtitle = `${totalBadRows} rows were missing the ${incompleteColumn} value.`;
   return (
-    <WorkspaceArea>
-      <Section>
-        <PageTitle
-          title={REPAIR_INCOMPLETENESS}
-          subtitle={subtitle}
-        />
-      </Section>
-      <DefaultInfoSection />
-      <RepairIncompletnessWorksheet incompleteColumn={incompleteColumn} />
-    </WorkspaceArea>
+    <SnackbarProvider maxSnack={1}>
+      <WorkspaceArea>
+        <Section>
+          <PageTitle
+            title={REPAIR_INCOMPLETENESS}
+            subtitle={subtitle}
+          />
+        </Section>
+        <DefaultInfoSection />
+        <RepairIncompletnessWorksheet incompleteColumn={incompleteColumn} />
+      </WorkspaceArea>
+    </SnackbarProvider>
   );
 };
 

@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useImmer } from 'use-immer';
 import PropTypes from 'prop-types';
+import { useSnackbar } from 'notistack';
 import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
@@ -20,9 +21,13 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
   const { id: errorId } = location.state;
   const { appData, patches, setPatches } = useContext(AppContext);
   const { data, schema, reporting } = appData;
+
   const [userInput, setUserInput] = useImmer({});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const tableData = useMemo(
     () => buildInconsistencySummaryData(reporting[inconsistencyType]),
     [inconsistencyType],
@@ -38,6 +43,24 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
     () => getPagedData(tableData, page, rowsPerPage),
     [tableData, page, rowsPerPage],
   );
+
+  const handleSaveChanges = () => {
+    Object.keys(userInput)
+      .filter((key) => userInput[key]?.approved)
+      .forEach((key) => {
+        const userInputPerKey = userInput[key];
+        const { column, value } = userInputPerKey;
+        userInputPerKey.rows.forEach((row) => {
+          const patch = createReplaceOperationPatch(row, column, value);
+          setPatches((currentPatches) => {
+            // eslint-disable-next-line no-param-reassign
+            currentPatches[row][column] = patch;
+          });
+        });
+      });
+    enqueueSnackbar('Changes are saved!', { variant: 'success' });
+  };
+
   return (
     <>
       <DataSheetCard>
@@ -99,21 +122,7 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
         </CancelButton>
         <SaveButton
           variant="contained"
-          onClick={() => {
-            Object.keys(userInput)
-              .filter((key) => userInput[key]?.approved)
-              .forEach((key) => {
-                const userInputPerKey = userInput[key];
-                const { column, value } = userInputPerKey;
-                userInputPerKey.rows.forEach((row) => {
-                  const patch = createReplaceOperationPatch(row, column, value);
-                  setPatches((currentPatches) => {
-                    // eslint-disable-next-line no-param-reassign
-                    currentPatches[row][column] = patch;
-                  });
-                });
-              });
-          }}
+          onClick={handleSaveChanges}
         >
           Save
         </SaveButton>

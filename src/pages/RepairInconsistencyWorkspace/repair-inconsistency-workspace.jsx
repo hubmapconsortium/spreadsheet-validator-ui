@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, styled } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
@@ -26,16 +27,18 @@ const RepairInconsistencyWorkspace = () => {
   const totalBadCells = badRows.flat(1).length;
   const subtitle = `${totalBadCells} cells contains a value that is ${unCamelCase(inconsistencyType)}.`;
   return (
-    <WorkspaceArea>
-      <Section>
-        <PageTitle
-          title={REPAIR_INCONSISTENCY}
-          subtitle={subtitle}
-        />
-      </Section>
-      <DefaultInfoSection />
-      <RepairInconsistencyWorksheet inconsistencyType={inconsistencyType} />
-    </WorkspaceArea>
+    <SnackbarProvider maxSnack={1}>
+      <WorkspaceArea>
+        <Section>
+          <PageTitle
+            title={REPAIR_INCONSISTENCY}
+            subtitle={subtitle}
+          />
+        </Section>
+        <DefaultInfoSection />
+        <RepairInconsistencyWorksheet inconsistencyType={inconsistencyType} />
+      </WorkspaceArea>
+    </SnackbarProvider>
   );
 };
 

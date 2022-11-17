@@ -3,6 +3,7 @@ import { useImmer } from 'use-immer';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useSnackbar } from 'notistack';
 import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
@@ -32,6 +33,8 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
   const [columnFilters, setColumnFilters] = useImmer([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const columns = Object.keys(schema.columns);
   const columnOrder = useMemo(
@@ -90,6 +93,7 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
           existingPatches[row][incompleteColumn] = patch;
         });
       });
+    enqueueSnackbar('Changes are saved!', { variant: 'success' });
   };
 
   return (
