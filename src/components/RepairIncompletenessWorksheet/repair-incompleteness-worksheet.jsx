@@ -80,6 +80,18 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
     [filteredData, page, rowsPerPage],
   );
 
+  const handleSaveChanges = () => {
+    Object.keys(userInput)
+      .filter((row) => userInput[row] && userInput[row] !== '' && true)
+      .forEach((row) => {
+        const patch = createAddOperationPatch(row, incompleteColumn, userInput[row]);
+        setPatches((existingPatches) => {
+          // eslint-disable-next-line no-param-reassign
+          existingPatches[row][incompleteColumn] = patch;
+        });
+      });
+  };
+
   return (
     <>
       <DataSheetCard>
@@ -167,17 +179,7 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
         </CancelButton>
         <SaveButton
           variant="contained"
-          onClick={() => {
-            Object.keys(userInput)
-              .filter((row) => userInput[row] && userInput[row] !== '' && true)
-              .forEach((row) => {
-                const patch = createAddOperationPatch(row, incompleteColumn, userInput[row]);
-                setPatches((existingPatches) => {
-                  // eslint-disable-next-line no-param-reassign
-                  existingPatches[row][incompleteColumn] = patch;
-                });
-              });
-          }}
+          onClick={handleSaveChanges}
         >
           Save
         </SaveButton>
