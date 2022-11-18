@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Collapse, List, ListItemButton, ListItemText, ListSubheader, styled } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -69,18 +69,26 @@ const NoErrorStatusIcon = styled(CheckCircleIcon)({
 });
 
 // eslint-disable-next-line max-len
-const NestedMenuItem = ({ icon, title, navigateTo, subMenu, selectedMenuItem, setSelectedMenuItem }) => {
+const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { selectedMenuItem } = location.state;
+
   const [subMenuVisible, setSubMenuVisible] = useState(false);
   const [parentMenuSelected, setParentMenuSelected] = useState(true);
-  const navigate = useNavigate();
+
   const openSubMenus = () => {
-    navigate(navigateTo);
+    navigate(navigateTo, {
+      state: {
+        selectedMenuItem: title,
+      },
+    });
     if (parentMenuSelected) {
       setSubMenuVisible(!subMenuVisible);
     }
     setParentMenuSelected(true);
-    setSelectedMenuItem(title);
   };
+
   return (
     <>
       <MenuItem
@@ -106,10 +114,12 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu, selectedMenuItem, se
                   selected={subMenuTitle === selectedMenuItem}
                   onClick={() => {
                     navigate(subMenuItem.navigateTo, {
-                      state: { id: subMenuItem.id },
+                      state: {
+                        id: subMenuItem.id,
+                        selectedMenuItem: subMenuTitle,
+                      },
                     });
                     setParentMenuSelected(false);
-                    setSelectedMenuItem(subMenuTitle);
                   }}
                 >
                   <SubMenuItemText primary={subMenuTitle} />
@@ -139,8 +149,6 @@ NestedMenuItem.propTypes = {
       }),
     ),
   }),
-  selectedMenuItem: PropTypes.string.isRequired,
-  setSelectedMenuItem: PropTypes.func.isRequired,
 };
 
 NestedMenuItem.defaultProps = {

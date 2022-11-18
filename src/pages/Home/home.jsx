@@ -7,6 +7,8 @@ import logo from '../../logo.svg';
 import 'filepond/dist/filepond.min.css';
 import './home.css';
 import { APP_DATA } from '../../constants/TestData';
+import { OVERVIEW } from '../../constants/PageTitle';
+import { OVERVIEW_PATH } from '../../constants/Router';
 
 const HomeContainer = styled(Container)({
   display: 'flex',
@@ -53,7 +55,11 @@ const Home = ({ setAppData }) => {
   const submitSpreadsheet = () => {
     const validateData = async () => {
       setAppData(APP_DATA);
-      navigate('overview');
+      navigate(OVERVIEW_PATH, {
+        state: {
+          selectedMenuItem: OVERVIEW,
+        },
+      });
     };
     validateData();
   };

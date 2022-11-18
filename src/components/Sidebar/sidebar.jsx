@@ -1,7 +1,9 @@
 import { useContext, useMemo, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, List, styled } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ConstructionIcon from '@mui/icons-material/Construction';
+import { useHotkeys } from 'react-hotkeys-hook';
 import AppContext from '../../pages/AppContext';
 import NestedMenuItem from '../NestedMenuItem';
 import logo from '../../logo.svg';
@@ -54,7 +56,7 @@ const RepairIcon = styled(ConstructionIcon)({
 });
 
 const SideBar = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState(OVERVIEW);
+  const navigate = useNavigate();
   const [disabled, setDisabled] = useState(true);
   const { appData, patches } = useContext(AppContext);
   const { data, reporting } = appData;
@@ -73,6 +75,39 @@ const SideBar = () => {
     },
     [patches],
   );
+  useHotkeys(
+    ['ctrl+1', 'meta+1'],
+    () => {
+      navigate(OVERVIEW_PATH, {
+        state: {
+          selectedMenuItem: OVERVIEW,
+        },
+      });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    ['ctrl+2', 'meta+2'],
+    () => {
+      navigate(REPAIR_INCOMPLENESS_PATH, {
+        state: {
+          selectedMenuItem: REPAIR_INCOMPLETENESS,
+        },
+      });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    ['ctrl+3', 'meta+3'],
+    () => {
+      navigate(REPAIR_INCONSISTENCY_PATH, {
+        state: {
+          selectedMenuItem: REPAIR_INCONSISTENCY,
+        },
+      });
+    },
+    { preventDefault: true },
+  );
   return (
     <SideBarContainer>
       <LogoSection>
@@ -84,24 +119,18 @@ const SideBar = () => {
             icon={<OverviewIcon />}
             title={OVERVIEW}
             navigateTo={OVERVIEW_PATH}
-            selectedMenuItem={selectedMenuItem}
-            setSelectedMenuItem={setSelectedMenuItem}
           />
           <NestedMenuItem
             icon={<RepairIcon />}
             title={REPAIR_INCOMPLETENESS}
             navigateTo={REPAIR_INCOMPLENESS_PATH}
             subMenu={repairIncompletenessSubMenu}
-            selectedMenuItem={selectedMenuItem}
-            setSelectedMenuItem={setSelectedMenuItem}
           />
           <NestedMenuItem
             icon={<RepairIcon />}
             title={REPAIR_INCONSISTENCY}
             navigateTo={REPAIR_INCONSISTENCY_PATH}
             subMenu={repairInconsistencySubMenu}
-            selectedMenuItem={selectedMenuItem}
-            setSelectedMenuItem={setSelectedMenuItem}
           />
         </NestedMenu>
       </MenuSection>
