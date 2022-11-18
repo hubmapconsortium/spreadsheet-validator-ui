@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
+import { useHotkeys } from 'react-hotkeys-hook';
 import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
@@ -95,6 +96,15 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
       });
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
   };
+  const saveChanges = useHotkeys(
+    ['ctrl+s', 'meta+s'],
+    () => handleSaveChanges(),
+    {
+      preventDefault: true,
+      enableOnFormTags: true,
+    },
+    [userInput],
+  );
 
   return (
     <>
@@ -146,6 +156,7 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
                         <EditableCell
                           value={userInput[row] || ''}
                           type={getColumnType(column, schema)}
+                          inputRef={saveChanges}
                           permissibleValues={getPermissibleValues(column, schema)}
                           handleInputChange={handleInputChange}
                         />

@@ -22,7 +22,7 @@ const printFrequency = (rows) => {
 };
 
 // eslint-disable-next-line max-len
-const CollapsibleTableRow = ({ summaryData, sheetData, schema, userInput, setUserInput }) => {
+const CollapsibleTableRow = ({ summaryData, sheetData, schema, inputRef, userInput, setUserInput }) => {
   const [open, setOpen] = useState(false);
   const { key } = summaryData;
   return (
@@ -60,6 +60,7 @@ const CollapsibleTableRow = ({ summaryData, sheetData, schema, userInput, setUse
             value={userInput?.value}
             type={getColumnType(summaryData.column, schema)}
             permissibleValues={getPermissibleValues(summaryData.column, schema)}
+            inputRef={inputRef}
             handleInputChange={(event) => {
               const userValue = event.target.value;
               setUserInput((currentUserInput) => {
@@ -158,7 +159,12 @@ CollapsibleTableRow.propTypes = {
     rows: PropTypes.arrayOf(PropTypes.number).isRequired,
     approved: PropTypes.bool.isRequired,
   }).isRequired,
+  inputRef: PropTypes.func,
   setUserInput: PropTypes.func.isRequired,
+};
+
+CollapsibleTableRow.defaultProps = {
+  inputRef: undefined,
 };
 
 export default CollapsibleTableRow;

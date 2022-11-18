@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useImmer } from 'use-immer';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
+import { useHotkeys } from 'react-hotkeys-hook';
 import AppContext from '../../pages/AppContext';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
@@ -60,6 +61,15 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
       });
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
   };
+  const saveChanges = useHotkeys(
+    ['ctrl+s', 'meta+s'],
+    () => handleSaveChanges(),
+    {
+      preventDefault: true,
+      enableOnFormTags: true,
+    },
+    [userInput],
+  );
 
   return (
     <>
@@ -98,6 +108,7 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
                   summaryData={summaryData}
                   sheetData={data}
                   schema={schema}
+                  inputRef={saveChanges}
                   userInput={userInput[summaryData.key]}
                   setUserInput={setUserInput}
                 />

@@ -5,7 +5,7 @@ import InputField from '../DataSheet/InputField';
 import { LIGHT_RED } from '../../constants/Color';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
 
-const EditableCell = ({ value, type, permissibleValues, handleInputChange }) => (
+const EditableCell = ({ value, type, permissibleValues, inputRef, handleInputChange }) => (
   <FormControl fullWidth>
     {permissibleValues
       ? (
@@ -20,6 +20,7 @@ const EditableCell = ({ value, type, permissibleValues, handleInputChange }) => 
         <InputField
           value={value}
           type={type}
+          inputRef={inputRef}
           onChange={handleInputChange}
           colorOnEmpty={LIGHT_RED}
         />
@@ -31,6 +32,7 @@ EditableCell.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
+  inputRef: PropTypes.func,
   handleInputChange: PropTypes.func.isRequired,
 };
 
@@ -38,6 +40,7 @@ EditableCell.defaultProps = {
   value: '',
   type: TEXT,
   permissibleValues: undefined,
+  inputRef: undefined,
 };
 
 export default EditableCell;
