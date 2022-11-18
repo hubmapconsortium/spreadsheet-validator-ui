@@ -242,11 +242,11 @@ export const ERROR_REPORT = {
       {
         row: 2,
         value: 'OCT Embedded',
-        suggestion: 'OCT',
+        suggestion: 'Non-Buffered Formalin (FOR)',
       }, {
         row: 3,
         value: 'OCT Embedded',
-        suggestion: 'OCT',
+        suggestion: 'Non-Buffered Formalin (FOR)',
       }],
     preparation_temperature: [
       {
