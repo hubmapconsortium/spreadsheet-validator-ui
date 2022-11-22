@@ -53,7 +53,7 @@ export const getTotalNotStringType = (reporting) => {
   return Object.values(notStringTypeReporting).flat().length;
 };
 
-export const getTotalInconsistency = (reporting) => getTotalNotStandardTerm(reporting)
+export const getTotalIncorrectness = (reporting) => getTotalNotStandardTerm(reporting)
   + getTotalNotNumberType(reporting)
   + getTotalNotStringType(reporting);
 

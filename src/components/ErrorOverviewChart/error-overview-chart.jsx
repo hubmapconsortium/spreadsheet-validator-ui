@@ -64,7 +64,7 @@ const chartOptions = {
   cutout: '65%',
 };
 
-const CompletenessAndAdherenceChart = ({ completenessData, adherenceData }) => (
+const ErrorOverviewChart = ({ completenessData, correctnessData }) => (
   <ChartCard>
     <ChartSection>
       <Doughnut
@@ -81,12 +81,12 @@ const CompletenessAndAdherenceChart = ({ completenessData, adherenceData }) => (
     </ChartSection>
     <ChartSection>
       <Doughnut
-        data={adherenceData}
-        plugins={generatePlugins(adherenceData)}
+        data={correctnessData}
+        plugins={generatePlugins(correctnessData)}
         options={chartOptions}
       />
       <DescriptionSection>
-        <b>Adherence</b>
+        <b>Correctness</b>
         {' '}
         measures the conformance of the stated value in the
         metadata field to the data type defined in the metadata
@@ -96,7 +96,7 @@ const CompletenessAndAdherenceChart = ({ completenessData, adherenceData }) => (
   </ChartCard>
 );
 
-CompletenessAndAdherenceChart.propTypes = {
+ErrorOverviewChart.propTypes = {
   completenessData: PropTypes.shape({
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     datasets: PropTypes.arrayOf(PropTypes.shape({
@@ -104,7 +104,7 @@ CompletenessAndAdherenceChart.propTypes = {
       data: PropTypes.arrayOf(PropTypes.number).isRequired,
     })),
   }).isRequired,
-  adherenceData: PropTypes.shape({
+  correctnessData: PropTypes.shape({
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     datasets: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -113,4 +113,4 @@ CompletenessAndAdherenceChart.propTypes = {
   }).isRequired,
 };
 
-export default CompletenessAndAdherenceChart;
+export default ErrorOverviewChart;

@@ -10,14 +10,14 @@ import Help from './pages/Help';
 import Overview from './pages/Overview';
 import RepairIncompleteness from './pages/RepairIncompleteness';
 import RepairIncompletenessWorkspace from './pages/RepairIncompletenessWorkspace';
-import RepairInconsistency from './pages/RepairInconsistency';
+import RepairIncorrectness from './pages/RepairIncorrectness';
 import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import SideBar from './components/Sidebar';
 import ContentArea from './components/ContentArea';
-import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from './constants/Router';
+import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from './constants/Router';
 import { generateEmptyObjects } from './helpers/array-utils';
-import RepairInconsistencyWorkspace from './pages/RepairInconsistencyWorkspace';
+import RepairIncorrectnessWorkspace from './pages/RepairIncorrectnessWorkspace';
 
 const LandingPageContainer = () => (
   <Stack direction="column">
@@ -66,8 +66,8 @@ const App = () => {
           <Route path={OVERVIEW_PATH} element={<Overview />} />
           <Route path={REPAIR_INCOMPLENESS_PATH} element={<RepairIncompleteness />} />
           <Route path={`${REPAIR_INCOMPLENESS_PATH}/:incompleteColumn`} element={<RepairIncompletenessWorkspace />} />
-          <Route path={REPAIR_INCONSISTENCY_PATH} element={<RepairInconsistency />} />
-          <Route path={`${REPAIR_INCONSISTENCY_PATH}/:inconsistencyType`} element={<RepairInconsistencyWorkspace />} />
+          <Route path={REPAIR_INCORRECTNESS_PATH} element={<RepairIncorrectness />} />
+          <Route path={`${REPAIR_INCORRECTNESS_PATH}/:incorrectnessType`} element={<RepairIncorrectnessWorkspace />} />
         </Route>
       </Routes>
     </Router>

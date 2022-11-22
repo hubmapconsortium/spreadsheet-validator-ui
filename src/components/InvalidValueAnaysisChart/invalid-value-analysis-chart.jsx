@@ -30,10 +30,10 @@ const SubTitle = styled(Typography)({
 });
 
 // eslint-disable-next-line react/prop-types
-const RequiredFieldAnalysisChart = ({ analysisData }) => (
+const InvalidValueAnalysisChart = ({ analysisData }) => (
   <ChartCard>
     <TitleSection>
-      <Title variant="h4">Required Field Analysis</Title>
+      <Title variant="h4">Invalid Value Type Analysis</Title>
       <SubTitle variant="h5">Evaluating 99 metadata rows in the spreadsheet</SubTitle>
     </TitleSection>
     <ChartSection>
@@ -42,4 +42,4 @@ const RequiredFieldAnalysisChart = ({ analysisData }) => (
   </ChartCard>
 );
 
-export default RequiredFieldAnalysisChart;
+export default InvalidValueAnalysisChart;

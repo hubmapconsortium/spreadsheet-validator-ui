@@ -2,9 +2,9 @@
 import { Chart as ChartJS } from 'chart.js/auto';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
-import CompletenessAndAdherenceChart from '../../components/CompletenessAndAdherenceChart';
-import RequiredFieldAnalysisChart from '../../components/RequiredFieldAnalysisChart';
-import ValueTypeAnalysisChart from '../../components/ValueTypeAnalysisChart';
+import ErrorOverviewChart from '../../components/ErrorOverviewChart';
+import MissingValueAnalysisChart from '../../components/MissingValueAnalysisChart';
+import InvalidValueAnalysisChart from '../../components/InvalidValueAnaysisChart';
 import Section from '../../styles/Section';
 import { VALIDATION_RESULT } from '../../constants/PageTitle';
 import { ADHERENCE_CHART_DATA, COMPLETENESS_CHART_DATA, REQUIRED_FIELD_ANALYSIS_CHART_DATA, VALUE_TYPE_ANALYSIS_CHART_DATA } from '../../constants/TestData';
@@ -20,14 +20,14 @@ const Overview = () => {
         />
       </Section>
       <DefaultInfoSection />
-      <CompletenessAndAdherenceChart
+      <ErrorOverviewChart
         completenessData={COMPLETENESS_CHART_DATA}
-        adherenceData={ADHERENCE_CHART_DATA}
+        correctnessData={ADHERENCE_CHART_DATA}
       />
-      <RequiredFieldAnalysisChart
+      <MissingValueAnalysisChart
         analysisData={REQUIRED_FIELD_ANALYSIS_CHART_DATA}
       />
-      <ValueTypeAnalysisChart
+      <InvalidValueAnalysisChart
         analysisData={VALUE_TYPE_ANALYSIS_CHART_DATA}
       />
     </>

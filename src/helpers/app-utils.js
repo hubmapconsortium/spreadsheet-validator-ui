@@ -1,5 +1,5 @@
 import * as jsonpatch from 'fast-json-patch';
-import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCONSISTENCY_PATH } from '../constants/Router';
+import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 import { getTotalNotNumberType, getTotalNotStandardTerm, getTotalNotStringType } from './data-utils';
 
@@ -44,10 +44,10 @@ export const buildRepairIncompletenessSubMenu = (reporting, patches) => {
   };
 };
 
-const isRepairInconsistencyCompleted = (inconsistencyReporting, patches) => {
-  const columns = Object.keys(inconsistencyReporting);
+const isRepairIncorrectnessCompleted = (incorrectnessReporting, patches) => {
+  const columns = Object.keys(incorrectnessReporting);
   return columns.map((column) => {
-    const reports = inconsistencyReporting[column];
+    const reports = incorrectnessReporting[column];
     return reports.map((report) => {
       const { row } = report;
       return checkPatchNotUndefined(row, column, patches);
@@ -57,37 +57,37 @@ const isRepairInconsistencyCompleted = (inconsistencyReporting, patches) => {
   );
 };
 
-const determineRepairInconsistencyStatus = (inconsistencyReporting, patches) => (
-  isRepairInconsistencyCompleted(inconsistencyReporting, patches)
+const determineRepairIncorrectnessStatus = (incorrectnessReporting, patches) => (
+  isRepairIncorrectnessCompleted(incorrectnessReporting, patches)
     ? REPAIR_COMPLETED
     : REPAIR_NOT_COMPLETED
 );
 
-export const buildRepairInconsistencySubMenu = (reporting, patches) => {
+export const buildRepairIncorrectnessSubMenu = (reporting, patches) => {
   const { notStandardTerm, notNumberType, notStringType } = reporting;
   const subMenuItems = [];
   if (notStandardTerm) {
     subMenuItems.push({
       id: 'not-standard-term-error',
       title: 'Value not standard term',
-      status: determineRepairInconsistencyStatus(notStandardTerm, patches),
-      navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notStandardTerm`,
+      status: determineRepairIncorrectnessStatus(notStandardTerm, patches),
+      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStandardTerm`,
     });
   }
   if (notNumberType) {
     subMenuItems.push({
       id: 'not-number-type-error',
       title: 'Value not number type',
-      status: determineRepairInconsistencyStatus(notNumberType, patches),
-      navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notNumberType`,
+      status: determineRepairIncorrectnessStatus(notNumberType, patches),
+      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notNumberType`,
     });
   }
   if (notStringType) {
     subMenuItems.push({
       id: 'not-string-type-error',
       title: 'Value not string type',
-      status: determineRepairInconsistencyStatus(notStringType, patches),
-      navigateTo: `${REPAIR_INCONSISTENCY_PATH}/notStringType`,
+      status: determineRepairIncorrectnessStatus(notStringType, patches),
+      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStringType`,
     });
   }
   return {
@@ -111,7 +111,7 @@ export const buildRepairIncompletenessBadges = (reporting, patches) => {
   return badgeItems;
 };
 
-export const buildRepairInconsistencyBadges = (reporting, patches) => {
+export const buildRepairIncorrectnessBadges = (reporting, patches) => {
   const { notStandardTerm, notNumberType, notStringType } = reporting;
   const badgeItems = [];
   if (notStandardTerm) {
@@ -119,8 +119,8 @@ export const buildRepairInconsistencyBadges = (reporting, patches) => {
     badgeItems.push({
       id: 'not-standard-term-error',
       title: 'Value is not a standard term',
-      caption: `${totalErrors} values are inconsistent`,
-      status: determineRepairInconsistencyStatus(notStandardTerm, patches),
+      caption: `${totalErrors} values are incorrect`,
+      status: determineRepairIncorrectnessStatus(notStandardTerm, patches),
       navigateTo: 'notStandardTerm',
     });
   }
@@ -129,8 +129,8 @@ export const buildRepairInconsistencyBadges = (reporting, patches) => {
     badgeItems.push({
       id: 'not-number-type-error',
       title: 'Value is not a number type',
-      caption: `${totalErrors} values are inconsistent`,
-      status: determineRepairInconsistencyStatus(notNumberType, patches),
+      caption: `${totalErrors} values are incorrect`,
+      status: determineRepairIncorrectnessStatus(notNumberType, patches),
       navigateTo: 'notNumberType',
     });
   }
@@ -139,19 +139,19 @@ export const buildRepairInconsistencyBadges = (reporting, patches) => {
     badgeItems.push({
       id: 'not-string-type-error',
       title: 'Value is not a string type',
-      caption: `${totalErrors} values are inconsistent`,
-      status: determineRepairInconsistencyStatus(notStringType, patches),
+      caption: `${totalErrors} values are incorrect`,
+      status: determineRepairIncorrectnessStatus(notStringType, patches),
       navigateTo: 'notStringType',
     });
   }
   return badgeItems;
 };
 
-export const buildInconsistencySummaryData = (inconsistencyReporting) => {
-  const targetColumns = Object.keys(inconsistencyReporting);
+export const buildIncorrectnessSummaryData = (incorrectnessReporting) => {
+  const targetColumns = Object.keys(incorrectnessReporting);
   return targetColumns.map(
     (column) => {
-      const evaluationByColumn = inconsistencyReporting[column];
+      const evaluationByColumn = incorrectnessReporting[column];
       return evaluationByColumn.reduce((groups, item) => {
         const { value } = item;
         const { suggestion } = item;
@@ -185,15 +185,15 @@ export const determineOverallRepairStatus = (reporting, patches) => {
     if (!completed) return REPAIR_NOT_COMPLETED;
   }
   if (notStandardTerm) {
-    completed = completed && isRepairInconsistencyCompleted(notStandardTerm, patches);
+    completed = completed && isRepairIncorrectnessCompleted(notStandardTerm, patches);
     if (!completed) return REPAIR_NOT_COMPLETED;
   }
   if (notNumberType) {
-    completed = completed && isRepairInconsistencyCompleted(notNumberType, patches);
+    completed = completed && isRepairIncorrectnessCompleted(notNumberType, patches);
     if (!completed) return REPAIR_NOT_COMPLETED;
   }
   if (notStringType) {
-    completed = completed && isRepairInconsistencyCompleted(notStringType, patches);
+    completed = completed && isRepairIncorrectnessCompleted(notStringType, patches);
     if (!completed) return REPAIR_NOT_COMPLETED;
   }
   return REPAIR_COMPLETED;

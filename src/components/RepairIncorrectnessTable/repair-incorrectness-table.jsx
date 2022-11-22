@@ -9,14 +9,14 @@ import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import SheetPagination from '../DataSheet/SheetPagination';
-import { buildInconsistencySummaryData, createReplaceOperationPatch, getPagedData } from '../../helpers/app-utils';
+import { buildIncorrectnessSummaryData, createReplaceOperationPatch, getPagedData } from '../../helpers/app-utils';
 import { initUserInput } from './function';
 import HeaderWithCheckbox from './header-with-checkbox';
 import CollapsibleTableRow from './collapsible-table-row';
 import { ButtonBox, CancelButton, DataSheetCard, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from './styled';
-import { REPAIR_INCONSISTENCY_PATH } from '../../constants/Router';
+import { REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 
-const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
+const RepairIncorrectnessTable = ({ incorrectnessType }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id: errorId } = location.state;
@@ -30,8 +30,8 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const tableData = useMemo(
-    () => buildInconsistencySummaryData(reporting[inconsistencyType]),
-    [inconsistencyType],
+    () => buildIncorrectnessSummaryData(reporting[incorrectnessType]),
+    [incorrectnessType],
   );
   useEffect(
     () => {
@@ -127,7 +127,7 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
       <ButtonBox>
         <CancelButton
           variant="outlined"
-          onClick={() => navigate(`../${REPAIR_INCONSISTENCY_PATH}`)}
+          onClick={() => navigate(`../${REPAIR_INCORRECTNESS_PATH}`)}
         >
           Cancel
         </CancelButton>
@@ -142,8 +142,8 @@ const RepairInconsistencyWorksheet = ({ inconsistencyType }) => {
   );
 };
 
-RepairInconsistencyWorksheet.propTypes = {
-  inconsistencyType: PropTypes.string.isRequired,
+RepairIncorrectnessTable.propTypes = {
+  incorrectnessType: PropTypes.string.isRequired,
 };
 
-export default RepairInconsistencyWorksheet;
+export default RepairIncorrectnessTable;

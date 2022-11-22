@@ -21,7 +21,7 @@ import { ButtonBox, CancelButton, DataSheetCard, SaveButton, SheetTable, SheetTa
 import { getFilteredData, initUserInput } from './function';
 import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 
-const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
+const RepairIncompletnessTable = ({ incompleteColumn }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id: errorId } = location.state;
@@ -203,8 +203,8 @@ const RepairIncompletnessWorksheet = ({ incompleteColumn }) => {
   );
 };
 
-RepairIncompletnessWorksheet.propTypes = {
+RepairIncompletnessTable.propTypes = {
   incompleteColumn: PropTypes.string.isRequired,
 };
 
-export default RepairIncompletnessWorksheet;
+export default RepairIncompletnessTable;

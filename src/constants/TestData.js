@@ -361,7 +361,7 @@ export const COMPLETENESS_CHART_DATA = {
 export const ADHERENCE_CHART_DATA = {
   labels: ['Row has no data type errors', 'Row has some data type error'],
   innerTextTitle: '79 / 99',
-  innerTextSubtitle: 'Adherence',
+  innerTextSubtitle: 'Correctness',
   datasets: [{
     label: '',
     data: [79, 20],
@@ -370,7 +370,7 @@ export const ADHERENCE_CHART_DATA = {
 };
 
 export const REQUIRED_FIELD_ANALYSIS_CHART_DATA = {
-  columns: ['Required field', 'Frequency of error'],
+  columns: ['Field name', 'Number of errors'],
   rows: [
     ['sample_ID', [{ value: 17, color: RED }, { value: 82, color: GREEN }]],
     ['storage_medium', [{ value: 10, color: RED }, { value: 89, color: GREEN }]],
@@ -381,7 +381,7 @@ export const REQUIRED_FIELD_ANALYSIS_CHART_DATA = {
 };
 
 export const VALUE_TYPE_ANALYSIS_CHART_DATA = {
-  columns: ['Field name', 'Error flag', 'Frequency of error'],
+  columns: ['Field name', 'Error flag', 'Number of errors'],
   rows: [
     ['preparation_medium', 'Value not standard term', [{ value: 23, color: RED }, { value: 76, color: GREEN }]],
     ['processing_time_value', 'Value not number type', [{ value: 20, color: RED }, { value: 79, color: GREEN }]],

@@ -5,9 +5,9 @@ import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
-import RepairInconsistencyWorksheet from '../../components/RepairInconsistencyWorksheet';
+import RepairIncorrectnessTable from '../../components/RepairIncorrectnessTable';
 import Section from '../../styles/Section';
-import { REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
+import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
 const WorkspaceArea = styled(Box)({
   display: 'block',
@@ -18,28 +18,28 @@ const unCamelCase = (str) => str
   .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
   .toLowerCase();
 
-const RepairInconsistencyWorkspace = () => {
+const RepairIncorrectnessWorkspace = () => {
   const { appData } = useContext(AppContext);
   const { reporting } = appData;
-  const { inconsistencyType } = useParams();
-  const badColumns = Object.keys(reporting[inconsistencyType]);
-  const badRows = badColumns.map((column) => reporting[inconsistencyType][column]);
+  const { incorrectnessType } = useParams();
+  const badColumns = Object.keys(reporting[incorrectnessType]);
+  const badRows = badColumns.map((column) => reporting[incorrectnessType][column]);
   const totalBadCells = badRows.flat(1).length;
-  const subtitle = `${totalBadCells} cells contains a value that is ${unCamelCase(inconsistencyType)}.`;
+  const subtitle = `${totalBadCells} cells contains a value that is ${unCamelCase(incorrectnessType)}.`;
   return (
     <SnackbarProvider maxSnack={1}>
       <WorkspaceArea>
         <Section>
           <PageTitle
-            title={REPAIR_INCONSISTENCY}
+            title={REPAIR_INCORRECTNESS}
             subtitle={subtitle}
           />
         </Section>
         <DefaultInfoSection />
-        <RepairInconsistencyWorksheet inconsistencyType={inconsistencyType} />
+        <RepairIncorrectnessTable incorrectnessType={incorrectnessType} />
       </WorkspaceArea>
     </SnackbarProvider>
   );
 };
 
-export default RepairInconsistencyWorkspace;
+export default RepairIncorrectnessWorkspace;

@@ -5,32 +5,32 @@ import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairBadge from '../../components/RepairBadge';
 import Section from '../../styles/Section';
-import { getTotalInconsistency } from '../../helpers/data-utils';
-import { buildRepairInconsistencyBadges } from '../../helpers/app-utils';
-import { REPAIR_INCONSISTENCY } from '../../constants/PageTitle';
+import { getTotalIncorrectness } from '../../helpers/data-utils';
+import { buildRepairIncorrectnessBadges } from '../../helpers/app-utils';
+import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
 const RepairBadgeSection = styled(Section)({
   width: '800px',
   padding: '10px 0 0 50px',
 });
 
-const RepairInconsistency = () => {
+const RepairIncorrectness = () => {
   const { appData, patches } = useContext(AppContext);
   const { reporting } = appData;
-  const totalInconsistency = useMemo(
-    () => getTotalInconsistency(reporting),
+  const totalIncorrectness = useMemo(
+    () => getTotalIncorrectness(reporting),
     [reporting],
   );
   const badgeData = useMemo(
-    () => buildRepairInconsistencyBadges(reporting, patches),
+    () => buildRepairIncorrectnessBadges(reporting, patches),
     [patches],
   );
   return (
     <>
       <Section>
         <PageTitle
-          title={REPAIR_INCONSISTENCY}
-          subtitle={`${totalInconsistency} values are found inconsistent with the metadata specification.`}
+          title={REPAIR_INCORRECTNESS}
+          subtitle={`${totalIncorrectness} values are found inconsistent with the metadata specification.`}
         />
       </Section>
       <DefaultInfoSection />
@@ -47,4 +47,4 @@ const RepairInconsistency = () => {
   );
 };
 
-export default RepairInconsistency;
+export default RepairIncorrectness;

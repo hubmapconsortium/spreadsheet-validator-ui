@@ -5,7 +5,7 @@ import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
-import RepairIncompletnessWorksheet from '../../components/RepairIncompletenessWorksheet';
+import RepairIncompletnessTable from '../../components/RepairIncompletenessTable';
 import Section from '../../styles/Section';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 
@@ -29,7 +29,7 @@ const RepairIncompletenessWorkspace = () => {
           />
         </Section>
         <DefaultInfoSection />
-        <RepairIncompletnessWorksheet incompleteColumn={incompleteColumn} />
+        <RepairIncompletnessTable incompleteColumn={incompleteColumn} />
       </WorkspaceArea>
     </SnackbarProvider>
   );
