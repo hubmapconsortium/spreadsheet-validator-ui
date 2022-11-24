@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, styled } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
@@ -8,6 +8,7 @@ import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairIncompletnessTable from '../../components/RepairIncompletenessTable';
 import Section from '../../styles/Section';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
+import { getIncompletenessReporting } from '../../helpers/data-utils';
 
 const WorkspaceArea = styled(Box)({
   display: 'block',
@@ -16,20 +17,28 @@ const WorkspaceArea = styled(Box)({
 const RepairIncompletenessWorkspace = () => {
   const { appData } = useContext(AppContext);
   const { reporting } = appData;
-  const { incompleteColumn } = useParams();
-  const totalBadRows = reporting.missingRequired[incompleteColumn]?.length;
-  const subtitle = `${totalBadRows} rows were missing the ${incompleteColumn} value.`;
+  const { targetColumn } = useParams();
+  const incompletenessReporting = useMemo(
+    () => getIncompletenessReporting(reporting).filter(
+      (reportItem) => reportItem.column === targetColumn,
+    ),
+    [reporting, targetColumn],
+  );
+  const errorSize = incompletenessReporting.length;
   return (
     <SnackbarProvider maxSnack={1}>
       <WorkspaceArea>
         <Section>
           <PageTitle
             title={REPAIR_INCOMPLETENESS}
-            subtitle={subtitle}
+            subtitle={`${errorSize} rows were missing the ${targetColumn} value.`}
           />
         </Section>
         <DefaultInfoSection />
-        <RepairIncompletnessTable incompleteColumn={incompleteColumn} />
+        <RepairIncompletnessTable
+          targetColumn={targetColumn}
+          incompletenessReporting={incompletenessReporting}
+        />
       </WorkspaceArea>
     </SnackbarProvider>
   );

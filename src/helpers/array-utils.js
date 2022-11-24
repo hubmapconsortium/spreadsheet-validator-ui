@@ -3,8 +3,6 @@ export const moveItemToFront = (item, arr) => arr.sort(
   (x, y) => (x === item ? -1 : (y === item ? 1 : 0)),
 );
 
-export const extractItems = (indexes, arr) => indexes.map((index) => arr[index]);
-
 export const generateFalses = (size) => Array
   .from({ length: size }, () => (false));
 

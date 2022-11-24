@@ -17,7 +17,7 @@ FilterInputField.propTypes = {
   key: PropTypes.string,
   type: PropTypes.string,
   onChange: PropTypes.func,
-  endAdornment: PropTypes.objectOf(PropTypes.string),
+  endAdornment: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.element]),
 };
 
 FilterInputField.defaultProps = {

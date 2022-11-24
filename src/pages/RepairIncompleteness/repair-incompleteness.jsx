@@ -5,8 +5,8 @@ import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairBadge from '../../components/RepairBadge';
 import Section from '../../styles/Section';
-import { getTotalMissingRequired } from '../../helpers/data-utils';
-import { buildRepairIncompletenessBadges } from '../../helpers/app-utils';
+import { generateErrorSummaryData, generateRepairIncompletenessButtonData } from '../../helpers/app-utils';
+import { getIncompletenessReporting } from '../../helpers/data-utils';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 
 const RepairBadgeSection = styled(Section)({
@@ -17,28 +17,33 @@ const RepairBadgeSection = styled(Section)({
 const RepairIncompleteness = () => {
   const { appData, patches } = useContext(AppContext);
   const { reporting } = appData;
-  const totalMissingRequired = useMemo(
-    () => getTotalMissingRequired(reporting),
+  const incompletenessReporting = useMemo(
+    () => getIncompletenessReporting(reporting),
     [reporting],
   );
-  const badges = useMemo(
-    () => buildRepairIncompletenessBadges(reporting, patches),
-    [patches],
+  const errorSummaryData = useMemo(
+    () => generateErrorSummaryData(incompletenessReporting),
+    [incompletenessReporting],
   );
+  const buttonData = useMemo(
+    () => generateRepairIncompletenessButtonData(errorSummaryData, patches),
+    [errorSummaryData, patches],
+  );
+  const errorSize = incompletenessReporting.length;
   return (
     <>
       <Section>
         <PageTitle
           title={REPAIR_INCOMPLETENESS}
-          subtitle={`${totalMissingRequired} required values are missing from the metadata records.`}
+          subtitle={`${errorSize} required values are missing from the metadata records.`}
         />
       </Section>
       <DefaultInfoSection />
       <RepairBadgeSection>
         <Grid container spacing={3}>
-          {badges.map((badge) => (
-            <Grid item xs={3}>
-              <RepairBadge data={badge} />
+          {buttonData.map((data) => (
+            <Grid item key={data.key} xs={3}>
+              <RepairBadge data={data} />
             </Grid>
           ))}
         </Grid>

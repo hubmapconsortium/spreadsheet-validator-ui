@@ -15,47 +15,43 @@ export const getColumnType = (column, schema) => {
   return columnSchema.type;
 };
 
+export const isColumnRequired = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema.required;
+};
+
 export const getPermissibleValues = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
   return columnSchema.permissibleValues;
 };
 
-export const getMissingRequiredReporting = (reporting) => reporting.missingRequired;
+export const getMissingRequiredReporting = (reporting) => (
+  reporting.filter((reportItem) => reportItem.errorType === 'missingRequired')
+);
 
-export const getTotalMissingRequired = (reporting) => {
-  const missingRequired = getMissingRequiredReporting(reporting);
-  return Object.values(missingRequired).flat().length;
-};
+export const getIncompletenessReporting = (reporting) => (
+  getMissingRequiredReporting(reporting)
+);
 
-export const getMissingRequiredRows = (column, reporting) => {
-  const missingRequired = getMissingRequiredReporting(reporting);
-  return missingRequired[column];
-};
+export const getNotStandardTermReporting = (reporting) => (
+  reporting.filter((reportItem) => reportItem.errorType === 'notStandardTerm')
+);
 
-export const getNotStandardTermReporting = (reporting) => reporting.notStandardTerm || {};
+export const getNotNumberTypeReporting = (reporting) => (
+  reporting.filter((reportItem) => reportItem.errorType === 'notNumberType')
+);
 
-export const getTotalNotStandardTerm = (reporting) => {
-  const notStandardTermReporting = getNotStandardTermReporting(reporting);
-  return Object.values(notStandardTermReporting).flat().length;
-};
+export const getNotStringTypeReporting = (reporting) => (
+  reporting.filter((reportItem) => reportItem.errorType === 'notStringType')
+);
 
-export const getNotNumberTypeReporting = (reporting) => reporting.notNumberType || {};
-
-export const getTotalNotNumberType = (reporting) => {
-  const notNumberTypeReporting = getNotNumberTypeReporting(reporting);
-  return Object.values(notNumberTypeReporting).flat().length;
-};
-
-export const getNotStringTypeReporting = (reporting) => reporting.notStringType || {};
-
-export const getTotalNotStringType = (reporting) => {
-  const notStringTypeReporting = getNotStringTypeReporting(reporting);
-  return Object.values(notStringTypeReporting).flat().length;
-};
-
-export const getTotalIncorrectness = (reporting) => getTotalNotStandardTerm(reporting)
-  + getTotalNotNumberType(reporting)
-  + getTotalNotStringType(reporting);
+export const getIncorrectnessReporting = (reporting) => (
+  reporting.filter(
+    (reportItem) => reportItem.errorType === 'notStandardTerm'
+      || reportItem.errorType === 'notNumberType'
+      || reportItem.errorType === 'notStringType',
+  )
+);
 
 export const getPatchGroup = (row, patches) => {
   const mutablePatches = patches;

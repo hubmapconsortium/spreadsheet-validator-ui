@@ -4,7 +4,8 @@ import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/
 import { WHITE } from '../../../constants/Color';
 
 const InputField = (
-  { key, value, type, placeholder, inputRef, onChange, onKeyPress, colorOnEmpty, endAdornment },
+  // eslint-disable-next-line max-len
+  { key, value, type, placeholder, required, inputRef, onChange, onKeyPress, colorOnEmpty, endAdornment },
 ) => (
   <OutlinedInput
     key={key}
@@ -12,6 +13,7 @@ const InputField = (
     value={value}
     type={type}
     placeholder={placeholder}
+    required={required}
     inputRef={inputRef}
     onChange={onChange}
     onKeyPress={onKeyPress}
@@ -25,17 +27,20 @@ InputField.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
   placeholder: PropTypes.string,
-  inputRef: PropTypes.func,
+  required: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  inputRef: PropTypes.object,
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
   colorOnEmpty: PropTypes.string,
-  endAdornment: PropTypes.element,
+  endAdornment: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.element]),
 };
 
 InputField.defaultProps = {
   key: undefined,
   value: undefined,
   placeholder: undefined,
+  required: false,
   inputRef: undefined,
   onChange: undefined,
   onKeyPress: undefined,

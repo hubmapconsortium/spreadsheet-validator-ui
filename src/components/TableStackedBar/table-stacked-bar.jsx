@@ -27,11 +27,13 @@ const TableStackedBar = ({ data }) => (
     <TableBody>
       {data.rows.map((row) => (
         <TableRow>
-          {row.map((cell, cellIndex, arr) => (
-            (cellIndex + 1 === arr.length)
-              ? <ChartCell><HSBar showTextIn data={cell} /></ChartCell>
-              : <TextCell>{cell}</TextCell>
-          ))}
+          {
+            row.map((cell, cellIndex, arr) => (
+              (cellIndex + 1 === arr.length)
+                ? <ChartCell><HSBar showTextIn data={cell} /></ChartCell>
+                : <TextCell>{cell}</TextCell>
+            ))
+          }
         </TableRow>
       ))}
     </TableBody>

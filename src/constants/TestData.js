@@ -7,10 +7,12 @@ export const METADATA_SCHEMA = {
     sample_ID: {
       label: 'sample_ID',
       type: 'text',
+      required: true,
     },
     section_index_number: {
       label: 'section_index_number',
       type: 'number',
+      required: true,
     },
     preparation_medium: {
       label: 'preparation_medium',
@@ -72,6 +74,7 @@ export const METADATA_SCHEMA = {
           label: 'None',
           meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41132',
         }],
+      required: true,
     },
     preparation_temperature: {
       label: 'preparation_temperature',
@@ -109,10 +112,12 @@ export const METADATA_SCHEMA = {
           label: 'Minus 20 Degrees Celsius',
           meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185334',
         }],
+      required: true,
     },
     preparation_time_value: {
       label: 'preparation_time_value',
       type: 'number',
+      required: false,
     },
     preparation_time_unit: {
       label: 'preparation_time_unit',
@@ -129,10 +134,12 @@ export const METADATA_SCHEMA = {
         label: 'day',
         meaning: 'http://purl.obolibrary.org/obo/UO_0000033',
       }],
+      required: true,
     },
     histology_report: {
       label: 'histology_report',
       type: 'text',
+      required: false,
     },
   },
 };
@@ -231,87 +238,153 @@ export const METADATA_RECORDS = [
   },
 ];
 
-export const ERROR_REPORT = {
-  missingRequired: {
-    sample_ID: [1, 2, 3],
-    preparation_temperature: [2, 4, 5, 6, 7],
-    preparation_time_unit: [0, 2],
+export const ERROR_REPORT = [
+  {
+    row: 1,
+    column: 'sample_ID',
+    errorType: 'missingRequired',
+  }, {
+    row: 2,
+    column: 'sample_ID',
+    errorType: 'missingRequired',
+  }, {
+    row: 3,
+    column: 'sample_ID',
+    errorType: 'missingRequired',
+  }, {
+    row: 2,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 4,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 5,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 6,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 7,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 0,
+    column: 'preparation_time_unit',
+    errorType: 'missingRequired',
+  }, {
+    row: 2,
+    column: 'preparation_time_unit',
+    errorType: 'missingRequired',
+  }, {
+    row: 2,
+    column: 'preparation_medium',
+    value: 'OCT Embedded',
+    suggestion: 'Non-Buffered Formalin (FOR)',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 3,
+    column: 'preparation_medium',
+    value: 'OCT Embedded',
+    suggestion: 'Non-Buffered Formalin (FOR)',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 0,
+    column: 'preparation_temperature',
+    value: '4 Celcius',
+    suggestion: '4 Degrees Celsius',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 1,
+    column: 'preparation_temperature',
+    value: '4 Celcius',
+    suggestion: '4 Degrees Celsius',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 3,
+    column: 'preparation_temperature',
+    value: '24 Celcius',
+    suggestion: '24 Celsius (Room Temperature)',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 1,
+    column: 'preparation_time_unit',
+    value: 'min',
+    suggestion: 'minute',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 3,
+    column: 'preparation_time_unit',
+    value: 'min',
+    suggestion: 'minute',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 4,
+    column: 'preparation_time_unit',
+    value: 'min',
+    suggestion: 'minute',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 0,
+    column: 'preparation_time_value',
+    value: '1 minute',
+    suggestion: null,
+    errorType: 'notNumberType',
+  }, {
+    row: 1,
+    column: 'preparation_time_value',
+    value: '1 min',
+    suggestion: 1,
+    errorType: 'notNumberType',
+  }, {
+    row: 4,
+    column: 'preparation_time_value',
+    value: '4 min',
+    suggestion: 4,
+    errorType: 'notNumberType',
+  }, {
+    row: 1,
+    column: 'histology_report',
+    value: 0,
+    suggestion: null,
+    errorType: 'notStringType',
+  }, {
+    row: 2,
+    column: 'histology_report',
+    value: 0,
+    suggestion: null,
+    errorType: 'notStringType',
   },
-  notStandardTerm: {
-    preparation_medium: [
-      {
-        row: 2,
-        value: 'OCT Embedded',
-        suggestion: 'Non-Buffered Formalin (FOR)',
-      }, {
-        row: 3,
-        value: 'OCT Embedded',
-        suggestion: 'Non-Buffered Formalin (FOR)',
-      }],
-    preparation_temperature: [
-      {
-        row: 0,
-        value: '4 Celcius',
-        suggestion: '4 Degrees Celsius',
-      }, {
-        row: 1,
-        value: '4 Celcius',
-        suggestion: '4 Degrees Celsius',
-      }, {
-        row: 3,
-        value: '24 Celcius',
-        suggestion: '24 Celsius (Room Temperature)',
-      }],
-    preparation_time_unit: [
-      {
-        row: 1,
-        value: 'min',
-        suggestion: 'minute',
-      }, {
-        row: 3,
-        value: 'min',
-        suggestion: 'minute',
-      }, {
-        row: 4,
-        value: 'min',
-        suggestion: 'minute',
-      }],
-  },
-  notNumberType: {
-    preparation_time_value: [
-      {
-        row: 0,
-        value: '1 minute',
-        suggestion: 1,
-      }, {
-        row: 1,
-        value: '1 min',
-        suggestion: 1,
-      }, {
-        row: 4,
-        value: '4 min',
-        suggestion: 4,
-      }],
-  },
-  notStringType: {
-    histology_report: [
-      {
-        row: 1,
-        value: 0,
-        suggestion: '',
-      }, {
-        row: 2,
-        value: 0,
-        suggestion: '',
-      }],
-  },
-};
+];
 
 export const APP_DATA = {
   schema: METADATA_SCHEMA,
   data: METADATA_RECORDS,
   reporting: ERROR_REPORT,
 };
+
+export const ERROR_SUMMARY_DATA = [
+  {
+    column: 'col1',
+    rows: [1, 2, 3],
+    errorType: 'missingRequired',
+  }, {
+    column: 'col2',
+    rows: [1, 2, 3],
+    errorType: 'missingRequired',
+  }, {
+    column: 'col4',
+    rows: [1],
+    errorType: 'notStandardTerm',
+  }, {
+    column: 'col5',
+    rows: [1, 2],
+    errorType: 'notStandardTerm',
+  },
+];
 
 export const PATCH_DATA = [
   {},

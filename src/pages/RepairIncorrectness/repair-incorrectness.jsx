@@ -5,8 +5,8 @@ import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairBadge from '../../components/RepairBadge';
 import Section from '../../styles/Section';
-import { getTotalIncorrectness } from '../../helpers/data-utils';
-import { buildRepairIncorrectnessBadges } from '../../helpers/app-utils';
+import { getIncorrectnessReporting } from '../../helpers/data-utils';
+import { generateErrorSummaryData, generateRepairIncorrectnessButtonData } from '../../helpers/app-utils';
 import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
 const RepairBadgeSection = styled(Section)({
@@ -17,27 +17,32 @@ const RepairBadgeSection = styled(Section)({
 const RepairIncorrectness = () => {
   const { appData, patches } = useContext(AppContext);
   const { reporting } = appData;
-  const totalIncorrectness = useMemo(
-    () => getTotalIncorrectness(reporting),
+  const incorrectnessReporting = useMemo(
+    () => getIncorrectnessReporting(reporting),
     [reporting],
   );
-  const badgeData = useMemo(
-    () => buildRepairIncorrectnessBadges(reporting, patches),
-    [patches],
+  const errorSummaryData = useMemo(
+    () => generateErrorSummaryData(incorrectnessReporting),
+    [incorrectnessReporting],
   );
+  const buttonData = useMemo(
+    () => generateRepairIncorrectnessButtonData(errorSummaryData, patches),
+    [errorSummaryData, patches],
+  );
+  const errorSize = incorrectnessReporting.length;
   return (
     <>
       <Section>
         <PageTitle
           title={REPAIR_INCORRECTNESS}
-          subtitle={`${totalIncorrectness} values are found inconsistent with the metadata specification.`}
+          subtitle={`${errorSize} values are found inconsistent with the metadata specification.`}
         />
       </Section>
       <DefaultInfoSection />
       <RepairBadgeSection>
         <Grid container spacing={3}>
-          {badgeData.map((data) => (
-            <Grid item xs={3}>
+          {buttonData.map((data) => (
+            <Grid item key={data.key} xs={3}>
               <RepairBadge data={data} />
             </Grid>
           ))}

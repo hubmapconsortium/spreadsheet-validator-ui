@@ -9,19 +9,20 @@ import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import SheetPagination from '../DataSheet/SheetPagination';
-import { buildIncorrectnessSummaryData, createReplaceOperationPatch, getPagedData } from '../../helpers/app-utils';
+import { createReplaceOperationPatch, generateRepairIncorrectnessTableData, getPagedData } from '../../helpers/app-utils';
 import { initUserInput } from './function';
 import HeaderWithCheckbox from './header-with-checkbox';
 import CollapsibleTableRow from './collapsible-table-row';
 import { ButtonBox, CancelButton, DataSheetCard, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from './styled';
 import { REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 
-const RepairIncorrectnessTable = ({ incorrectnessType }) => {
+// eslint-disable-next-line no-unused-vars
+const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id: errorId } = location.state;
   const { appData, patches, setPatches } = useContext(AppContext);
-  const { data, schema, reporting } = appData;
+  const { data, schema } = appData;
 
   const [userInput, setUserInput] = useImmer({});
   const [page, setPage] = useState(0);
@@ -30,8 +31,8 @@ const RepairIncorrectnessTable = ({ incorrectnessType }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const tableData = useMemo(
-    () => buildIncorrectnessSummaryData(reporting[incorrectnessType]),
-    [incorrectnessType],
+    () => generateRepairIncorrectnessTableData(incorrectnessReporting, data),
+    [incorrectnessReporting],
   );
   useEffect(
     () => {
@@ -47,11 +48,11 @@ const RepairIncorrectnessTable = ({ incorrectnessType }) => {
 
   const handleSaveChanges = () => {
     Object.keys(userInput)
-      .filter((key) => userInput[key]?.approved)
+      .filter((key) => userInput[key].approved)
       .forEach((key) => {
-        const userInputPerKey = userInput[key];
-        const { column, value } = userInputPerKey;
-        userInputPerKey.rows.forEach((row) => {
+        const userInputPerMatchingGroup = userInput[key];
+        const { column, value } = userInputPerMatchingGroup;
+        userInputPerMatchingGroup.rows.forEach((row) => {
           const patch = createReplaceOperationPatch(row, column, value);
           setPatches((currentPatches) => {
             // eslint-disable-next-line no-param-reassign
@@ -102,14 +103,12 @@ const RepairIncorrectnessTable = ({ incorrectnessType }) => {
               />
             </SheetHeader>
             <SheetBody>
-              {pagedData.map((summaryData) => (
+              {pagedData.map((rowData) => (
                 <CollapsibleTableRow
-                  id={summaryData.key}
-                  summaryData={summaryData}
-                  sheetData={data}
+                  rowData={rowData}
                   schema={schema}
                   inputRef={saveChanges}
-                  userInput={userInput[summaryData.key]}
+                  userInput={userInput}
                   setUserInput={setUserInput}
                 />
               ))}
@@ -144,6 +143,15 @@ const RepairIncorrectnessTable = ({ incorrectnessType }) => {
 
 RepairIncorrectnessTable.propTypes = {
   incorrectnessType: PropTypes.string.isRequired,
+  incorrectnessReporting: PropTypes.arrayOf(
+    PropTypes.shape({
+      row: PropTypes.number.isRequired,
+      column: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+      suggestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+      errorType: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default RepairIncorrectnessTable;

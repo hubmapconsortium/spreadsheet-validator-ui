@@ -8,7 +8,7 @@ import AppContext from '../../pages/AppContext';
 import NestedMenuItem from '../NestedMenuItem';
 import logo from '../../logo.svg';
 import Container from '../../styles/Container';
-import { buildRepairIncompletenessSubMenu, buildRepairIncorrectnessSubMenu, determineOverallRepairStatus, generateNewSpreadsheet } from '../../helpers/app-utils';
+import { determineOverallRepairStatus, generateErrorSummaryData, generateNewSpreadsheet, generateRepairIncompletenessSubMenuData, generateRepairIncorrectnessSubMenuData } from '../../helpers/app-utils';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 import { OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 import { REPAIR_NOT_COMPLETED } from '../../constants/Status';
@@ -60,13 +60,17 @@ const SideBar = () => {
   const [disabled, setDisabled] = useState(true);
   const { appData, patches } = useContext(AppContext);
   const { data, reporting } = appData;
-  const repairIncompletenessSubMenu = useMemo(
-    () => buildRepairIncompletenessSubMenu(reporting, patches),
-    [patches],
+  const errorSummaryData = useMemo(
+    () => generateErrorSummaryData(reporting),
+    [reporting],
   );
-  const repairInconsistencySubMenu = useMemo(
-    () => buildRepairIncorrectnessSubMenu(reporting, patches),
-    [patches],
+  const repairIncompletenessSubMenu = useMemo(
+    () => generateRepairIncompletenessSubMenuData(errorSummaryData, patches),
+    [errorSummaryData, patches],
+  );
+  const repairIncorrectnessSubMenu = useMemo(
+    () => generateRepairIncorrectnessSubMenuData(errorSummaryData, patches),
+    [errorSummaryData, patches],
   );
   useEffect(
     () => {
@@ -130,7 +134,7 @@ const SideBar = () => {
             icon={<RepairIcon />}
             title={REPAIR_INCORRECTNESS}
             navigateTo={REPAIR_INCORRECTNESS_PATH}
-            subMenu={repairInconsistencySubMenu}
+            subMenu={repairIncorrectnessSubMenu}
           />
         </NestedMenu>
       </MenuSection>

@@ -5,7 +5,9 @@ import InputField from '../DataSheet/InputField';
 import { LIGHT_RED } from '../../constants/Color';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
 
-const EditableCell = ({ value, type, permissibleValues, inputRef, handleInputChange }) => (
+const EditableCell = (
+  { value, type, required, permissibleValues, inputRef, handleInputChange },
+) => (
   <FormControl fullWidth>
     {permissibleValues
       ? (
@@ -20,6 +22,7 @@ const EditableCell = ({ value, type, permissibleValues, inputRef, handleInputCha
         <InputField
           value={value}
           type={type}
+          required={required}
           inputRef={inputRef}
           onChange={handleInputChange}
           colorOnEmpty={LIGHT_RED}
@@ -31,14 +34,17 @@ const EditableCell = ({ value, type, permissibleValues, inputRef, handleInputCha
 EditableCell.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
+  required: PropTypes.bool,
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
-  inputRef: PropTypes.func,
+  // eslint-disable-next-line react/forbid-prop-types
+  inputRef: PropTypes.object,
   handleInputChange: PropTypes.func.isRequired,
 };
 
 EditableCell.defaultProps = {
   value: '',
   type: TEXT,
+  required: false,
   permissibleValues: undefined,
   inputRef: undefined,
 };

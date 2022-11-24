@@ -63,7 +63,7 @@ const HeaderWithFilter = ({ key, label, setColumnFilters, setStaleBatch }) => {
 
 HeaderWithFilter.propTypes = {
   key: PropTypes.string.isRequired,
-  label: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
   setColumnFilters: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,
 };

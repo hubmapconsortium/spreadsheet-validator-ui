@@ -48,12 +48,20 @@ WorkspaceContainer.propTypes = {
     data: PropTypes.arrayOf(
       PropTypes.oneOfType([PropTypes.object]),
     ).isRequired,
-    reporting: PropTypes.oneOfType([PropTypes.object]).isRequired,
+    reporting: PropTypes.arrayOf(
+      PropTypes.shape({
+        row: PropTypes.number.isRequired,
+        column: PropTypes.string.isRequired,
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        suggestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+        errorType: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
   }).isRequired,
 };
 
 const App = () => {
-  const [appData, setAppData] = useState({ schema: {}, data: [], reporting: {} });
+  const [appData, setAppData] = useState({ schema: {}, data: [], reporting: [] });
   return (
     <Router>
       <Routes>
@@ -65,7 +73,7 @@ const App = () => {
         <Route element={(<WorkspaceContainer appData={appData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
           <Route path={REPAIR_INCOMPLENESS_PATH} element={<RepairIncompleteness />} />
-          <Route path={`${REPAIR_INCOMPLENESS_PATH}/:incompleteColumn`} element={<RepairIncompletenessWorkspace />} />
+          <Route path={`${REPAIR_INCOMPLENESS_PATH}/:targetColumn`} element={<RepairIncompletenessWorkspace />} />
           <Route path={REPAIR_INCORRECTNESS_PATH} element={<RepairIncorrectness />} />
           <Route path={`${REPAIR_INCORRECTNESS_PATH}/:incorrectnessType`} element={<RepairIncorrectnessWorkspace />} />
         </Route>

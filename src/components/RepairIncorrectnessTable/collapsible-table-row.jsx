@@ -9,7 +9,7 @@ import SheetCell from '../DataSheet/SheetCell';
 import WrappedText from '../DataSheet/WrappedText';
 import EditableCell from './editable-cell';
 import { SheetTable } from './styled';
-import { getColumnType, getDataValue, getPermissibleValues } from '../../helpers/data-utils';
+import { getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
 import { BLACK, DARK_GRAY, LIGHT_GRAY, RED } from '../../constants/Color';
 
 const CellValue = styled(Typography)({
@@ -22,9 +22,9 @@ const printFrequency = (rows) => {
 };
 
 // eslint-disable-next-line max-len
-const CollapsibleTableRow = ({ summaryData, sheetData, schema, inputRef, userInput, setUserInput }) => {
+const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInput }) => {
   const [open, setOpen] = useState(false);
-  const { key } = summaryData;
+  const { id, column: targetColumn, value, rows, records } = rowData;
   return (
     <>
       <TableRow>
@@ -38,11 +38,11 @@ const CollapsibleTableRow = ({ summaryData, sheetData, schema, inputRef, userInp
           </IconButton>
         </SheetCell>
         <SheetCell>
-          <CellValue>{summaryData.column}</CellValue>
+          <CellValue>{targetColumn}</CellValue>
         </SheetCell>
         <SheetCell>
           <CellValue sx={{ display: 'flex' }}>
-            <CellValue>{summaryData.value}</CellValue>
+            <CellValue>{value}</CellValue>
             &nbsp;
             <CellValue
               sx={{
@@ -51,41 +51,44 @@ const CollapsibleTableRow = ({ summaryData, sheetData, schema, inputRef, userInp
                 color: DARK_GRAY,
               }}
             >
-              {printFrequency(summaryData.rows)}
+              {printFrequency(rows)}
             </CellValue>
           </CellValue>
         </SheetCell>
         <SheetCell>
           <EditableCell
-            value={userInput?.value}
-            type={getColumnType(summaryData.column, schema)}
-            permissibleValues={getPermissibleValues(summaryData.column, schema)}
+            value={userInput[id]?.value || ''}
+            type={getColumnType(targetColumn, schema)}
+            required={isColumnRequired(targetColumn, schema)}
+            permissibleValues={getPermissibleValues(targetColumn, schema)}
             inputRef={inputRef}
             handleInputChange={(event) => {
-              const userValue = event.target.value;
-              setUserInput((currentUserInput) => {
-                // eslint-disable-next-line no-param-reassign
-                currentUserInput[key] = {
-                  column: summaryData.column,
-                  value: userValue,
-                  rows: summaryData.rows,
-                  approved: true,
-                };
-              });
+              const { value: userValue } = event.target;
+              if (userValue !== '') {
+                setUserInput((currentUserInput) => {
+                  // eslint-disable-next-line no-param-reassign
+                  currentUserInput[id] = {
+                    column: targetColumn,
+                    value: userValue,
+                    rows,
+                    approved: true,
+                  };
+                });
+              }
             }}
           />
         </SheetCell>
         <SheetCell align="center">
           <Checkbox
-            key={key}
+            key={`checkbox-${id}`}
             onChange={(event) => {
-              const approved = event.target.checked;
+              const { checked: approved } = event.target;
               setUserInput((currentUserInput) => {
                 // eslint-disable-next-line no-param-reassign
-                currentUserInput[key] = {
-                  column: summaryData.column,
-                  value: userInput?.value,
-                  rows: summaryData.rows,
+                currentUserInput[id] = {
+                  column: targetColumn,
+                  value: userInput[id].value,
+                  rows,
                   approved,
                 };
               });
@@ -114,20 +117,20 @@ const CollapsibleTableRow = ({ summaryData, sheetData, schema, inputRef, userInp
               </Typography>
               <SheetTable size="small">
                 <SheetHeader>
-                  {Object.keys(schema.columns).map((columnName) => (
+                  {Object.keys(schema.columns).map((columnHeader) => (
                     <SheetCell sx={{ backgroundColor: LIGHT_GRAY }}>
-                      {columnName}
+                      {columnHeader}
                     </SheetCell>
                   ))}
                 </SheetHeader>
                 <SheetBody>
-                  {summaryData.rows.map((row) => (
+                  {records.map((record) => (
                     <TableRow>
-                      {Object.keys(schema.columns).map((column) => (
+                      {Object.keys(schema.columns).map((columnHeader) => (
                         <SheetCell align="right">
                           <WrappedText
-                            text={getDataValue(row, column, sheetData)}
-                            color={column === summaryData.column ? RED : BLACK}
+                            text={record[columnHeader]}
+                            color={columnHeader === targetColumn ? RED : BLACK}
                           />
                         </SheetCell>
                       ))}
@@ -144,22 +147,25 @@ const CollapsibleTableRow = ({ summaryData, sheetData, schema, inputRef, userInp
 };
 
 CollapsibleTableRow.propTypes = {
-  summaryData: PropTypes.shape({
-    key: PropTypes.string.isRequired,
+  rowData: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     column: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     suggestion: PropTypes.string,
     rows: PropTypes.arrayOf(PropTypes.number).isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    records: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
-  sheetData: PropTypes.objectOf(PropTypes.string).isRequired,
-  schema: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  schema: PropTypes.object.isRequired,
   userInput: PropTypes.shape({
     column: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     rows: PropTypes.arrayOf(PropTypes.number).isRequired,
     approved: PropTypes.bool.isRequired,
   }).isRequired,
-  inputRef: PropTypes.func,
+  // eslint-disable-next-line react/forbid-prop-types
+  inputRef: PropTypes.object,
   setUserInput: PropTypes.func.isRequired,
 };
 

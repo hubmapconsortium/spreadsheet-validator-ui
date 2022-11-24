@@ -65,16 +65,16 @@ const CaptionLabel = styled(Typography)({
 });
 
 // eslint-disable-next-line react/prop-types
-const Title = ({ title }) => (
+const Title = ({ text }) => (
   <TitleBox>
-    <TitleLabel>{title}</TitleLabel>
+    <TitleLabel>{text}</TitleLabel>
   </TitleBox>
 );
 
 // eslint-disable-next-line react/prop-types
-const Caption = ({ caption }) => (
+const Caption = ({ text }) => (
   <CaptionBox>
-    <CaptionLabel>{caption}</CaptionLabel>
+    <CaptionLabel>{text}</CaptionLabel>
   </CaptionBox>
 );
 
@@ -86,26 +86,31 @@ const CheckIcon = () => (
 
 const RepairBadge = ({ data }) => {
   const navigate = useNavigate();
-  const repairStatus = data.status;
+  const { key, title, subtitle, status: repairStatus, navigateTo } = data;
   return (
     <>
       {repairStatus === REPAIR_NOT_COMPLETED && (
         <RedBadgeButton onClick={() => {
-          navigate(data.navigateTo, {
-            state: { id: data.id },
+          navigate(navigateTo, {
+            state: { key },
           });
         }}
         >
           <Stack direction="column" alignItems="center" spacing={0}>
-            <Title title={data.title} />
-            <Caption caption={data.caption} />
+            <Title text={title} />
+            <Caption text={subtitle} />
           </Stack>
         </RedBadgeButton>
       )}
       {repairStatus === REPAIR_COMPLETED && (
-        <GreenBadgeButton onClick={() => navigate(data.navigateTo)}>
+        <GreenBadgeButton onClick={() => {
+          navigate(navigateTo, {
+            state: { key },
+          });
+        }}
+        >
           <Stack direction="column" alignItems="center" spacing={0}>
-            <Title title={data.title} />
+            <Title title={title} />
             <CheckIcon />
           </Stack>
         </GreenBadgeButton>
@@ -116,9 +121,9 @@ const RepairBadge = ({ data }) => {
 
 RepairBadge.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    key: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
     status: PropTypes.oneOf([REPAIR_NOT_COMPLETED, REPAIR_COMPLETED]).isRequired,
     navigateTo: PropTypes.string.isRequired,
   }).isRequired,

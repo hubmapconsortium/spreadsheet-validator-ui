@@ -32,9 +32,8 @@ const SearchableSelector = ({ key, options, onChange, onKeyPress }) => (
 
 SearchableSelector.propTypes = {
   key: PropTypes.string,
-  options: PropTypes.arrayOf(
-    PropTypes.objectOf(PropTypes.string),
-  ).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
 };

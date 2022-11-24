@@ -12,8 +12,8 @@ import SheetCell from '../DataSheet/SheetCell';
 import WrappedText from '../DataSheet/WrappedText';
 import SheetPagination from '../DataSheet/SheetPagination';
 import { createAddOperationPatch, getPagedData } from '../../helpers/app-utils';
-import { moveItemToFront, extractItems } from '../../helpers/array-utils';
-import { getMissingRequiredRows, getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues } from '../../helpers/data-utils';
+import { moveItemToFront } from '../../helpers/array-utils';
+import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues } from '../../helpers/data-utils';
 import HeaderWithBatchInput from './header-with-batch-input';
 import HeaderWithFilter from './header-with-filter';
 import EditableCell from './editable-cell';
@@ -21,12 +21,12 @@ import { ButtonBox, CancelButton, DataSheetCard, SaveButton, SheetTable, SheetTa
 import { getFilteredData, initUserInput } from './function';
 import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
 
-const RepairIncompletnessTable = ({ incompleteColumn }) => {
+const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { id: errorId } = location.state;
+  const { key } = location.state;
   const { appData, patches, setPatches } = useContext(AppContext);
-  const { schema, data, reporting } = appData;
+  const { schema, data } = appData;
 
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useState('');
@@ -39,25 +39,29 @@ const RepairIncompletnessTable = ({ incompleteColumn }) => {
 
   const columns = Object.keys(schema.columns);
   const columnOrder = useMemo(
-    () => moveItemToFront(incompleteColumn, columns),
-    [incompleteColumn],
+    () => moveItemToFront(targetColumn, columns),
+    [targetColumn],
   );
 
-  const missingRequiredRows = useMemo(
-    () => getMissingRequiredRows(incompleteColumn, reporting),
-    [incompleteColumn],
+  const badRows = useMemo(
+    () => incompletenessReporting.map(
+      (reportItem) => reportItem.row,
+    ),
+    [incompletenessReporting],
   );
   const tableData = useMemo(
-    () => extractItems(missingRequiredRows, data),
-    [missingRequiredRows],
+    () => badRows.map(
+      (row) => data[row],
+    ),
+    [badRows, data],
   );
   useEffect(
     () => {
-      const existingUserInput = initUserInput(missingRequiredRows, incompleteColumn, patches);
+      const existingUserInput = initUserInput(badRows, targetColumn, patches);
       setUserInput(existingUserInput);
       return () => setColumnFilters([]);
     },
-    [incompleteColumn, patches],
+    [tableData, patches],
   );
 
   const filteredData = useMemo(
@@ -86,13 +90,15 @@ const RepairIncompletnessTable = ({ incompleteColumn }) => {
 
   const handleSaveChanges = () => {
     Object.keys(userInput)
-      .filter((row) => userInput[row] && userInput[row] !== '' && true)
       .forEach((row) => {
-        const patch = createAddOperationPatch(row, incompleteColumn, userInput[row]);
-        setPatches((existingPatches) => {
-          // eslint-disable-next-line no-param-reassign
-          existingPatches[row][incompleteColumn] = patch;
-        });
+        const value = userInput[row];
+        if (typeof value !== 'undefined') {
+          const patch = createAddOperationPatch(row, targetColumn, value);
+          setPatches((existingPatches) => {
+            // eslint-disable-next-line no-param-reassign
+            existingPatches[row][targetColumn] = patch;
+          });
+        }
       });
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
   };
@@ -117,7 +123,8 @@ const RepairIncompletnessTable = ({ incompleteColumn }) => {
                 if (index === 0) {
                   component = (
                     <HeaderWithBatchInput
-                      key={`${errorId}-${column}`}
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={`batch-input-${key}-${column}`}
                       label={getColumnLabel(column, schema)}
                       type={getColumnType(column, schema)}
                       permissibleValues={getPermissibleValues(column, schema)}
@@ -128,7 +135,8 @@ const RepairIncompletnessTable = ({ incompleteColumn }) => {
                 } else {
                   component = (
                     <HeaderWithFilter
-                      key={`${errorId}-${column}`}
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={`filter-${key}-${column}`}
                       label={getColumnLabel(column, schema)}
                       setColumnFilters={setColumnFilters}
                       setStaleBatch={setStaleBatch}
@@ -146,19 +154,23 @@ const RepairIncompletnessTable = ({ incompleteColumn }) => {
                     // eslint-disable-next-line dot-notation
                     const row = rowData['_id'];
                     if (index === 0) {
-                      const handleInputChange = (event) => {
-                        setUserInput((currentUserInput) => {
-                          // eslint-disable-next-line no-param-reassign
-                          currentUserInput[row] = event.target.value;
-                        });
-                      };
                       component = (
                         <EditableCell
+                          required
+                          key={`cell-${key}-${column}`}
                           value={userInput[row] || ''}
                           type={getColumnType(column, schema)}
                           inputRef={saveChanges}
                           permissibleValues={getPermissibleValues(column, schema)}
-                          handleInputChange={handleInputChange}
+                          handleInputChange={(event) => {
+                            const { value } = event.target;
+                            if (value !== '') {
+                              setUserInput((currentUserInput) => {
+                                // eslint-disable-next-line no-param-reassign
+                                currentUserInput[row] = value;
+                              });
+                            }
+                          }}
                         />
                       );
                     } else {
@@ -204,7 +216,16 @@ const RepairIncompletnessTable = ({ incompleteColumn }) => {
 };
 
 RepairIncompletnessTable.propTypes = {
-  incompleteColumn: PropTypes.string.isRequired,
+  targetColumn: PropTypes.string.isRequired,
+  incompletenessReporting: PropTypes.arrayOf(
+    PropTypes.shape({
+      row: PropTypes.number.isRequired,
+      column: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+      suggestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+      errorType: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default RepairIncompletnessTable;

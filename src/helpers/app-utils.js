@@ -1,203 +1,6 @@
 import * as jsonpatch from 'fast-json-patch';
 import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
-import { getTotalNotNumberType, getTotalNotStandardTerm, getTotalNotStringType } from './data-utils';
-
-export const getPagedData = (data, page, rowsPerPage) => (
-  (rowsPerPage > 0
-    ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    : data)
-);
-
-export const checkPatchNotUndefined = (row, column, patches) => (
-  !!patches[row] && !!patches[row][column] && !!patches[row][column].value
-);
-
-const isRepairIncompletenessCompleted = (rows, column, patches) => (
-  rows.map(
-    (row) => checkPatchNotUndefined(row, column, patches),
-  ).reduce(
-    (cache, value) => cache && value,
-  )
-);
-
-const determineRepairIncompletenessStatus = (rows, column, patches) => (
-  isRepairIncompletenessCompleted(rows, column, patches)
-    ? REPAIR_COMPLETED
-    : REPAIR_NOT_COMPLETED
-);
-
-export const buildRepairIncompletenessSubMenu = (reporting, patches) => {
-  const { missingRequired } = reporting;
-  const subMenuItems = Object.keys(missingRequired).map((column, index) => {
-    const rows = missingRequired[column];
-    return ({
-      id: `incomplete-error-${index}`,
-      title: `Missing ${column}`,
-      status: determineRepairIncompletenessStatus(rows, column, patches),
-      navigateTo: `${REPAIR_INCOMPLENESS_PATH}/${column}`,
-    });
-  });
-  return {
-    title: 'Types of Error',
-    items: subMenuItems,
-  };
-};
-
-const isRepairIncorrectnessCompleted = (incorrectnessReporting, patches) => {
-  const columns = Object.keys(incorrectnessReporting);
-  return columns.map((column) => {
-    const reports = incorrectnessReporting[column];
-    return reports.map((report) => {
-      const { row } = report;
-      return checkPatchNotUndefined(row, column, patches);
-    });
-  }).flat(1).reduce(
-    (cache, value) => cache && value,
-  );
-};
-
-const determineRepairIncorrectnessStatus = (incorrectnessReporting, patches) => (
-  isRepairIncorrectnessCompleted(incorrectnessReporting, patches)
-    ? REPAIR_COMPLETED
-    : REPAIR_NOT_COMPLETED
-);
-
-export const buildRepairIncorrectnessSubMenu = (reporting, patches) => {
-  const { notStandardTerm, notNumberType, notStringType } = reporting;
-  const subMenuItems = [];
-  if (notStandardTerm) {
-    subMenuItems.push({
-      id: 'not-standard-term-error',
-      title: 'Value not standard term',
-      status: determineRepairIncorrectnessStatus(notStandardTerm, patches),
-      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStandardTerm`,
-    });
-  }
-  if (notNumberType) {
-    subMenuItems.push({
-      id: 'not-number-type-error',
-      title: 'Value not number type',
-      status: determineRepairIncorrectnessStatus(notNumberType, patches),
-      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notNumberType`,
-    });
-  }
-  if (notStringType) {
-    subMenuItems.push({
-      id: 'not-string-type-error',
-      title: 'Value not string type',
-      status: determineRepairIncorrectnessStatus(notStringType, patches),
-      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStringType`,
-    });
-  }
-  return {
-    title: 'Types of Error',
-    items: subMenuItems,
-  };
-};
-
-export const buildRepairIncompletenessBadges = (reporting, patches) => {
-  const { missingRequired } = reporting;
-  const badgeItems = Object.keys(missingRequired).map((column, index) => {
-    const rows = missingRequired[column];
-    return ({
-      id: `incomplete-error-${index}`,
-      title: column,
-      caption: `${rows.length} records are incomplete`,
-      status: determineRepairIncompletenessStatus(rows, column, patches),
-      navigateTo: column,
-    });
-  });
-  return badgeItems;
-};
-
-export const buildRepairIncorrectnessBadges = (reporting, patches) => {
-  const { notStandardTerm, notNumberType, notStringType } = reporting;
-  const badgeItems = [];
-  if (notStandardTerm) {
-    const totalErrors = getTotalNotStandardTerm(reporting);
-    badgeItems.push({
-      id: 'not-standard-term-error',
-      title: 'Value is not a standard term',
-      caption: `${totalErrors} values are incorrect`,
-      status: determineRepairIncorrectnessStatus(notStandardTerm, patches),
-      navigateTo: 'notStandardTerm',
-    });
-  }
-  if (notNumberType) {
-    const totalErrors = getTotalNotNumberType(reporting);
-    badgeItems.push({
-      id: 'not-number-type-error',
-      title: 'Value is not a number type',
-      caption: `${totalErrors} values are incorrect`,
-      status: determineRepairIncorrectnessStatus(notNumberType, patches),
-      navigateTo: 'notNumberType',
-    });
-  }
-  if (notStringType) {
-    const totalErrors = getTotalNotStringType(reporting);
-    badgeItems.push({
-      id: 'not-string-type-error',
-      title: 'Value is not a string type',
-      caption: `${totalErrors} values are incorrect`,
-      status: determineRepairIncorrectnessStatus(notStringType, patches),
-      navigateTo: 'notStringType',
-    });
-  }
-  return badgeItems;
-};
-
-export const buildIncorrectnessSummaryData = (incorrectnessReporting) => {
-  const targetColumns = Object.keys(incorrectnessReporting);
-  return targetColumns.map(
-    (column) => {
-      const evaluationByColumn = incorrectnessReporting[column];
-      return evaluationByColumn.reduce((groups, item) => {
-        const { value } = item;
-        const { suggestion } = item;
-        const key = `${column}-${value}`;
-        const group = (groups[key] || {
-          key,
-          column,
-          value,
-          suggestion,
-          rows: [],
-        });
-        group.rows.push(item.row);
-        // eslint-disable-next-line no-param-reassign
-        groups[key] = group;
-        return groups;
-      }, {});
-    },
-  ).map((item) => Object.values(item)).flat();
-};
-
-export const determineOverallRepairStatus = (reporting, patches) => {
-  const { missingRequired, notStandardTerm, notNumberType, notStringType } = reporting;
-  let completed = true;
-  if (missingRequired) {
-    completed = completed && Object.keys(missingRequired).map((column) => {
-      const rows = missingRequired[column];
-      return isRepairIncompletenessCompleted(rows, column, patches);
-    }).reduce(
-      (cache, value) => cache && value,
-    );
-    if (!completed) return REPAIR_NOT_COMPLETED;
-  }
-  if (notStandardTerm) {
-    completed = completed && isRepairIncorrectnessCompleted(notStandardTerm, patches);
-    if (!completed) return REPAIR_NOT_COMPLETED;
-  }
-  if (notNumberType) {
-    completed = completed && isRepairIncorrectnessCompleted(notNumberType, patches);
-    if (!completed) return REPAIR_NOT_COMPLETED;
-  }
-  if (notStringType) {
-    completed = completed && isRepairIncorrectnessCompleted(notStringType, patches);
-    if (!completed) return REPAIR_NOT_COMPLETED;
-  }
-  return REPAIR_COMPLETED;
-};
 
 export const createAddOperationPatch = (row, column, value) => ({
   op: 'add',
@@ -210,6 +13,292 @@ export const createReplaceOperationPatch = (row, column, value) => ({
   path: `/${row}/${column}`,
   value,
 });
+
+export const getPagedData = (data, page, rowsPerPage) => (
+  (rowsPerPage > 0
+    ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    : data)
+);
+
+export const checkRepairPatchPresent = (row, column, patches) => (
+  !!patches[row]
+  && !!patches[row][column]
+  && typeof patches[row][column].value !== 'undefined'
+);
+
+const isRepairCompleted = (rows, column, patches) => {
+  for (let i = 0; i < rows.length; i += 1) {
+    const row = rows[i];
+    if (!checkRepairPatchPresent(row, column, patches)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const determineRepairIncompletenessStatus = (rows, column, patches) => (
+  isRepairCompleted(rows, column, patches)
+    ? REPAIR_COMPLETED
+    : REPAIR_NOT_COMPLETED
+);
+
+export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patches) => {
+  const missingRequiredErrorList = errorSummaryData.filter(
+    (item) => item.errorType === 'missingRequired',
+  );
+  const subMenuItems = missingRequiredErrorList.map(
+    (errorDetails) => {
+      const { column: errorColumnLocation, rows: errorRowLocations } = errorDetails;
+      return ({
+        key: `missing-required-${errorColumnLocation}`,
+        title: `Missing ${errorColumnLocation}`,
+        status: determineRepairIncompletenessStatus(
+          errorRowLocations,
+          errorColumnLocation,
+          patches,
+        ),
+        navigateTo: `${REPAIR_INCOMPLENESS_PATH}/${errorColumnLocation}`,
+      });
+    },
+  );
+  return {
+    title: 'Types of Error',
+    items: subMenuItems,
+  };
+};
+
+const determineRepairIncorrectnessStatus = (errorList, patches) => {
+  for (let i = 0; errorList.length > 0; i += 1) {
+    const errorDetails = errorList[i];
+    const { column: errorColumnLocation, rows: errorRowLocations } = errorDetails;
+    if (!isRepairCompleted(errorRowLocations, errorColumnLocation, patches)) {
+      return REPAIR_NOT_COMPLETED;
+    }
+  }
+  return REPAIR_COMPLETED;
+};
+
+const getNotStandardTermSubMenuItemData = (errorSummaryData, patches) => {
+  const notStandardTermErrorList = errorSummaryData.filter(
+    (item) => item.errorType === 'notStandardTerm',
+  );
+  if (notStandardTermErrorList.length > 0) {
+    return {
+      key: 'not-standard-term-error',
+      title: 'Value not standard term',
+      status: determineRepairIncorrectnessStatus(notStandardTermErrorList, patches),
+      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStandardTerm`,
+    };
+  }
+  return null;
+};
+
+const getNotNumberTypeSubMenuItemData = (errorSummaryData, patches) => {
+  const notNumberTypeErrorList = errorSummaryData.filter(
+    (item) => item.errorType === 'notNumberType',
+  );
+  if (notNumberTypeErrorList.length > 0) {
+    return {
+      key: 'not-number-type-error',
+      title: 'Value not number type',
+      status: determineRepairIncorrectnessStatus(notNumberTypeErrorList, patches),
+      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notNumberType`,
+    };
+  }
+  return null;
+};
+
+const getNotStringTypeSubMenuItemData = (errorSummaryData, patches) => {
+  const notStringTypeErrorList = errorSummaryData.filter(
+    (item) => item.errorType === 'notStringType',
+  );
+  if (notStringTypeErrorList.length > 0) {
+    return {
+      key: 'not-string-type-error',
+      title: 'Value not string type',
+      status: determineRepairIncorrectnessStatus(notStringTypeErrorList, patches),
+      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStringType`,
+    };
+  }
+  return null;
+};
+
+export const generateRepairIncorrectnessSubMenuData = (errorSummaryData, patches) => ({
+  title: 'Types of Error',
+  items: [
+    getNotStandardTermSubMenuItemData(errorSummaryData, patches),
+    getNotNumberTypeSubMenuItemData(errorSummaryData, patches),
+    getNotStringTypeSubMenuItemData(errorSummaryData, patches),
+  ].filter(
+    (item) => item !== null,
+  ),
+});
+
+export const generateRepairIncompletenessButtonData = (errorSummaryData, patches) => {
+  const missingRequiredErrorList = errorSummaryData.filter(
+    (item) => item.errorType === 'missingRequired',
+  );
+  return missingRequiredErrorList.map(
+    (errorDetails) => {
+      const { column: errorColumnLocation, rows: errorRowLocations } = errorDetails;
+      const errorSize = errorRowLocations.length;
+      const subTitleText = errorSize === 1
+        ? '1 record is incomplete'
+        : `${errorSize} records are incomplete`;
+      return ({
+        key: `missing-required-${errorColumnLocation}`,
+        title: errorColumnLocation,
+        subtitle: subTitleText,
+        status: determineRepairIncompletenessStatus(
+          errorRowLocations,
+          errorColumnLocation,
+          patches,
+        ),
+        navigateTo: errorColumnLocation,
+      });
+    },
+  );
+};
+
+const getErrorSize = (errorList) => (
+  errorList.reduce(
+    (accumulator, errorDetails) => accumulator + errorDetails.rows.length,
+    0,
+  )
+);
+
+const getNotStandardTermButtonItemData = (errorSummaryData, patches) => {
+  const notStandardTermErrorList = errorSummaryData.filter(
+    (item) => item.errorType === 'notStandardTerm',
+  );
+  const errorSize = getErrorSize(notStandardTermErrorList);
+  const subTitleText = errorSize === 1
+    ? '1 value is incorrect'
+    : `${errorSize} values are incorrect`;
+  if (notStandardTermErrorList.length > 0) {
+    return {
+      key: 'not-standard-term-error',
+      title: 'Value not standard term',
+      subtitle: subTitleText,
+      status: determineRepairIncorrectnessStatus(notStandardTermErrorList, patches),
+      navigateTo: 'notStandardTerm',
+    };
+  }
+  return null;
+};
+
+const getNotNumberTypeButtonItemData = (errorSummaryData, patches) => {
+  const notNumberTypeErrorList = errorSummaryData.filter(
+    (item) => item.errorType === 'notNumberType',
+  );
+  const errorSize = getErrorSize(notNumberTypeErrorList);
+  const subTitleText = errorSize === 1
+    ? '1 value is incorrect'
+    : `${errorSize} values are incorrect`;
+  if (notNumberTypeErrorList.length > 0) {
+    return {
+      key: 'not-number-type-error',
+      title: 'Value is not a number type',
+      subtitle: subTitleText,
+      status: determineRepairIncorrectnessStatus(notNumberTypeErrorList, patches),
+      navigateTo: 'notNumberType',
+    };
+  }
+  return null;
+};
+
+const getNotStringTypeButtonItemData = (errorSummaryData, patches) => {
+  const notStringTypeErrorList = errorSummaryData.filter(
+    (item) => item.errorType === 'notStringType',
+  );
+  const errorSize = getErrorSize(notStringTypeErrorList);
+  const subTitleText = errorSize === 1
+    ? '1 value is incorrect'
+    : `${errorSize} values are incorrect`;
+  if (notStringTypeErrorList.length > 0) {
+    return {
+      key: 'not-string-type-error',
+      title: 'Value is not a string type',
+      subtitle: subTitleText,
+      status: determineRepairIncorrectnessStatus(notStringTypeErrorList, patches),
+      navigateTo: 'notStringType',
+    };
+  }
+  return null;
+};
+
+export const generateRepairIncorrectnessButtonData = (errorSummaryData, patches) => [
+  getNotStandardTermButtonItemData(errorSummaryData, patches),
+  getNotNumberTypeButtonItemData(errorSummaryData, patches),
+  getNotStringTypeButtonItemData(errorSummaryData, patches),
+].filter(
+  (item) => item !== null,
+);
+
+export const determineOverallRepairStatus = (reporting, patches) => {
+  for (let i = 0; reporting.length > 0; i += 1) {
+    const reportItem = reporting[i];
+    const { row, column } = reportItem;
+    if (!checkRepairPatchPresent(row, column, patches)) {
+      return REPAIR_NOT_COMPLETED;
+    }
+  }
+  return REPAIR_COMPLETED;
+};
+
+export const generateErrorSummaryData = (reporting) => (
+  Object.values(
+    reporting.reduce(
+      (accumulator, reportItem) => {
+        const { row, column, errorType } = reportItem;
+        const key = `${column}-${errorType}`;
+        const matchingGroup = (
+          // eslint-disable-next-line no-multi-assign
+          accumulator[key] = accumulator[key] || {
+            column,
+            rows: [],
+            errorType,
+          }
+        );
+        matchingGroup.rows.push(row);
+        return accumulator;
+      },
+      {}, // initial accumulator value
+    ),
+  )
+);
+
+export const generateRepairIncorrectnessTableData = (reporting, data) => {
+  const incorrectnessReporting = reporting.filter(
+    (item) => item.errorType === 'notStandardTerm'
+      || item.errorType === 'notNumberType'
+      || item.errorType === 'notStringType',
+  );
+  return Object.values(
+    incorrectnessReporting.reduce(
+      (accumulator, reportItem) => {
+        const { row, column, value, errorType, suggestion } = reportItem;
+        const key = `${column}-${value}-${errorType}`;
+        const matchingGroup = (
+          // eslint-disable-next-line no-multi-assign
+          accumulator[key] = accumulator[key] || {
+            id: key,
+            column,
+            value,
+            suggestion,
+            errorType,
+            rows: [],
+            records: [],
+          }
+        );
+        matchingGroup.rows.push(row);
+        matchingGroup.records.push(data[row]);
+        return accumulator;
+      },
+      {},
+    ),
+  );
+};
 
 export const generateNewSpreadsheet = (data, patches) => {
   const patchArray = patches.map((patch) => (Object.values(patch))).flat();
