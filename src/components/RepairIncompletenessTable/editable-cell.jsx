@@ -37,7 +37,8 @@ EditableCell.propTypes = {
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   // eslint-disable-next-line react/forbid-prop-types
   inputRef: PropTypes.object,
-  permissibleValues: PropTypes.arrayOf(PropTypes.string),
+  // eslint-disable-next-line react/forbid-prop-types
+  permissibleValues: PropTypes.arrayOf(PropTypes.object),
   handleInputChange: PropTypes.func.isRequired,
 };
 
