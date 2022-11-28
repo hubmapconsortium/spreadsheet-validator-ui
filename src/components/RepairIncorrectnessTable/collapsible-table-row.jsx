@@ -167,11 +167,11 @@ CollapsibleTableRow.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   schema: PropTypes.object.isRequired,
   userInput: PropTypes.shape({
-    column: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    rows: PropTypes.arrayOf(PropTypes.number).isRequired,
-    approved: PropTypes.bool.isRequired,
-  }).isRequired,
+    column: PropTypes.string,
+    value: PropTypes.string,
+    rows: PropTypes.arrayOf(PropTypes.number),
+    approved: PropTypes.bool,
+  }),
   // eslint-disable-next-line react/forbid-prop-types
   inputRef: PropTypes.object,
   setUserInput: PropTypes.func.isRequired,
@@ -179,6 +179,7 @@ CollapsibleTableRow.propTypes = {
 
 CollapsibleTableRow.defaultProps = {
   inputRef: undefined,
+  userInput: undefined,
 };
 
 export default CollapsibleTableRow;
