@@ -108,7 +108,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
             maxHeight: '400px',
             maxWidth: '1100px',
           }}
-          colspan={5}
+          colSpan={5}
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ padding: 1, marginBottom: 2 }}>
