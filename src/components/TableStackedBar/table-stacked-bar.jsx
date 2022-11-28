@@ -21,17 +21,27 @@ const TableStackedBar = ({ data }) => (
   <Table>
     <TableHead>
       <TableRow>
-        {data.columns.map((column) => <HeaderCell>{column}</HeaderCell>)}
+        {data.columns.map(
+          (column, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <HeaderCell key={`header-${index}`}>
+              {column}
+            </HeaderCell>
+          ),
+        )}
       </TableRow>
     </TableHead>
     <TableBody>
-      {data.rows.map((row) => (
-        <TableRow>
+      {data.rows.map((row, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <TableRow key={`row-${index}`}>
           {
             row.map((cell, cellIndex, arr) => (
               (cellIndex + 1 === arr.length)
-                ? <ChartCell><HSBar showTextIn data={cell} /></ChartCell>
-                : <TextCell>{cell}</TextCell>
+                // eslint-disable-next-line react/no-array-index-key
+                ? <ChartCell key={`chart-cell-${cellIndex}`}><HSBar showTextIn data={cell} /></ChartCell>
+                // eslint-disable-next-line react/no-array-index-key
+                : <TextCell key={`text-cell-${cellIndex}`}>{cell}</TextCell>
             ))
           }
         </TableRow>
