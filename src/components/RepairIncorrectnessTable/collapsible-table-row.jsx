@@ -156,10 +156,14 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
 
 CollapsibleTableRow.propTypes = {
   rowData: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
     column: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    suggestion: PropTypes.string,
+    value: PropTypes.oneOfType(
+      [PropTypes.string, PropTypes.number, PropTypes.bool],
+    ).isRequired,
+    suggestion: PropTypes.oneOfType(
+      [PropTypes.string, PropTypes.number, PropTypes.bool],
+    ),
     rows: PropTypes.arrayOf(PropTypes.number).isRequired,
     // eslint-disable-next-line react/forbid-prop-types
     records: PropTypes.arrayOf(PropTypes.object).isRequired,
