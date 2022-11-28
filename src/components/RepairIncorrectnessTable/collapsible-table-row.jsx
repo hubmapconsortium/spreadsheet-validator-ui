@@ -148,7 +148,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
 
 CollapsibleTableRow.propTypes = {
   rowData: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     column: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     suggestion: PropTypes.string,

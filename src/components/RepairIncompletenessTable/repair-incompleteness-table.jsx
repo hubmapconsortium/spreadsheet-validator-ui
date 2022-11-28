@@ -111,7 +111,6 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
     },
     [userInput],
   );
-
   return (
     <>
       <DataSheetCard>
@@ -123,8 +122,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                 if (index === 0) {
                   component = (
                     <HeaderWithBatchInput
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={`batch-input-${key}-${column}`}
+                      id={`batch-input-${key}-${column}`}
                       label={getColumnLabel(column, schema)}
                       type={getColumnType(column, schema)}
                       permissibleValues={getPermissibleValues(column, schema)}
@@ -135,8 +133,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                 } else {
                   component = (
                     <HeaderWithFilter
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={`filter-${key}-${column}`}
+                      id={`filter-${key}-${column}`}
                       label={getColumnLabel(column, schema)}
                       setColumnFilters={setColumnFilters}
                       setStaleBatch={setStaleBatch}
@@ -157,7 +154,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                       component = (
                         <EditableCell
                           required
-                          key={`cell-${key}-${column}`}
+                          id={`cell-${key}-${column}`}
                           value={userInput[row] || ''}
                           type={getColumnType(column, schema)}
                           inputRef={saveChanges}

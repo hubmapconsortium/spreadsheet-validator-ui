@@ -2,9 +2,9 @@ import { Autocomplete, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PropTypes from 'prop-types';
 
-const SearchableSelector = ({ key, options, onChange, onKeyPress }) => (
+const SearchableSelector = ({ id, options, onChange, onKeyPress }) => (
   <Autocomplete
-    key={key}
+    key={id}
     forcePopupIcon={false}
     autoHighlight
     options={options}
@@ -31,7 +31,7 @@ const SearchableSelector = ({ key, options, onChange, onKeyPress }) => (
 );
 
 SearchableSelector.propTypes = {
-  key: PropTypes.string,
+  id: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   onChange: PropTypes.func,
@@ -39,7 +39,7 @@ SearchableSelector.propTypes = {
 };
 
 SearchableSelector.defaultProps = {
-  key: undefined,
+  id: undefined,
   onChange: undefined,
   onKeyPress: undefined,
 };

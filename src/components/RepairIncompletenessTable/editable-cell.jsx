@@ -6,8 +6,8 @@ import SheetCell from '../DataSheet/SheetCell';
 import { LIGHT_RED } from '../../constants/Color';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
 
-const EditableCell = ({ key, value, type, inputRef, permissibleValues, handleInputChange }) => (
-  <SheetCell key={key} sx={{ zIndex: 998 }} sticky>
+const EditableCell = ({ id, value, type, inputRef, permissibleValues, handleInputChange }) => (
+  <SheetCell key={id} sx={{ zIndex: 998 }} sticky>
     <FormControl fullWidth>
       {permissibleValues
         ? (
@@ -32,7 +32,7 @@ const EditableCell = ({ key, value, type, inputRef, permissibleValues, handleInp
 );
 
 EditableCell.propTypes = {
-  key: PropTypes.string.isRequired,
+  id: PropTypes.string,
   value: PropTypes.string,
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   // eslint-disable-next-line react/forbid-prop-types
@@ -42,6 +42,7 @@ EditableCell.propTypes = {
 };
 
 EditableCell.defaultProps = {
+  id: undefined,
   value: '',
   type: TEXT,
   inputRef: undefined,

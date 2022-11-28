@@ -2,9 +2,9 @@ import { OutlinedInput } from '@mui/material';
 import PropTypes from 'prop-types';
 import { TEXT } from '../../../constants/ValueType';
 
-const FilterInputField = ({ key, type, onChange, endAdornment }) => (
+const FilterInputField = ({ id, type, onChange, endAdornment }) => (
   <OutlinedInput
-    key={key}
+    key={id}
     type={type}
     size="small"
     placeholder="Filter text..."
@@ -14,14 +14,14 @@ const FilterInputField = ({ key, type, onChange, endAdornment }) => (
 );
 
 FilterInputField.propTypes = {
-  key: PropTypes.string,
+  id: PropTypes.string,
   type: PropTypes.string,
   onChange: PropTypes.func,
   endAdornment: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.element]),
 };
 
 FilterInputField.defaultProps = {
-  key: undefined,
+  id: undefined,
   type: TEXT,
   onChange: undefined,
   endAdornment: undefined,

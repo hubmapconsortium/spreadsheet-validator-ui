@@ -5,10 +5,10 @@ import { WHITE } from '../../../constants/Color';
 
 const InputField = (
   // eslint-disable-next-line max-len
-  { key, value, type, placeholder, required, inputRef, onChange, onKeyPress, colorOnEmpty, endAdornment },
+  { id, value, type, placeholder, required, inputRef, onChange, onKeyPress, colorOnEmpty, endAdornment },
 ) => (
   <OutlinedInput
-    key={key}
+    key={id}
     size="small"
     value={value}
     type={type}
@@ -23,7 +23,7 @@ const InputField = (
 );
 
 InputField.propTypes = {
-  key: PropTypes.string,
+  id: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
   placeholder: PropTypes.string,
@@ -37,7 +37,7 @@ InputField.propTypes = {
 };
 
 InputField.defaultProps = {
-  key: undefined,
+  id: undefined,
   value: undefined,
   placeholder: undefined,
   required: false,

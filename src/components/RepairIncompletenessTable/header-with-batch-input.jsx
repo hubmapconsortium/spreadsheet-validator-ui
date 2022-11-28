@@ -8,9 +8,8 @@ import SheetCell from '../DataSheet/SheetCell';
 import { HeaderLabel } from './styled';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
 
-const HeaderWithBatchInput = (
-  { key, label, type, permissibleValues, setBatchInput, setStaleBatch },
-) => {
+// eslint-disable-next-line max-len
+const HeaderWithBatchInput = ({ id, label, type, permissibleValues, setBatchInput, setStaleBatch }) => {
   const [userTyping, setUserTyping] = useState(false);
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -26,14 +25,14 @@ const HeaderWithBatchInput = (
         {permissibleValues
           ? (
             <SearchableSelector
-              key={`${key}-selector-batch-field`}
+              id={`${id}-selector-batch-field`}
               options={permissibleValues}
               onKeyPress={handleKeyPress}
             />
           )
           : (
             <InputField
-              key={`${key}-input-batch-field`}
+              id={`${id}-input-batch-field`}
               type={type}
               placeholder="Enter value..."
               onChange={(e) => setUserTyping(e.target.value !== '')}
@@ -51,7 +50,7 @@ const HeaderWithBatchInput = (
 };
 
 HeaderWithBatchInput.propTypes = {
-  key: PropTypes.string.isRequired,
+  id: PropTypes.string,
   label: PropTypes.string.isRequired,
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
@@ -60,6 +59,7 @@ HeaderWithBatchInput.propTypes = {
 };
 
 HeaderWithBatchInput.defaultProps = {
+  id: undefined,
   type: TEXT,
   permissibleValues: undefined,
 };
