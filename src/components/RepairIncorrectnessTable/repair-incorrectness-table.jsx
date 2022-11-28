@@ -103,8 +103,11 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
               />
             </SheetHeader>
             <SheetBody>
-              {pagedData.map((rowData) => (
+              {pagedData.map((rowData, index) => (
                 <CollapsibleTableRow
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`collapsible-row-${index}`}
+                  id={`collapsible-row-${index}`}
                   rowData={rowData}
                   schema={schema}
                   inputRef={saveChanges}

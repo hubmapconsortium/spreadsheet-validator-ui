@@ -27,8 +27,8 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
   const { id, column: targetColumn, value, rows, records } = rowData;
   return (
     <>
-      <TableRow>
-        <SheetCell>
+      <TableRow key={`summary-row-${id}`}>
+        <SheetCell key={`expand-icon-cell-${id}`}>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -37,10 +37,10 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </SheetCell>
-        <SheetCell>
+        <SheetCell key={`target-column-cell-${id}`}>
           <CellValue>{targetColumn}</CellValue>
         </SheetCell>
-        <SheetCell>
+        <SheetCell key={`target-value-cell-${id}`}>
           <CellValue sx={{ display: 'flex' }}>
             <CellValue>{value}</CellValue>
             &nbsp;
@@ -55,7 +55,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
             </CellValue>
           </CellValue>
         </SheetCell>
-        <SheetCell>
+        <SheetCell key={`suggested-value-cell-${id}`}>
           <EditableCell
             value={userInput[id]?.value || ''}
             type={getColumnType(targetColumn, schema)}
@@ -78,7 +78,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
             }}
           />
         </SheetCell>
-        <SheetCell align="center">
+        <SheetCell key={`approved-cell-${id}`} align="center">
           <Checkbox
             key={`checkbox-${id}`}
             onChange={(event) => {
@@ -97,8 +97,9 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
           />
         </SheetCell>
       </TableRow>
-      <TableRow>
+      <TableRow key={`table-row-${id}`}>
         <SheetCell
+          key={`collapse-cell-span-${id}`}
           sx={{
             border: 0,
             paddingBottom: 0,
@@ -118,16 +119,23 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
               <SheetTable size="small">
                 <SheetHeader>
                   {Object.keys(schema.columns).map((columnHeader) => (
-                    <SheetCell sx={{ backgroundColor: LIGHT_GRAY }}>
+                    <SheetCell
+                      key={`table-header-${columnHeader}`}
+                      sx={{ backgroundColor: LIGHT_GRAY }}
+                    >
                       {columnHeader}
                     </SheetCell>
                   ))}
                 </SheetHeader>
                 <SheetBody>
-                  {records.map((record) => (
+                  {records.map((record, index) => (
                     <TableRow>
                       {Object.keys(schema.columns).map((columnHeader) => (
-                        <SheetCell align="right">
+                        <SheetCell
+                          // eslint-disable-next-line react/no-array-index-key
+                          key={`table-cell-row-${index}-column-${columnHeader}`}
+                          align="right"
+                        >
                           <WrappedText
                             text={record[columnHeader]}
                             color={columnHeader === targetColumn ? RED : BLACK}
