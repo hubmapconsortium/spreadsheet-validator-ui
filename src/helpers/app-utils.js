@@ -50,7 +50,7 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
     (errorDetails) => {
       const { column: errorColumnLocation, rows: errorRowLocations } = errorDetails;
       return ({
-        key: `missing-required-${errorColumnLocation}`,
+        errorId: `missing-required-${errorColumnLocation}`,
         title: `Missing ${errorColumnLocation}`,
         status: determineRepairIncompletenessStatus(
           errorRowLocations,
@@ -84,7 +84,7 @@ const getNotStandardTermSubMenuItemData = (errorSummaryData, patches) => {
   );
   if (notStandardTermErrorList.length > 0) {
     return {
-      key: 'not-standard-term-error',
+      errorId: 'not-standard-term-error',
       title: 'Value not standard term',
       status: determineRepairIncorrectnessStatus(notStandardTermErrorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStandardTerm`,
@@ -99,7 +99,7 @@ const getNotNumberTypeSubMenuItemData = (errorSummaryData, patches) => {
   );
   if (notNumberTypeErrorList.length > 0) {
     return {
-      key: 'not-number-type-error',
+      errorId: 'not-number-type-error',
       title: 'Value not number type',
       status: determineRepairIncorrectnessStatus(notNumberTypeErrorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notNumberType`,
@@ -114,7 +114,7 @@ const getNotStringTypeSubMenuItemData = (errorSummaryData, patches) => {
   );
   if (notStringTypeErrorList.length > 0) {
     return {
-      key: 'not-string-type-error',
+      errorId: 'not-string-type-error',
       title: 'Value not string type',
       status: determineRepairIncorrectnessStatus(notStringTypeErrorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStringType`,
@@ -146,7 +146,7 @@ export const generateRepairIncompletenessButtonData = (errorSummaryData, patches
         ? '1 record is incomplete'
         : `${errorSize} records are incomplete`;
       return ({
-        key: `missing-required-${errorColumnLocation}`,
+        errorId: `missing-required-${errorColumnLocation}`,
         title: errorColumnLocation,
         subtitle: subTitleText,
         status: determineRepairIncompletenessStatus(
@@ -177,7 +177,7 @@ const getNotStandardTermButtonItemData = (errorSummaryData, patches) => {
     : `${errorSize} values are incorrect`;
   if (notStandardTermErrorList.length > 0) {
     return {
-      key: 'not-standard-term-error',
+      errorId: 'not-standard-term-error',
       title: 'Value not standard term',
       subtitle: subTitleText,
       status: determineRepairIncorrectnessStatus(notStandardTermErrorList, patches),
@@ -197,7 +197,7 @@ const getNotNumberTypeButtonItemData = (errorSummaryData, patches) => {
     : `${errorSize} values are incorrect`;
   if (notNumberTypeErrorList.length > 0) {
     return {
-      key: 'not-number-type-error',
+      errorId: 'not-number-type-error',
       title: 'Value is not a number type',
       subtitle: subTitleText,
       status: determineRepairIncorrectnessStatus(notNumberTypeErrorList, patches),
@@ -217,7 +217,7 @@ const getNotStringTypeButtonItemData = (errorSummaryData, patches) => {
     : `${errorSize} values are incorrect`;
   if (notStringTypeErrorList.length > 0) {
     return {
-      key: 'not-string-type-error',
+      errorId: 'not-string-type-error',
       title: 'Value is not a string type',
       subtitle: subTitleText,
       status: determineRepairIncorrectnessStatus(notStringTypeErrorList, patches),

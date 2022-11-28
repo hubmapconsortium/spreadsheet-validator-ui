@@ -42,7 +42,7 @@ const RepairIncorrectness = () => {
       <RepairBadgeSection>
         <Grid container spacing={3}>
           {buttonData.map((data) => (
-            <Grid item key={data.key} xs={3}>
+            <Grid item key={data.errorId} xs={3}>
               <RepairBadge data={data} />
             </Grid>
           ))}

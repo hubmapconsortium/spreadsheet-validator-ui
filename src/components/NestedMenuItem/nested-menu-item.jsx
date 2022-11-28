@@ -115,7 +115,7 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
                   onClick={() => {
                     navigate(subMenuItem.navigateTo, {
                       state: {
-                        key: subMenuItem.key,
+                        errorId: subMenuItem.errorId,
                         selectedMenuItem: subMenuTitle,
                       },
                     });
@@ -143,7 +143,7 @@ NestedMenuItem.propTypes = {
     title: PropTypes.string,
     items: PropTypes.arrayOf(
       PropTypes.shape({
-        key: PropTypes.string.isRequired,
+        errorId: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         navigateTo: PropTypes.string.isRequired,
         status: PropTypes.oneOf([REPAIR_NOT_COMPLETED, REPAIR_COMPLETED]),
