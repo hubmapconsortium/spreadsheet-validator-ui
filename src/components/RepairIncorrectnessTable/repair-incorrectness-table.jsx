@@ -20,7 +20,7 @@ import { REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { id: errorId } = location.state;
+  const { errorId } = location.state;
   const { appData, patches, setPatches } = useContext(AppContext);
   const { data, schema } = appData;
 
@@ -89,7 +89,7 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
                 <HeaderLabel>Suggested value</HeaderLabel>
               </SheetCell>
               <HeaderWithCheckbox
-                key={`${errorId}`}
+                id={`checkbox-${errorId}`}
                 label="Approved?"
                 handleCheckAll={(event) => {
                   setUserInput((currentUserInput) => {
