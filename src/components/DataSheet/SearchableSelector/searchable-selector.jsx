@@ -17,13 +17,13 @@ const SearchableSelector = ({ id, options, onChange, onKeyPress }) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...params}
         size="small"
+        disableunderline="true"
         InputProps={{
           ...params.InputProps,
           startAdornment: (
             <InputAdornment position="start">
               <SearchIcon />
             </InputAdornment>),
-          disableUnderline: true,
         }}
       />
     )}
