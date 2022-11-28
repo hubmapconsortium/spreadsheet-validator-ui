@@ -122,6 +122,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                 if (index === 0) {
                   component = (
                     <HeaderWithBatchInput
+                      key={`batch-input-${key}-${column}`}
                       id={`batch-input-${key}-${column}`}
                       label={getColumnLabel(column, schema)}
                       type={getColumnType(column, schema)}
@@ -133,6 +134,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                 } else {
                   component = (
                     <HeaderWithFilter
+                      key={`filter-${key}-${column}`}
                       id={`filter-${key}-${column}`}
                       label={getColumnLabel(column, schema)}
                       setColumnFilters={setColumnFilters}
@@ -144,45 +146,52 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
               })}
             </SheetHeader>
             <SheetBody>
-              {pagedData.map((rowData) => (
-                <TableRow>
-                  {columnOrder.map((column, index) => {
-                    let component;
-                    // eslint-disable-next-line dot-notation
-                    const row = rowData['_id'];
-                    if (index === 0) {
-                      component = (
-                        <EditableCell
-                          required
-                          id={`cell-${key}-${column}`}
-                          value={userInput[row] || ''}
-                          type={getColumnType(column, schema)}
-                          inputRef={saveChanges}
-                          permissibleValues={getPermissibleValues(column, schema)}
-                          handleInputChange={(event) => {
-                            const { value } = event.target;
-                            if (value !== '') {
-                              setUserInput((currentUserInput) => {
-                                // eslint-disable-next-line no-param-reassign
-                                currentUserInput[row] = value;
-                              });
-                            }
-                          }}
-                        />
-                      );
-                    } else {
-                      component = (
-                        <SheetCell align="right">
-                          <WrappedText
-                            text={getEffectiveValue(row, column, data, patches)}
+              {pagedData.map((rowData) => {
+                // eslint-disable-next-line dot-notation
+                const row = rowData['_id'];
+                return (
+                  <TableRow key={`row-${row}`}>
+                    {columnOrder.map((column, index) => {
+                      let component;
+                      if (index === 0) {
+                        component = (
+                          <EditableCell
+                            required
+                            key={`cell-${key}-${column}`}
+                            id={`cell-${key}-${column}`}
+                            value={userInput[row] || ''}
+                            type={getColumnType(column, schema)}
+                            inputRef={saveChanges}
+                            permissibleValues={getPermissibleValues(column, schema)}
+                            handleInputChange={(event) => {
+                              const { value } = event.target;
+                              if (value !== '') {
+                                setUserInput((currentUserInput) => {
+                                  // eslint-disable-next-line no-param-reassign
+                                  currentUserInput[row] = value;
+                                });
+                              }
+                            }}
                           />
-                        </SheetCell>
-                      );
-                    }
-                    return component;
-                  })}
-                </TableRow>
-              ))}
+                        );
+                      } else {
+                        component = (
+                          <SheetCell
+                            key={`cell-${key}-${column}`}
+                            id={`cell-${key}-${column}`}
+                            align="right"
+                          >
+                            <WrappedText
+                              text={getEffectiveValue(row, column, data, patches)}
+                            />
+                          </SheetCell>
+                        );
+                      }
+                      return component;
+                    })}
+                  </TableRow>
+                );
+              })}
             </SheetBody>
           </SheetTable>
         </SheetTableContainer>
