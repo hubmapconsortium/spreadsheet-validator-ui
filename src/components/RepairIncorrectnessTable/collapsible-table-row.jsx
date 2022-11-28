@@ -41,7 +41,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
           <CellValue>{targetColumn}</CellValue>
         </SheetCell>
         <SheetCell key={`target-value-cell-${id}`}>
-          <CellValue sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex' }}>
             <CellValue>{value}</CellValue>
             &nbsp;
             <CellValue
@@ -53,7 +53,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
             >
               {printFrequency(rows)}
             </CellValue>
-          </CellValue>
+          </Box>
         </SheetCell>
         <SheetCell key={`suggested-value-cell-${id}`}>
           <EditableCell
