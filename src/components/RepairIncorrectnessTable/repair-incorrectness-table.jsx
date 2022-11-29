@@ -94,9 +94,9 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
                 handleCheckAll={(event) => {
                   setUserInput((currentUserInput) => {
                     pagedData.forEach((summaryData) => {
-                      const { key } = summaryData;
+                      const { id } = summaryData;
                       // eslint-disable-next-line no-param-reassign
-                      currentUserInput[key].approved = event.target.checked;
+                      currentUserInput[id].approved = event.target.checked;
                     });
                   });
                 }}

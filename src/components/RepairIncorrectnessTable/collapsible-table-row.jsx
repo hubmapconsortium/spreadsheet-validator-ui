@@ -93,7 +93,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
                 };
               });
             }}
-            checked={userInput?.approved || false}
+            checked={userInput[id]?.approved || false}
           />
         </SheetCell>
       </TableRow>
