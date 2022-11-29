@@ -110,7 +110,7 @@ const RepairBadge = ({ data }) => {
         }}
         >
           <Stack direction="column" alignItems="center" spacing={0}>
-            <Title title={title} />
+            <Title text={title} />
             <CheckIcon />
           </Stack>
         </GreenBadgeButton>
