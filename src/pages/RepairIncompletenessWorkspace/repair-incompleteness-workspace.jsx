@@ -35,6 +35,16 @@ const RepairIncompletenessWorkspace = () => {
           />
         </Section>
         <DefaultInfoSection />
+        <Section sx={{ fontSize: '14pt', width: '90%' }}>
+          <b>INSTRUCTION: </b>
+          The table below shows all the metadata records with missing values on
+          {' '}
+          <i>{targetColumn}</i>
+          {' '}
+          values which is a mandatory entry. Please fill out the missing value
+          using the input field on each metadata record, or using the table header
+          input field to enter in a batch mode.
+        </Section>
         <RepairIncompletnessTable
           targetColumn={targetColumn}
           incompletenessReporting={incompletenessReporting}

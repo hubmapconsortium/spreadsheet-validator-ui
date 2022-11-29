@@ -30,6 +30,7 @@ const RepairIncorrectnessWorkspace = () => {
     ),
     [reporting, incorrectnessType],
   );
+  const errorType = unCamelCase(incorrectnessType);
   const errorSize = incorrectnessReporting.length;
   return (
     <SnackbarProvider maxSnack={1}>
@@ -37,10 +38,17 @@ const RepairIncorrectnessWorkspace = () => {
         <Section>
           <PageTitle
             title={REPAIR_INCORRECTNESS}
-            subtitle={`${errorSize} cells contains a value that is ${unCamelCase(incorrectnessType)}.`}
+            subtitle={`${errorSize} cells contains a value that is ${errorType}.`}
           />
         </Section>
         <DefaultInfoSection />
+        <Section sx={{ fontSize: '14pt', width: '90%' }}>
+          <b>INSTRUCTION: </b>
+          The table below shows all the metadata records that contain values that are
+          not according to the metadata specification. Please correct those values using
+          the available input field, or using the check box to approve the suggested
+          value given by the application.
+        </Section>
         <RepairIncorrectnessTable
           incorrectnessType={incorrectnessType}
           incorrectnessReporting={incorrectnessReporting}
