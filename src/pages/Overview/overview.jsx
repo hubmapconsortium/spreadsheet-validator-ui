@@ -10,7 +10,7 @@ import { VALIDATION_RESULT } from '../../constants/PageTitle';
 import { ADHERENCE_CHART_DATA, COMPLETENESS_CHART_DATA, REQUIRED_FIELD_ANALYSIS_CHART_DATA, VALUE_TYPE_ANALYSIS_CHART_DATA } from '../../constants/TestData';
 
 const Overview = () => {
-  const subtitle = '99 metadata rows were found and validated.';
+  const subtitle = '99 metadata records were found and validated.';
   return (
     <>
       <Section>

@@ -5,7 +5,7 @@ import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
-import RepairIncorrectnessTable from '../../components/RepairIncorrectnessTable';
+import RepairIncorrectnessTable from '../../components/RepairTable/RepairIncorrectnessTable';
 import Section from '../../styles/Section';
 import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 import { getIncorrectnessReporting } from '../../helpers/data-utils';

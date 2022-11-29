@@ -5,21 +5,21 @@ import { TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useHotkeys } from 'react-hotkeys-hook';
-import AppContext from '../../pages/AppContext';
-import SheetHeader from '../DataSheet/SheetHeader';
-import SheetBody from '../DataSheet/SheetBody';
-import SheetCell from '../DataSheet/SheetCell';
-import WrappedText from '../DataSheet/WrappedText';
-import SheetPagination from '../DataSheet/SheetPagination';
-import { createAddOperationPatch, getPagedData } from '../../helpers/app-utils';
-import { moveItemToFront } from '../../helpers/array-utils';
-import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues } from '../../helpers/data-utils';
-import HeaderWithBatchInput from './header-with-batch-input';
-import HeaderWithFilter from './header-with-filter';
-import EditableCell from './editable-cell';
-import { ButtonBox, CancelButton, DataSheetCard, SaveButton, SheetTable, SheetTableContainer } from './styled';
+import AppContext from '../../../pages/AppContext';
+import SheetHeader from '../../DataSheet/SheetHeader';
+import SheetBody from '../../DataSheet/SheetBody';
+import SheetCell from '../../DataSheet/SheetCell';
+import WrappedText from '../../DataSheet/WrappedText';
+import SheetPagination from '../../DataSheet/SheetPagination';
+import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
+import { moveItemToFront } from '../../../helpers/array-utils';
+import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues } from '../../../helpers/data-utils';
+import HeaderWithBatchInput from '../header-with-batch-input';
+import HeaderWithFilter from '../header-with-filter';
+import EditableCell from '../editable-cell';
+import { ButtonBox, CancelButton, DataSheetCard, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { getFilteredData, initUserInput } from './function';
-import { REPAIR_INCOMPLENESS_PATH } from '../../constants/Router';
+import { REPAIR_INCOMPLENESS_PATH } from '../../../constants/Router';
 
 const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => {
   const navigate = useNavigate();
@@ -155,24 +155,24 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                       let component;
                       if (index === 0) {
                         component = (
-                          <EditableCell
-                            required
-                            key={`cell-${key}-${column}`}
-                            id={`cell-${key}-${column}`}
-                            value={userInput[row] || ''}
-                            type={getColumnType(column, schema)}
-                            inputRef={saveChanges}
-                            permissibleValues={getPermissibleValues(column, schema)}
-                            handleInputChange={(event) => {
-                              const { value } = event.target;
-                              if (value !== '') {
-                                setUserInput((currentUserInput) => {
-                                  // eslint-disable-next-line no-param-reassign
-                                  currentUserInput[row] = value;
-                                });
-                              }
-                            }}
-                          />
+                          <SheetCell key={`cell-${key}-${column}`} sx={{ zIndex: 998 }} sticky>
+                            <EditableCell
+                              required
+                              value={userInput[row] || ''}
+                              type={getColumnType(column, schema)}
+                              inputRef={saveChanges}
+                              permissibleValues={getPermissibleValues(column, schema)}
+                              handleInputChange={(event) => {
+                                const { value } = event.target;
+                                if (value !== '') {
+                                  setUserInput((currentUserInput) => {
+                                    // eslint-disable-next-line no-param-reassign
+                                    currentUserInput[row] = value;
+                                  });
+                                }
+                              }}
+                            />
+                          </SheetCell>
                         );
                       } else {
                         component = (

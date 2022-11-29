@@ -1,4 +1,4 @@
-import { getPatchValue } from '../../helpers/data-utils';
+import { getPatchValue } from '../../../helpers/data-utils';
 
 export const initUserInput = (rows, column, patches) => rows
   .reduce((result, row) => (

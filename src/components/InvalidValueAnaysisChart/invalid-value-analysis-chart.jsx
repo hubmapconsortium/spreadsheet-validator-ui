@@ -34,7 +34,7 @@ const InvalidValueAnalysisChart = ({ analysisData }) => (
   <ChartCard>
     <TitleSection>
       <Title variant="h4">Invalid Value Type Analysis</Title>
-      <SubTitle variant="h5">Evaluating 99 metadata rows in the spreadsheet</SubTitle>
+      <SubTitle variant="h5">Evaluating 99 metadata records in the spreadsheet</SubTitle>
     </TitleSection>
     <ChartSection>
       <TableStackedBar data={analysisData} />

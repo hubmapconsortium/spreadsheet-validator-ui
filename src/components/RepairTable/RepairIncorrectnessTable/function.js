@@ -1,5 +1,5 @@
-import { getPatchValue } from '../../helpers/data-utils';
-import { checkRepairPatchPresent } from '../../helpers/app-utils';
+import { getPatchValue } from '../../../helpers/data-utils';
+import { checkRepairPatchPresent } from '../../../helpers/app-utils';
 
 // eslint-disable-next-line import/prefer-default-export
 export const initUserInput = (tableData, patches) => tableData

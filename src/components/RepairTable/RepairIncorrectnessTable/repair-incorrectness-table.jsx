@@ -4,17 +4,17 @@ import { useImmer } from 'use-immer';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useHotkeys } from 'react-hotkeys-hook';
-import AppContext from '../../pages/AppContext';
-import SheetHeader from '../DataSheet/SheetHeader';
-import SheetBody from '../DataSheet/SheetBody';
-import SheetCell from '../DataSheet/SheetCell';
-import SheetPagination from '../DataSheet/SheetPagination';
-import { createReplaceOperationPatch, generateRepairIncorrectnessTableData, getPagedData } from '../../helpers/app-utils';
+import AppContext from '../../../pages/AppContext';
+import SheetHeader from '../../DataSheet/SheetHeader';
+import SheetBody from '../../DataSheet/SheetBody';
+import SheetCell from '../../DataSheet/SheetCell';
+import SheetPagination from '../../DataSheet/SheetPagination';
+import { createReplaceOperationPatch, generateRepairIncorrectnessTableData, getPagedData } from '../../../helpers/app-utils';
 import { initUserInput } from './function';
-import HeaderWithCheckbox from './header-with-checkbox';
-import CollapsibleTableRow from './collapsible-table-row';
-import { ButtonBox, CancelButton, DataSheetCard, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from './styled';
-import { REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
+import HeaderWithCheckbox from '../header-with-checkbox';
+import CollapsibleTableRow from '../collapsible-table-row';
+import { ButtonBox, CancelButton, DataSheetCard, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
+import { REPAIR_INCORRECTNESS_PATH } from '../../../constants/Router';
 
 // eslint-disable-next-line no-unused-vars
 const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting }) => {
