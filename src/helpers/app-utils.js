@@ -68,7 +68,7 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
 };
 
 const determineRepairIncorrectnessStatus = (errorList, patches) => {
-  for (let i = 0; errorList.length > 0; i += 1) {
+  for (let i = 0; i < errorList.length; i += 1) {
     const errorDetails = errorList[i];
     const { column: errorColumnLocation, rows: errorRowLocations } = errorDetails;
     if (!isRepairCompleted(errorRowLocations, errorColumnLocation, patches)) {
@@ -236,7 +236,7 @@ export const generateRepairIncorrectnessButtonData = (errorSummaryData, patches)
 );
 
 export const determineOverallRepairStatus = (reporting, patches) => {
-  for (let i = 0; reporting.length > 0; i += 1) {
+  for (let i = 0; i < reporting.length; i += 1) {
     const reportItem = reporting[i];
     const { row, column } = reportItem;
     if (!checkRepairPatchPresent(row, column, patches)) {
