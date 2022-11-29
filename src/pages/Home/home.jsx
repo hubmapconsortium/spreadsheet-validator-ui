@@ -7,7 +7,6 @@ import logo from '../../logo.svg';
 import 'filepond/dist/filepond.min.css';
 import './home.css';
 import { APP_DATA } from '../../constants/TestData';
-import { OVERVIEW } from '../../constants/PageTitle';
 import { OVERVIEW_PATH } from '../../constants/Router';
 
 const HomeContainer = styled(Container)({
@@ -57,7 +56,7 @@ const Home = ({ setAppData }) => {
       setAppData(APP_DATA);
       navigate(OVERVIEW_PATH, {
         state: {
-          selectedMenuItem: OVERVIEW,
+          selectedMenuItem: 'overview',
         },
       });
     };

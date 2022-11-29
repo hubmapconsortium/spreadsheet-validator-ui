@@ -84,7 +84,7 @@ const SideBar = () => {
     () => {
       navigate(OVERVIEW_PATH, {
         state: {
-          selectedMenuItem: OVERVIEW,
+          selectedMenuItem: 'overview',
         },
       });
     },
@@ -95,7 +95,7 @@ const SideBar = () => {
     () => {
       navigate(REPAIR_INCOMPLENESS_PATH, {
         state: {
-          selectedMenuItem: REPAIR_INCOMPLETENESS,
+          selectedMenuItem: 'repair-incompleteness',
         },
       });
     },
@@ -106,7 +106,7 @@ const SideBar = () => {
     () => {
       navigate(REPAIR_INCORRECTNESS_PATH, {
         state: {
-          selectedMenuItem: REPAIR_INCORRECTNESS,
+          selectedMenuItem: 'repair-incorrectness',
         },
       });
     },
@@ -121,17 +121,20 @@ const SideBar = () => {
         <NestedMenu>
           <NestedMenuItem
             icon={<OverviewIcon />}
+            name="overview"
             title={OVERVIEW}
             navigateTo={OVERVIEW_PATH}
           />
           <NestedMenuItem
             icon={<RepairIcon />}
+            name="repair-incompleteness"
             title={REPAIR_INCOMPLETENESS}
             navigateTo={REPAIR_INCOMPLENESS_PATH}
             subMenu={repairIncompletenessSubMenu}
           />
           <NestedMenuItem
             icon={<RepairIcon />}
+            name="repair-incorrectness"
             title={REPAIR_INCORRECTNESS}
             navigateTo={REPAIR_INCORRECTNESS_PATH}
             subMenu={repairIncorrectnessSubMenu}

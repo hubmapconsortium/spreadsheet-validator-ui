@@ -86,13 +86,16 @@ const CheckIcon = () => (
 
 const RepairBadge = ({ data }) => {
   const navigate = useNavigate();
-  const { errorId, title, subtitle, status: repairStatus, navigateTo } = data;
+  const { errorId, name, title, subtitle, status: repairStatus, navigateTo } = data;
   return (
     <>
       {repairStatus === REPAIR_NOT_COMPLETED && (
         <RedBadgeButton onClick={() => {
           navigate(navigateTo, {
-            state: { errorId },
+            state: {
+              errorId,
+              selectedMenuItem: name,
+            },
           });
         }}
         >
@@ -105,7 +108,10 @@ const RepairBadge = ({ data }) => {
       {repairStatus === REPAIR_COMPLETED && (
         <GreenBadgeButton onClick={() => {
           navigate(navigateTo, {
-            state: { errorId },
+            state: {
+              errorId,
+              selectedMenuItem: name,
+            },
           });
         }}
         >
@@ -122,6 +128,7 @@ const RepairBadge = ({ data }) => {
 RepairBadge.propTypes = {
   data: PropTypes.shape({
     errorId: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string.isRequired,
     status: PropTypes.oneOf([REPAIR_NOT_COMPLETED, REPAIR_COMPLETED]).isRequired,

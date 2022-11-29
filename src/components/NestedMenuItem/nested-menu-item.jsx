@@ -69,7 +69,7 @@ const NoErrorStatusIcon = styled(CheckCircleIcon)({
 });
 
 // eslint-disable-next-line max-len
-const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
+const NestedMenuItem = ({ icon, name, title, navigateTo, subMenu }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedMenuItem } = location.state;
@@ -80,7 +80,7 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
   const openSubMenus = () => {
     navigate(navigateTo, {
       state: {
-        selectedMenuItem: title,
+        selectedMenuItem: name,
       },
     });
     if (parentMenuSelected) {
@@ -92,8 +92,8 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
   return (
     <>
       <MenuItem
-        key={title}
-        selected={title === selectedMenuItem}
+        key={name}
+        selected={name === selectedMenuItem}
         onClick={openSubMenus}
       >
         {icon}
@@ -107,16 +107,16 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
             subheader={<SubMenuTitle>{subMenu.title}</SubMenuTitle>}
           >
             {subMenu.items.map((subMenuItem) => {
-              const subMenuTitle = subMenuItem.title;
+              const { name: subMenuName, title: subMenuTitle } = subMenuItem;
               return (
                 <SubMenuItem
                   key={subMenuTitle}
-                  selected={subMenuTitle === selectedMenuItem}
+                  selected={subMenuName === selectedMenuItem}
                   onClick={() => {
                     navigate(subMenuItem.navigateTo, {
                       state: {
                         errorId: subMenuItem.errorId,
-                        selectedMenuItem: subMenuTitle,
+                        selectedMenuItem: subMenuName,
                       },
                     });
                     setParentMenuSelected(false);
@@ -137,6 +137,7 @@ const NestedMenuItem = ({ icon, title, navigateTo, subMenu }) => {
 
 NestedMenuItem.propTypes = {
   icon: PropTypes.node,
+  name: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   navigateTo: PropTypes.string.isRequired,
   subMenu: PropTypes.shape({
