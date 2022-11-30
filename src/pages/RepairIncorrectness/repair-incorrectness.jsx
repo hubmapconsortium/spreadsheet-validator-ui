@@ -39,7 +39,7 @@ const RepairIncorrectness = () => {
         />
       </Section>
       <DefaultInfoSection />
-      <Section sx={{ fontSize: '14pt', width: '75%' }}>
+      <Section sx={{ fontSize: '14pt', width: '65%' }}>
         <b>INSTRUCTION: </b>
         Select an issue below and fix the data type error on the given metadata records.
         A table will appear once you make the selection to perform the repair.
