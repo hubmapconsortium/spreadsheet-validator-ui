@@ -7,17 +7,13 @@ import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairIncorrectnessTable from '../../components/RepairTable/RepairIncorrectnessTable';
 import Section from '../../styles/Section';
-import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 import { getIncorrectnessReporting } from '../../helpers/data-utils';
+import { unCamelCase } from '../../helpers/string-utils';
+import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
 const WorkspaceArea = styled(Box)({
   display: 'block',
 });
-
-const unCamelCase = (str) => str
-  .replace(/([a-z])([A-Z])/g, '$1 $2')
-  .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
-  .toLowerCase();
 
 const RepairIncorrectnessWorkspace = () => {
   const { appData } = useContext(AppContext);

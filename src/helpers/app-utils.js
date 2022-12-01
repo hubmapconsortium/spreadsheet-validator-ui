@@ -1,6 +1,91 @@
 import * as jsonpatch from 'fast-json-patch';
+import { unCamelCase } from './string-utils';
+import { GREEN, RED } from '../constants/Color';
 import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
+
+export const generateCompletenessChartData = (spreadsheetData, reportingData) => {
+  const dataSize = spreadsheetData.length;
+  const errorSize = [...new Set(reportingData
+    .filter(
+      (item) => item.errorType === 'missingRequired',
+    ).map(
+      (item) => item.row,
+    ))].length;
+  const validSize = dataSize - errorSize;
+  return {
+    labels: ['Row has all required value', 'Row missing some required value'],
+    innerTextTitle: `${validSize} / ${dataSize}`,
+    innerTextSubtitle: 'Completeness',
+    datasets: [{
+      label: '',
+      data: [validSize, errorSize],
+      backgroundColor: [GREEN, RED],
+    }],
+  };
+};
+
+export const generateCorrectnessChartData = (spreadsheetData, reportingData) => {
+  const dataSize = spreadsheetData.length;
+  const errorSize = [...new Set(reportingData
+    .filter(
+      (item) => item.errorType === 'notStandardTerm'
+        || item.errorType === 'notNumberType'
+        || item.errorType === 'notStringType',
+    ).map(
+      (item) => item.row,
+    ))].length;
+  const validSize = dataSize - errorSize;
+  return {
+    labels: ['Row has no data type errors', 'Row has some data type error'],
+    innerTextTitle: `${validSize} / ${dataSize}`,
+    innerTextSubtitle: 'Correctness',
+    datasets: [{
+      label: '',
+      data: [validSize, errorSize],
+      backgroundColor: [GREEN, RED],
+    }],
+  };
+};
+
+export const generateMissingValueAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
+  columns: ['Field name', 'Number of errors'],
+  rows: errorSummaryData
+    .filter(
+      (item) => item.errorType === 'missingRequired',
+    ).sort(
+      (item1, item2) => (item2.rows.length - item1.rows.length),
+    ).map(
+      (item) => [
+        item.column,
+        [
+          { value: item.rows.length, color: RED },
+          { value: spreadsheetData.length - item.rows.length, color: GREEN },
+        ],
+      ],
+    ),
+});
+
+export const generateInvalidValueTypeAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
+  columns: ['Field name', 'Error flag', 'Number of errors'],
+  rows: errorSummaryData
+    .filter(
+      (item) => item.errorType === 'notStandardTerm'
+        || item.errorType === 'notNumberType'
+        || item.errorType === 'notStringType',
+    ).sort(
+      (item1, item2) => (item2.rows.length - item1.rows.length),
+    ).map(
+      (item) => [
+        item.column,
+        `Value ${unCamelCase(item.errorType)}`,
+        [
+          { value: item.rows.length, color: RED },
+          { value: spreadsheetData.length - item.rows.length, color: GREEN },
+        ],
+      ],
+    ),
+});
 
 export const createAddOperationPatch = (row, column, value) => ({
   op: 'add',

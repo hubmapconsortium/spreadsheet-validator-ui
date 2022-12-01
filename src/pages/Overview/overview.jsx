@@ -1,34 +1,60 @@
+import { useContext, useMemo } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
+import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import ErrorOverviewChart from '../../components/ErrorOverviewChart';
-import MissingValueAnalysisChart from '../../components/MissingValueAnalysisChart';
-import InvalidValueAnalysisChart from '../../components/InvalidValueAnaysisChart';
+import ErrorAnalysisChart from '../../components/ErrorAnalysisChart';
 import Section from '../../styles/Section';
+import { generateCompletenessChartData, generateCorrectnessChartData, generateErrorSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
 import { VALIDATION_RESULT } from '../../constants/PageTitle';
-import { ADHERENCE_CHART_DATA, COMPLETENESS_CHART_DATA, REQUIRED_FIELD_ANALYSIS_CHART_DATA, VALUE_TYPE_ANALYSIS_CHART_DATA } from '../../constants/TestData';
 
 const Overview = () => {
-  const subtitle = '99 metadata records were found and validated.';
+  const { appData } = useContext(AppContext);
+  const { data, reporting } = appData;
+  const completenessChartData = useMemo(
+    () => generateCompletenessChartData(data, reporting),
+    [reporting],
+  );
+  const correctnessChartData = useMemo(
+    () => generateCorrectnessChartData(data, reporting),
+    [reporting],
+  );
+  const errorSummaryData = useMemo(
+    () => generateErrorSummaryData(reporting),
+    [reporting],
+  );
+  const missingValueAnalysisChartData = useMemo(
+    () => generateMissingValueAnalysisChartData(data, errorSummaryData),
+    [errorSummaryData],
+  );
+  const invalidValueTypeAnalysisChartData = useMemo(
+    () => generateInvalidValueTypeAnalysisChartData(data, errorSummaryData),
+    [errorSummaryData],
+  );
   return (
     <>
       <Section>
         <PageTitle
           title={VALIDATION_RESULT}
-          subtitle={subtitle}
+          subtitle={`${data.length} metadata records were found and validated.`}
         />
       </Section>
       <DefaultInfoSection />
       <ErrorOverviewChart
-        completenessData={COMPLETENESS_CHART_DATA}
-        correctnessData={ADHERENCE_CHART_DATA}
+        completenessData={completenessChartData}
+        correctnessData={correctnessChartData}
       />
-      <MissingValueAnalysisChart
-        analysisData={REQUIRED_FIELD_ANALYSIS_CHART_DATA}
+      <ErrorAnalysisChart
+        title="Missing Value Analysis"
+        subtitle={`Evaluating ${data.length} metadata records in the spreadsheet`}
+        analysisData={missingValueAnalysisChartData}
       />
-      <InvalidValueAnalysisChart
-        analysisData={VALUE_TYPE_ANALYSIS_CHART_DATA}
+      <ErrorAnalysisChart
+        title="Invalid Value Type Analysis"
+        subtitle={`Evaluating ${data.length} metadata records in the spreadsheet`}
+        analysisData={invalidValueTypeAnalysisChartData}
       />
     </>
   );
