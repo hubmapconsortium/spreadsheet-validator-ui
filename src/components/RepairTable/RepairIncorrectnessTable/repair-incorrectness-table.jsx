@@ -26,7 +26,7 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
 
   const [userInput, setUserInput] = useImmer({});
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { enqueueSnackbar } = useSnackbar();
 
