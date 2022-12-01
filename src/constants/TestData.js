@@ -35,49 +35,25 @@ export const METADATA_SCHEMA = {
     preparation_medium: {
       label: 'preparation_medium',
       type: 'text',
-      permissibleValues: [{
-        label: 'PFA 4%',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/PFA4pc-prep',
-      }, {
-        label: 'Buffered Formalin (10% NBF)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/bufferedFormalin-10pcNBF-prep',
-      }, {
-        label: 'Non-Buffered Formalin (FOR)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-BufferedFormalin-FOR-prep',
-      }, {
-        label: '1 x PBS',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/1xPBS-prep',
-      }, {
-        label: 'OCT',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/OCT',
-      }, {
-        label: 'CMC',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/CMC-prep',
-      }, {
-        label: 'MACS Tissue Storage Solution',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/maCSTissueStorageSolution-prep',
-      }, {
-        label: 'RNALater',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C63348',
-      }, {
-        label: 'Methanol',
-        meaning: 'http://purl.bioontology.org/ontology/MESH/D000432',
-      }, {
-        label: 'Non-Aldehyde Based Without Acetic Acid (NAA)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-AldehydeBasedWithoutAceticAcid-NAA',
-      }, {
-        label: 'Non-Aldehyde With Acetic Acid (ACA)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-AldehydeWithAceticAcid-ACA',
-      }, {
-        label: 'PAXgene Blood Tissue System',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C126392',
-      }, {
-        label: 'Allprotect Tissue Reagent (ALL)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/allprotectTissueReagent-ALL-prep',
-      }, {
-        label: 'None',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41132',
-      }],
+      permissibleValues: [
+        { label: 'PFA (4%)', meaning: '' },
+        { label: 'Buffered Formalin (10% NBF)', meaning: '' },
+        { label: 'Non-Buffered Formalin (FOR)', meaning: '' },
+        { label: '1 x PBS', meaning: '' },
+        { label: 'Formalin fixed OCT', meaning: '' },
+        { label: 'PFA fixed frozen OCT', meaning: '' },
+        { label: 'Fresh frozen OCT', meaning: '' },
+        { label: 'Fresh frozen CMC', meaning: '' },
+        { label: 'MACS Tissue Storage Solution', meaning: '' },
+        { label: 'RNAlater', meaning: '' },
+        { label: 'Methanol', meaning: '' },
+        { label: 'Non-aldehyde based without acetic acid (NAA)', meaning: '' },
+        { label: 'Non-aldehyde with acetic acid (ACA)', meaning: '' },
+        { label: 'PAXgene tissue (PXT)', meaning: '' },
+        { label: 'Allprotect tissue reagent (ALL)', meaning: '' },
+        { label: 'CLARITY hydrogel', meaning: '' },
+        { label: 'None', meaning: '' },
+        { label: 'Unknown', meaning: '' }],
       required: true,
       description: 'The medium used during preparation of the sample.',
     },
@@ -85,38 +61,14 @@ export const METADATA_SCHEMA = {
       label: 'preparation_temperature',
       type: 'text',
       permissibleValues: [
-        {
-          label: 'Liquid Nitrogen',
-          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C68796',
-        },
-        {
-          label: 'Liquid Nitrogen Vapor',
-          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C174159',
-        },
-        {
-          label: 'Dry Ice',
-          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C63373',
-        },
-        {
-          label: '4 Degrees Celsius',
-          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185332',
-        },
-        {
-          label: '24 Celsius (Room Temperature)',
-          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/24Celsius-RoomTemperature',
-        },
-        {
-          label: '37 Celsius',
-          meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/37Celsius-PT',
-        },
-        {
-          label: 'Minus 80 Degrees Celsius',
-          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185336',
-        },
-        {
-          label: 'Minus 20 Degrees Celsius',
-          meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185334',
-        }],
+        { label: 'Liquid Nitrogen', meaning: '' },
+        { label: 'Liquid Nitrogen Vapor', meaning: '' },
+        { label: 'Dry Ice', meaning: '' },
+        { label: '-80 Celsius', meaning: '' },
+        { label: '-20 Celsius', meaning: '' },
+        { label: '4 Celsius', meaning: '' },
+        { label: '37 Celsius', meaning: '' },
+        { label: 'Unknown', meaning: '' }],
       required: true,
       description: 'The temperature for the preparation process.',
     },
@@ -145,107 +97,51 @@ export const METADATA_SCHEMA = {
     storage_medium: {
       label: 'storage_medium',
       type: 'text',
-      permissibleValues: [{
-        label: 'PFA 4%',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/PFA4pc-store',
-      }, {
-        label: 'Buffered Formalin (10% NBF)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/BufferedFormalin-10pcNBF',
-      }, {
-        label: 'Non-Buffered Formalin (FOR)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Non-BufferedFormalin-FOR',
-      }, {
-        label: '1 x PBS',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/1xPBS-store',
-      }, {
-        label: 'OCT Embedded',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/OCTEmbedded',
-      }, {
-        label: 'CMC Embedded',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/CMCEmbedded',
-      }, {
-        label: 'OCT Embedded Cryoprotected (sucrose)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/OCTEmbeddedCryoprotected-sucrose',
-      }, {
-        label: 'Paraffin Embedded',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/ParaffinEmbedded',
-      }, {
-        label: 'MACS Tissue Storage Solution',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/mACSTissueStorageSolution',
-      }, {
-        label: 'RNALater',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C63348',
-      }, {
-        label: 'Methanol',
-        meaning: 'http://purl.bioontology.org/ontology/MESH/D000432',
-      }, {
-        label: 'Tris-EDTA',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/Tris-EDTA',
-      }, {
-        label: '70% Ethanol',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/70pcEthanol',
-      }, {
-        label: 'Serum + DMSO',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/SerumplusDMSO',
-      }, {
-        label: 'DMSO (No serum)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/DMSO-Noserum',
-      }, {
-        label: 'PAXgene Blood Tissue System',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C126392',
-      }, {
-        label: 'Allprotect Tissue Reagent (ALL)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/allprotectTissueReagent-ALL',
-      }, {
-        label: 'Sucrose Cryoprotection Solution',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/SucroseCryoprotectionSolution',
-      }, {
-        label: 'CMC',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/CMC-store',
-      }, {
-        label: 'None',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41132',
-      }],
+      permissibleValues: [
+        { label: 'PFA (4%)', meaning: '' },
+        { label: 'Buffered Formalin (10% NBF)', meaning: '' },
+        { label: 'Non-Buffered Formalin (FOR)', meaning: '' },
+        { label: '1 x PBS', meaning: '' },
+        { label: 'PBS + 0.05% Azide', meaning: '' },
+        { label: 'Antifreeze (50% PBS/50%glycerol/0.05% Azide)', meaning: '' },
+        { label: 'OCT Embedded', meaning: '' },
+        { label: 'CMC Embedded', meaning: '' },
+        { label: 'OCT Embedded Cryoprotected (sucrose)', meaning: '' },
+        { label: 'Paraffin Embedded', meaning: '' },
+        { label: 'MACS Tissue Storage Solution', meaning: '' },
+        { label: 'RNAlater', meaning: '' },
+        { label: 'Methanol', meaning: '' },
+        { label: 'Tris-EDTA', meaning: '' },
+        { label: '70% ethanol', meaning: '' },
+        { label: '90% Serum + 10% DMSO', meaning: '' },
+        { label: 'DMSO (no serum)', meaning: '' },
+        { label: 'PAXgene Tissue Kit (PXT)', meaning: '' },
+        { label: 'Allprotect Tissue Reagent (ALL)', meaning: '' },
+        { label: 'Sucrose Cryoprotection Solution', meaning: '' },
+        { label: 'Carboxymethylcellulose (CMC)', meaning: '' },
+        { label: 'None', meaning: '' },
+        { label: 'Unknown', meaning: '' }],
       required: true,
       description: 'What was the sample preserved in.',
     },
     storage_temperature: {
       label: 'storage_temperature',
       type: 'text',
-      permissibleValues: [{
-        label: 'Liquid Nitrogen (Unspecified)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/LiquidNitrogen-Unspecified',
-      }, {
-        label: 'Liquid Nitrogen (Cryotube)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/LiquidNitrogen-Cryotube',
-      }, {
-        label: 'Liquid Nitrogen (Straw)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/LiquidNitrogen-Straw',
-      }, {
-        label: 'Liquid Nitrogen Vapor',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C174159',
-      }, {
-        label: 'Dry Ice',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C63373',
-      }, {
-        label: '-80 Celsius (Unspecified)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/-80Celsius-Unspecified',
-      }, {
-        label: '-80 Celsius (Cryotube)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/-80Celsius-Cryotube',
-      }, {
-        label: '-80 Celsius (Straw)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/-80Celsius-Straw',
-      }, {
-        label: '4 Degrees Celsius',
-        meaning: 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C185332',
-      }, {
-        label: '24 Celsius (Room Temperature)',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/24Celsius-RoomTemperature',
-      }, {
-        label: '37 Celsius',
-        meaning: 'https://purl.org/hubmapvoc/samples-voc-additions/37Celsius-ST',
-      }],
+      permissibleValues: [
+        { label: 'Liquid Nitrogen (Unspecified)', meaning: '' },
+        { label: 'Liquid Nitrogen (Cryotube)', meaning: '' },
+        { label: 'Liquid Nitrogen (Straw)', meaning: '' },
+        { label: 'Liquid Nitrogen Vapor', meaning: '' },
+        { label: 'Dry Ice', meaning: '' },
+        { label: '-80 Celsius (Unspecified)', meaning: '' },
+        { label: '-80 Celsius (Cryotube)', meaning: '' },
+        { label: '-80 Celsius (Straw)', meaning: '' },
+        { label: '-20 Celsius', meaning: '' },
+        { label: '4 Celsius', meaning: '' },
+        { label: '24 Celsius (Room Temperature)', meaning: '' },
+        { label: '37 Celsius', meaning: '' },
+        { label: 'n/a', meaning: '' },
+        { label: 'Unknown', meaning: '' }],
       required: true,
       description: 'The temperature during storage, after preparation and before the assay is performed.',
     },
@@ -722,213 +618,345 @@ export const METADATA_RECORDS = [
 
 export const ERROR_REPORT = [
   {
-    row: 0,
+    row: 4,
+    column: 'sample_ID',
+    errorType: 'missingRequired',
+  }, {
+    row: 5,
+    column: 'sample_ID',
+    errorType: 'missingRequired',
+  }, {
+    row: 6,
+    column: 'sample_ID',
+    errorType: 'missingRequired',
+  }, {
+    row: 7,
+    column: 'sample_ID',
+    errorType: 'missingRequired',
+  }, {
+    row: 8,
+    column: 'sample_ID',
+    errorType: 'missingRequired',
+  }, {
+    row: 4,
+    column: 'source_storage_time_value',
+    value: '86 days',
+    suggestion: 86,
+    errorType: 'notNumberType',
+  }, {
+    row: 5,
+    column: 'source_storage_time_value',
+    value: '86 days',
+    suggestion: 86,
+    errorType: 'notNumberType',
+  }, {
+    row: 6,
+    column: 'source_storage_time_value',
+    value: '86 days',
+    suggestion: 86,
+    errorType: 'notNumberType',
+  }, {
+    row: 7,
+    column: 'source_storage_time_value',
+    value: '86 days',
+    suggestion: 86,
+    errorType: 'notNumberType',
+  }, {
+    row: 8,
+    column: 'source_storage_time_value',
+    value: '86 days',
+    suggestion: 86,
+    errorType: 'notNumberType',
+  }, {
+    row: 4,
+    column: 'source_storage_time_unit',
+    value: 'days',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 5,
+    column: 'source_storage_time_unit',
+    value: 'days',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 6,
+    column: 'source_storage_time_unit',
+    value: 'days',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 7,
+    column: 'source_storage_time_unit',
+    value: 'days',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 8,
+    column: 'source_storage_time_unit',
+    value: 'days',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 9,
+    column: 'source_storage_time_unit',
+    value: 'd',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 10,
+    column: 'source_storage_time_unit',
+    value: 'd',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 11,
+    column: 'source_storage_time_unit',
+    value: 'd',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 12,
+    column: 'source_storage_time_unit',
+    value: 'd',
+    suggestion: 'day',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 4,
+    column: 'preparation_medium',
+    value: 'Formalin',
+    suggestion: 'Formalin fixed OCT',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 5,
+    column: 'preparation_medium',
+    value: 'Formalin',
+    suggestion: 'Formalin fixed OCT',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 6,
+    column: 'preparation_medium',
+    value: 'Formalin',
+    suggestion: 'Formalin fixed OCT',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 7,
+    column: 'preparation_medium',
+    value: 'Formalin',
+    suggestion: 'Formalin fixed OCT',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 8,
+    column: 'preparation_medium',
+    value: 'Formalin',
+    suggestion: 'Formalin fixed OCT',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 9,
+    column: 'preparation_medium',
+    value: 'Agar-agar',
+    suggestion: '',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 10,
+    column: 'preparation_medium',
+    value: 'Agar-agar',
+    suggestion: '',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 11,
+    column: 'preparation_medium',
+    value: 'Agar-agar',
+    suggestion: '',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 12,
+    column: 'preparation_medium',
+    value: 'Agar-agar',
+    suggestion: '',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 4,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 5,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 6,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 7,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 8,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 9,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 10,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 11,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 12,
+    column: 'preparation_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 4,
+    column: 'processing_time_value',
+    value: '10 minutes',
+    suggestion: 10,
+    errorType: 'notNumberType',
+  }, {
+    row: 5,
+    column: 'processing_time_value',
+    value: '10 minutes',
+    suggestion: 10,
+    errorType: 'notNumberType',
+  }, {
+    row: 6,
+    column: 'processing_time_value',
+    value: '10 minutes',
+    suggestion: 10,
+    errorType: 'notNumberType',
+  }, {
+    row: 7,
+    column: 'processing_time_value',
+    value: '10 minutes',
+    suggestion: 10,
+    errorType: 'notNumberType',
+  }, {
+    row: 8,
+    column: 'processing_time_value',
+    value: '10 minutes',
+    suggestion: 10,
+    errorType: 'notNumberType',
+  }, {
+    row: 4,
+    column: 'processing_time_unit',
+    value: 'minutes',
+    suggestion: 'minute',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 5,
+    column: 'processing_time_unit',
+    value: 'minutes',
+    suggestion: 'minute',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 6,
+    column: 'processing_time_unit',
+    value: 'minutes',
+    suggestion: 'minute',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 7,
+    column: 'processing_time_unit',
+    value: 'minutes',
+    suggestion: 'minute',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 8,
+    column: 'processing_time_unit',
+    value: 'minutes',
+    suggestion: 'minute',
+    errorType: 'notStandardTerm',
+  }, {
+    row: 9,
     column: 'processing_time_unit',
     value: 'min',
     suggestion: 'minute',
     errorType: 'notStandardTerm',
   }, {
-    row: 1,
+    row: 10,
     column: 'processing_time_unit',
     value: 'min',
     suggestion: 'minute',
     errorType: 'notStandardTerm',
   }, {
-    row: 2,
+    row: 11,
     column: 'processing_time_unit',
     value: 'min',
     suggestion: 'minute',
     errorType: 'notStandardTerm',
   }, {
-    row: 3,
+    row: 12,
     column: 'processing_time_unit',
     value: 'min',
     suggestion: 'minute',
     errorType: 'notStandardTerm',
   }, {
-    row: 4,
-    column: 'source_storage_time_value',
-    value: '86 day',
-    suggestion: 86,
-    errorType: 'notNumberType',
-  }, {
-    row: 5,
-    column: 'source_storage_time_value',
-    value: '86 day',
-    suggestion: 86,
-    errorType: 'notNumberType',
-  }, {
-    row: 6,
-    column: 'source_storage_time_value',
-    value: '86 day',
-    suggestion: 86,
-    errorType: 'notNumberType',
-  }, {
-    row: 7,
-    column: 'source_storage_time_value',
-    value: '86 day',
-    suggestion: 86,
-    errorType: 'notNumberType',
-  }, {
-    row: 8,
-    column: 'source_storage_time_value',
-    value: '86 day',
-    suggestion: 86,
-    errorType: 'notNumberType',
-  }, {
-    row: 4,
-    column: 'source_storage_time_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 5,
-    column: 'source_storage_time_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 6,
-    column: 'source_storage_time_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 7,
-    column: 'source_storage_time_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 8,
-    column: 'source_storage_time_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 4,
-    column: 'preparation_medium',
-    value: 'Formalin',
-    suggestion: 'Buffered Formalin (10% NBF)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 5,
-    column: 'preparation_medium',
-    value: 'Formalin',
-    suggestion: 'Buffered Formalin (10% NBF)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 6,
-    column: 'preparation_medium',
-    value: 'Formalin',
-    suggestion: 'Buffered Formalin (10% NBF)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 7,
-    column: 'preparation_medium',
-    value: 'Formalin',
-    suggestion: 'Buffered Formalin (10% NBF)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 8,
-    column: 'preparation_medium',
-    value: 'Formalin',
-    suggestion: 'Buffered Formalin (10% NBF)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 4,
-    column: 'processing_time_value',
-    value: '10 minutes',
-    suggestion: 10,
-    errorType: 'notNumberType',
-  }, {
-    row: 5,
-    column: 'processing_time_value',
-    value: '10 minutes',
-    suggestion: 10,
-    errorType: 'notNumberType',
-  }, {
-    row: 6,
-    column: 'processing_time_value',
-    value: '10 minutes',
-    suggestion: 10,
-    errorType: 'notNumberType',
-  }, {
-    row: 7,
-    column: 'processing_time_value',
-    value: '10 minutes',
-    suggestion: 10,
-    errorType: 'notNumberType',
-  }, {
-    row: 8,
-    column: 'processing_time_value',
-    value: '10 minutes',
-    suggestion: 10,
-    errorType: 'notNumberType',
-  }, {
-    row: 4,
-    column: 'storage_medium',
-    value: 'Paraffin',
-    suggestion: 'Paraffin Embedded',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 5,
-    column: 'storage_medium',
-    value: 'Paraffin',
-    suggestion: 'Paraffin Embedded',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 6,
-    column: 'storage_medium',
-    value: 'Paraffin',
-    suggestion: 'Paraffin Embedded',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 7,
-    column: 'storage_medium',
-    value: 'Paraffin',
-    suggestion: 'Paraffin Embedded',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 8,
-    column: 'storage_medium',
-    value: 'Paraffin',
-    suggestion: 'Paraffin Embedded',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 4,
+    row: 9,
     column: 'storage_temperature',
     errorType: 'missingRequired',
   }, {
-    row: 5,
+    row: 10,
     column: 'storage_temperature',
     errorType: 'missingRequired',
+  }, {
+    row: 11,
+    column: 'storage_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 12,
+    column: 'storage_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 13,
+    column: 'storage_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 14,
+    column: 'storage_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 15,
+    column: 'storage_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 16,
+    column: 'storage_temperature',
+    errorType: 'missingRequired',
+  }, {
+    row: 4,
+    column: 'histological_report',
+    value: '12.05',
+    suggestion: '',
+    errorType: 'notStringType',
+  }, {
+    row: 5,
+    column: 'histological_report',
+    value: '15.84',
+    suggestion: '',
+    errorType: 'notStringType',
   }, {
     row: 6,
-    column: 'storage_temperature',
-    errorType: 'missingRequired',
+    column: 'histological_report',
+    value: '15.21',
+    suggestion: '',
+    errorType: 'notStringType',
   }, {
     row: 7,
-    column: 'storage_temperature',
-    errorType: 'missingRequired',
+    column: 'histological_report',
+    value: '16.34',
+    suggestion: '',
+    errorType: 'notStringType',
   }, {
     row: 8,
-    column: 'storage_temperature',
-    errorType: 'missingRequired',
-  }, {
-    row: 0,
-    column: 'thickness_unit',
-    value: '_m',
-    suggestion: 'millimeter',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 1,
-    column: 'thickness_unit',
-    value: '_m',
-    suggestion: 'millimeter',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 2,
-    column: 'thickness_unit',
-    value: '_m',
-    suggestion: 'millimeter',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 3,
-    column: 'thickness_unit',
-    value: '_m',
-    suggestion: 'millimeter',
-    errorType: 'notStandardTerm',
+    column: 'histological_report',
+    value: '12.04',
+    suggestion: '',
+    errorType: 'notStringType',
   }, {
     row: 6,
     column: 'section_index_number',
@@ -938,204 +966,44 @@ export const ERROR_REPORT = [
     column: 'section_index_number',
     errorType: 'missingRequired',
   }, {
-    row: 6,
-    column: 'area_value',
-    errorType: 'missingRequired',
-  }, {
-    row: 7,
-    column: 'area_value',
-    errorType: 'missingRequired',
-  }, {
-    row: 9,
-    column: 'source_storage_time_unit',
-    value: 'd',
-    suggestion: 'day',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 10,
-    column: 'source_storage_time_unit',
-    value: 'd',
-    suggestion: 'day',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 11,
-    column: 'source_storage_time_unit',
-    value: 'd',
-    suggestion: 'day',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 12,
-    column: 'source_storage_time_unit',
-    value: 'd',
-    suggestion: 'day',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 9,
-    column: 'storage_temperature',
-    value: '-80 C',
-    suggestion: '-80 Celsius (Unspecified)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 10,
-    column: 'storage_temperature',
-    value: '-80 C',
-    suggestion: '-80 Celsius (Unspecified)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 11,
-    column: 'storage_temperature',
-    value: '-80 C',
-    suggestion: '-80 Celsius (Unspecified)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 12,
-    column: 'storage_temperature',
-    value: '-80 C',
-    suggestion: '-80 Celsius (Unspecified)',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 9,
-    column: 'preparation_temperature',
-    value: '-80 C',
-    suggestion: 'Minus 80 Degrees Celsius',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 10,
-    column: 'preparation_temperature',
-    value: '-80 C',
-    suggestion: 'Minus 80 Degrees Celsius',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 11,
-    column: 'preparation_temperature',
-    value: '-80 C',
-    suggestion: 'Minus 80 Degrees Celsius',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 12,
-    column: 'preparation_temperature',
-    value: '-80 C',
-    suggestion: 'Minus 80 Degrees Celsius',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 9,
-    column: 'thickness_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 10,
-    column: 'thickness_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 11,
-    column: 'thickness_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 12,
-    column: 'thickness_unit',
-    errorType: 'missingRequired',
-  }, {
-    row: 9,
-    column: 'area_value',
-    errorType: 'missingRequired',
-  }, {
-    row: 10,
-    column: 'area_value',
-    errorType: 'missingRequired',
-  }, {
-    row: 11,
-    column: 'area_value',
-    errorType: 'missingRequired',
-  }, {
-    row: 12,
-    column: 'area_value',
-    errorType: 'missingRequired',
-  }, {
     row: 13,
-    column: 'preparation_temperature',
+    column: 'section_index_number',
     errorType: 'missingRequired',
   }, {
     row: 14,
-    column: 'preparation_temperature',
+    column: 'section_index_number',
     errorType: 'missingRequired',
   }, {
     row: 15,
-    column: 'preparation_temperature',
+    column: 'section_index_number',
     errorType: 'missingRequired',
   }, {
     row: 16,
-    column: 'preparation_temperature',
-    errorType: 'missingRequired',
-  }, {
-    row: 17,
-    column: 'preparation_temperature',
-    errorType: 'missingRequired',
-  }, {
-    row: 18,
-    column: 'preparation_temperature',
-    errorType: 'missingRequired',
-  }, {
-    row: 19,
-    column: 'preparation_temperature',
+    column: 'section_index_number',
     errorType: 'missingRequired',
   }, {
     row: 13,
-    column: 'storage_medium',
-    value: 'OCT',
-    suggestion: 'OCT Embedded',
-    errorType: 'notStandardTerm',
+    column: 'area_value',
+    value: '5.65 square mm',
+    suggestion: 5.65,
+    errorType: 'notNumberType',
   }, {
     row: 14,
-    column: 'storage_medium',
-    value: 'OCT',
-    suggestion: 'OCT Embedded',
-    errorType: 'notStandardTerm',
+    column: 'area_value',
+    value: '3.45 square mm',
+    suggestion: 3.45,
+    errorType: 'notNumberType',
   }, {
     row: 15,
-    column: 'storage_medium',
-    value: 'OCT',
-    suggestion: 'OCT Embedded',
-    errorType: 'notStandardTerm',
+    column: 'area_value',
+    value: '7.54 square mm',
+    suggestion: 7.54,
+    errorType: 'notNumberType',
   }, {
     row: 16,
-    column: 'storage_medium',
-    value: 'OCT',
-    suggestion: 'OCT Embedded',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 17,
-    column: 'thickness_unit',
-    value: 'mm',
-    suggestion: 'millimeter',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 18,
-    column: 'thickness_unit',
-    value: 'mm',
-    suggestion: 'millimeter',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 19,
-    column: 'thickness_unit',
-    value: 'mm',
-    suggestion: 'millimeter',
-    errorType: 'notStandardTerm',
-  }, {
-    row: 17,
     column: 'area_value',
-    value: '26.76 square mm',
-    suggestion: 26.76,
-    errorType: 'notNumberType',
-  }, {
-    row: 18,
-    column: 'area_value',
-    value: '27.89 square mm',
-    suggestion: 27.89,
-    errorType: 'notNumberType',
-  }, {
-    row: 19,
-    column: 'area_value',
-    value: '30.23 square mm',
-    suggestion: 30.23,
+    value: '6.09 square mm',
+    suggestion: 6.09,
     errorType: 'notNumberType',
   },
 ];
