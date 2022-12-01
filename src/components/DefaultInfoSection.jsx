@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Button, Link, styled } from '@mui/material';
 import Section from '../styles/Section';
 import InfoBox from './InfoBox';
@@ -16,6 +17,7 @@ const ChangeButton = styled(Button)({
 });
 
 const DefaultInfoSection = () => {
+  const navigate = useNavigate();
   const spreadsheetUrl = '/Users/JohnDoe/Experiments/X19/2022-08-31_SampleData.xlsx';
   const templateUrl = 'https://cedar.metadatacenter.org/templates/edit/https://repo.metadatacenter.org/templates/87046e67-c2da-40ac-be3c-f3e6c818ecc1';
   const templateName = 'Sample Section Specification v1.0';
@@ -24,7 +26,13 @@ const DefaultInfoSection = () => {
       <InfoBox>
         Spreadsheet is uploaded from&nbsp;
         {spreadsheetUrl}
-        <ChangeButton variant="contained" disableElevation>Change</ChangeButton>
+        <ChangeButton
+          variant="contained"
+          onClick={() => navigate('..')}
+          disableElevation
+        >
+          Change
+        </ChangeButton>
       </InfoBox>
       <InfoBox>
         Spreadsheet is validated against&nbsp;
