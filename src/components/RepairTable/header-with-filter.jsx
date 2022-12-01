@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { IconButton, InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment, Stack } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
 import FilterInputField from '../DataSheet/FilterInputField';
 import SheetCell from '../DataSheet/SheetCell';
 import { HeaderLabel } from './styled';
+import WrappedTooltip from './wrapped-tooltip';
 
-const HeaderWithFilter = ({ id, label, setColumnFilters, setStaleBatch }) => {
+const HeaderWithFilter = ({ id, label, description, setColumnFilters, setStaleBatch }) => {
   const [filterEnabled, setFilterEnabled] = useState(true);
   const handleFilterChange = (event) => {
     const enteredValue = event.target.value;
@@ -45,7 +47,12 @@ const HeaderWithFilter = ({ id, label, setColumnFilters, setStaleBatch }) => {
   };
   return (
     <SheetCell align="center">
-      <HeaderLabel>{label}</HeaderLabel>
+      <Stack direction="row" gap={1}>
+        <HeaderLabel>{label}</HeaderLabel>
+        <WrappedTooltip title={description}>
+          <InfoOutlinedIcon fontSize="small" />
+        </WrappedTooltip>
+      </Stack>
       <FilterInputField
         id={`${id}-column-filter-field`}
         onChange={handleFilterChange}
@@ -64,12 +71,14 @@ const HeaderWithFilter = ({ id, label, setColumnFilters, setStaleBatch }) => {
 HeaderWithFilter.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string.isRequired,
+  description: PropTypes.string,
   setColumnFilters: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,
 };
 
 HeaderWithFilter.defaultProps = {
   id: undefined,
+  description: undefined,
 };
 
 export default HeaderWithFilter;

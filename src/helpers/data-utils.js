@@ -15,6 +15,11 @@ export const getColumnType = (column, schema) => {
   return columnSchema.type;
 };
 
+export const getColumnDescription = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema.description;
+};
+
 export const isColumnRequired = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
   return columnSchema.required;

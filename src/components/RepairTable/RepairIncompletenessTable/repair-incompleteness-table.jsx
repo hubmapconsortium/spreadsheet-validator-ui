@@ -13,7 +13,7 @@ import WrappedText from '../../DataSheet/WrappedText';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
-import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues } from '../../../helpers/data-utils';
+import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import EditableCell from '../editable-cell';
@@ -125,6 +125,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                       key={`batch-input-${key}-${column}`}
                       id={`batch-input-${key}-${column}`}
                       label={getColumnLabel(column, schema)}
+                      description={getColumnDescription(column, schema)}
                       type={getColumnType(column, schema)}
                       permissibleValues={getPermissibleValues(column, schema)}
                       setBatchInput={setBatchInput}
@@ -137,6 +138,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                       key={`filter-${key}-${column}`}
                       id={`filter-${key}-${column}`}
                       label={getColumnLabel(column, schema)}
+                      description={getColumnDescription(column, schema)}
                       setColumnFilters={setColumnFilters}
                       setStaleBatch={setStaleBatch}
                     />

@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { Box, Checkbox, Collapse, IconButton, styled, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, Collapse, IconButton, Stack, styled, TableRow, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import WrappedText from '../DataSheet/WrappedText';
 import EditableCell from './editable-cell';
-import { SheetTable } from './styled';
-import { getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
+import { HeaderLabel, SheetTable } from './styled';
+import { getColumnDescription, getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
 import { BLACK, DARK_GRAY, LIGHT_GRAY, RED } from '../../constants/Color';
+import WrappedTooltip from './wrapped-tooltip';
 
 const CellValue = styled(Typography)({
   fontSize: '17px',
@@ -38,7 +40,14 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
           </IconButton>
         </SheetCell>
         <SheetCell key={`target-column-cell-${id}`}>
-          <CellValue>{targetColumn}</CellValue>
+          <CellValue>
+            <Stack direction="row" gap={1}>
+              <HeaderLabel>{targetColumn}</HeaderLabel>
+              <WrappedTooltip title={getColumnDescription(targetColumn, schema)}>
+                <InfoOutlinedIcon fontSize="small" />
+              </WrappedTooltip>
+            </Stack>
+          </CellValue>
         </SheetCell>
         <SheetCell key={`target-value-cell-${id}`}>
           <Box sx={{ display: 'flex' }}>
