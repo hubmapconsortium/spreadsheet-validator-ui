@@ -1,5 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Stack, Typography } from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
 import { useImmer } from 'use-immer';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -9,11 +11,13 @@ import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
 import SheetCell from '../../DataSheet/SheetCell';
 import SheetPagination from '../../DataSheet/SheetPagination';
+import Block from '../../../styles/Block';
 import { createReplaceOperationPatch, generateRepairIncorrectnessTableData, getPagedData } from '../../../helpers/app-utils';
-import { initUserInput } from './function';
 import HeaderWithCheckbox from '../header-with-checkbox';
 import CollapsibleTableRow from '../collapsible-table-row';
-import { ButtonBox, CancelButton, DataSheetCard, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
+import InfoTooltip from '../info-tooltip';
+import { initUserInput } from './function';
+import { ButtonBox, CancelButton, DataSheetCard, FooterBox, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { REPAIR_INCORRECTNESS_PATH } from '../../../constants/Router';
 
 // eslint-disable-next-line no-unused-vars
@@ -118,13 +122,30 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
             </SheetBody>
           </SheetTable>
         </SheetTableContainer>
-        <SheetPagination
-          data={tableData}
-          page={page}
-          setPage={setPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-        />
+        <FooterBox>
+          <Block sx={{ width: '400px', paddingLeft: '5px' }}>
+            <Stack direction="row" gap={1}>
+              <InfoTooltip
+                title="INSTRUCTION: The table below shows all the metadata records that contain values
+                that are not according to the metadata specification. Please correct those values using
+                the available input field, or using the check box to approve the suggested value given
+                by the application.."
+                placement="right"
+                arrow
+              >
+                <HelpIcon color="primary" fontSize="medium" />
+              </InfoTooltip>
+              <Typography>Help Tooltip</Typography>
+            </Stack>
+          </Block>
+          <SheetPagination
+            data={tableData}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+          />
+        </FooterBox>
       </DataSheetCard>
       <ButtonBox>
         <CancelButton

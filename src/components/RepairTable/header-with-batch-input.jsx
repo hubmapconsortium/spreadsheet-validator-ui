@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import InputField from '../DataSheet/InputField';
 import SearchableSelector from '../DataSheet/SearchableSelector';
 import SheetCell from '../DataSheet/SheetCell';
+import InfoTooltip from './info-tooltip';
 import { HeaderLabel } from './styled';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
-import WrappedTooltip from './wrapped-tooltip';
 
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues, setBatchInput, setStaleBatch }) => {
@@ -24,9 +24,9 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
     <SheetCell align="center" sticky>
       <Stack direction="row" gap={1}>
         <HeaderLabel>{label}</HeaderLabel>
-        <WrappedTooltip title={description}>
+        <InfoTooltip title={description}>
           <InfoOutlinedIcon fontSize="small" />
-        </WrappedTooltip>
+        </InfoTooltip>
       </Stack>
       <FormControl fullWidth>
         {permissibleValues

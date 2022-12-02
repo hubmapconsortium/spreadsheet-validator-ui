@@ -33,6 +33,10 @@ export const ButtonBox = styled(Box)({
   justifyContent: 'right',
 });
 
+export const FooterBox = styled(Box)({
+  display: 'flex',
+});
+
 export const CancelButton = styled(BaseButton)({
   backgroundColor: WHITE,
 });

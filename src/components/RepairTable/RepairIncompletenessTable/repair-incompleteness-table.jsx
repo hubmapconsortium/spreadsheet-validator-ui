@@ -1,7 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { TableRow } from '@mui/material';
+import { Stack, TableRow, Typography } from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -11,13 +12,15 @@ import SheetBody from '../../DataSheet/SheetBody';
 import SheetCell from '../../DataSheet/SheetCell';
 import WrappedText from '../../DataSheet/WrappedText';
 import SheetPagination from '../../DataSheet/SheetPagination';
+import Block from '../../../styles/Block';
 import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
 import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import EditableCell from '../editable-cell';
-import { ButtonBox, CancelButton, DataSheetCard, SaveButton, SheetTable, SheetTableContainer } from '../styled';
+import InfoTooltip from '../info-tooltip';
+import { ButtonBox, CancelButton, DataSheetCard, FooterBox, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { getFilteredData, initUserInput } from './function';
 import { REPAIR_INCOMPLENESS_PATH } from '../../../constants/Router';
 
@@ -197,13 +200,29 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
             </SheetBody>
           </SheetTable>
         </SheetTableContainer>
-        <SheetPagination
-          data={filteredData}
-          page={page}
-          setPage={setPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-        />
+        <FooterBox>
+          <Block sx={{ width: '400px', paddingLeft: '5px' }}>
+            <Stack direction="row" gap={1}>
+              <InfoTooltip
+                title="INSTRUCTION: The table below shows all the metadata records with missing required
+                values. Please fill out the missing value using the input field on each metadata record,
+                or using the table header input field to enter in a batch mode."
+                placement="right"
+                arrow
+              >
+                <HelpIcon color="primary" fontSize="medium" />
+              </InfoTooltip>
+              <Typography>Help Tooltip</Typography>
+            </Stack>
+          </Block>
+          <SheetPagination
+            data={filteredData}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+          />
+        </FooterBox>
       </DataSheetCard>
       <ButtonBox>
         <CancelButton

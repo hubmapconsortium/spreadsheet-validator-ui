@@ -12,7 +12,7 @@ import EditableCell from './editable-cell';
 import { HeaderLabel, SheetTable } from './styled';
 import { getColumnDescription, getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
 import { BLACK, DARK_GRAY, LIGHT_GRAY, RED } from '../../constants/Color';
-import WrappedTooltip from './wrapped-tooltip';
+import InfoTooltip from './info-tooltip';
 
 const CellValue = styled(Typography)({
   fontSize: '17px',
@@ -43,9 +43,9 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
           <CellValue>
             <Stack direction="row" gap={1}>
               <HeaderLabel>{targetColumn}</HeaderLabel>
-              <WrappedTooltip title={getColumnDescription(targetColumn, schema)}>
+              <InfoTooltip title={getColumnDescription(targetColumn, schema)}>
                 <InfoOutlinedIcon fontSize="small" />
-              </WrappedTooltip>
+              </InfoTooltip>
             </Stack>
           </CellValue>
         </SheetCell>
