@@ -19,13 +19,13 @@ export const generateEvaluationSummaryData = (spreadsheetData, reportingData) =>
   const errorSize = [...new Set(reportingData.map((item) => item.row))].length;
   const validSize = dataSize - errorSize;
   return {
-    labels: ['Valid metadata', 'Invalid metadata'],
+    labels: ['Invalid metadata', 'Valid metadata'],
     innerTextTitle: `${errorSize} / ${dataSize}`,
     innerTextSubtitle: 'Overview',
     datasets: [{
       label: '',
-      data: [validSize, errorSize],
-      backgroundColor: [GREEN, RED],
+      data: [errorSize, validSize],
+      backgroundColor: [RED, GREEN],
     }],
     hasCompletenessErrors: reportingData.filter((item) => checkCompletenessError(item)).length > 0,
     hasAdherenceErrors: reportingData.filter((item) => checkAdherenceError(item)).length > 0,
