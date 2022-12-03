@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Collapse, List, ListItemButton, ListItemText, ListSubheader, styled } from '@mui/material';
@@ -88,6 +88,14 @@ const NestedMenuItem = ({ icon, name, title, navigateTo, subMenu }) => {
     }
     setParentMenuSelected(true);
   };
+
+  useEffect(
+    () => {
+      setSubMenuVisible(name === selectedMenuItem
+        || subMenu?.items.some((subMenuItem) => subMenuItem.name === selectedMenuItem));
+    },
+    [selectedMenuItem],
+  );
 
   return (
     <>
