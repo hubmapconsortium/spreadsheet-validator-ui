@@ -4,14 +4,40 @@ import { GREEN, RED } from '../constants/Color';
 import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 
+const checkCompletenessError = (reportItem) => (
+  reportItem.errorType === 'missingRequired'
+);
+
+const checkAdherenceError = (reportItem) => (
+  reportItem.errorType === 'notStandardTerm'
+  || reportItem.errorType === 'notNumberType'
+  || reportItem.errorType === 'notStringType'
+);
+
+export const generateEvaluationSummaryData = (spreadsheetData, reportingData) => {
+  const dataSize = spreadsheetData.length;
+  const errorSize = [...new Set(reportingData.map((item) => item.row))].length;
+  const validSize = dataSize - errorSize;
+  return {
+    labels: ['Valid metadata record', 'Invalid metadata record'],
+    innerTextTitle: `${errorSize} / ${dataSize}`,
+    innerTextSubtitle: 'Overview',
+    datasets: [{
+      label: '',
+      data: [validSize, errorSize],
+      backgroundColor: [GREEN, RED],
+    }],
+    hasCompletenessErrors: reportingData.filter((item) => checkCompletenessError(item)).length > 0,
+    hasAdherenceErrors: reportingData.filter((item) => checkAdherenceError(item)).length > 0,
+  };
+};
+
 export const generateCompletenessChartData = (spreadsheetData, reportingData) => {
   const dataSize = spreadsheetData.length;
   const errorSize = [...new Set(reportingData
-    .filter(
-      (item) => item.errorType === 'missingRequired',
-    ).map(
-      (item) => item.row,
-    ))].length;
+    .filter((item) => checkCompletenessError(item))
+    .map((item) => item.row)),
+  ].length;
   const validSize = dataSize - errorSize;
   return {
     labels: ['Row has all required value', 'Row missing some required value'],
@@ -28,13 +54,9 @@ export const generateCompletenessChartData = (spreadsheetData, reportingData) =>
 export const generateCorrectnessChartData = (spreadsheetData, reportingData) => {
   const dataSize = spreadsheetData.length;
   const errorSize = [...new Set(reportingData
-    .filter(
-      (item) => item.errorType === 'notStandardTerm'
-        || item.errorType === 'notNumberType'
-        || item.errorType === 'notStringType',
-    ).map(
-      (item) => item.row,
-    ))].length;
+    .filter((item) => checkAdherenceError(item))
+    .map((item) => item.row)),
+  ].length;
   const validSize = dataSize - errorSize;
   return {
     labels: ['Row has no data type errors', 'Row has some data type error'],
@@ -51,40 +73,30 @@ export const generateCorrectnessChartData = (spreadsheetData, reportingData) => 
 export const generateMissingValueAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
   columns: ['Field name', 'Number of errors'],
   rows: errorSummaryData
-    .filter(
-      (item) => item.errorType === 'missingRequired',
-    ).sort(
-      (item1, item2) => (item2.rows.length - item1.rows.length),
-    ).map(
-      (item) => [
-        item.column,
-        [
-          { value: item.rows.length, color: RED },
-          { value: spreadsheetData.length - item.rows.length, color: GREEN },
-        ],
+    .filter((item) => checkCompletenessError(item))
+    .sort((item1, item2) => (item2.rows.length - item1.rows.length))
+    .map((item) => [
+      item.column,
+      [
+        { value: item.rows.length, color: RED },
+        { value: spreadsheetData.length - item.rows.length, color: GREEN },
       ],
-    ),
+    ]),
 });
 
 export const generateInvalidValueTypeAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
   columns: ['Field name', 'Error flag', 'Number of errors'],
   rows: errorSummaryData
-    .filter(
-      (item) => item.errorType === 'notStandardTerm'
-        || item.errorType === 'notNumberType'
-        || item.errorType === 'notStringType',
-    ).sort(
-      (item1, item2) => (item2.rows.length - item1.rows.length),
-    ).map(
-      (item) => [
-        item.column,
-        `Value ${unCamelCase(item.errorType)}`,
-        [
-          { value: item.rows.length, color: RED },
-          { value: spreadsheetData.length - item.rows.length, color: GREEN },
-        ],
+    .filter((item) => checkAdherenceError(item))
+    .sort((item1, item2) => (item2.rows.length - item1.rows.length))
+    .map((item) => [
+      item.column,
+      `Value ${unCamelCase(item.errorType)}`,
+      [
+        { value: item.rows.length, color: RED },
+        { value: spreadsheetData.length - item.rows.length, color: GREEN },
       ],
-    ),
+    ]),
 });
 
 export const createAddOperationPatch = (row, column, value) => ({
@@ -128,9 +140,7 @@ const determineRepairIncompletenessStatus = (rows, column, patches) => (
 );
 
 export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patches) => {
-  const missingRequiredErrorList = errorSummaryData.filter(
-    (item) => item.errorType === 'missingRequired',
-  );
+  const missingRequiredErrorList = errorSummaryData.filter((item) => checkCompletenessError(item));
   const subMenuItems = missingRequiredErrorList.map(
     (errorDetails) => {
       const { column: errorColumnLocation, rows: errorRowLocations } = errorDetails;
@@ -225,7 +235,7 @@ export const generateRepairIncorrectnessSubMenuData = (errorSummaryData, patches
 
 export const generateRepairIncompletenessButtonData = (errorSummaryData, patches) => {
   const missingRequiredErrorList = errorSummaryData.filter(
-    (item) => item.errorType === 'missingRequired',
+    (item) => checkCompletenessError(item),
   );
   return missingRequiredErrorList.map(
     (errorDetails) => {
@@ -362,11 +372,7 @@ export const generateErrorSummaryData = (reporting) => (
 );
 
 export const generateRepairIncorrectnessTableData = (reporting, data) => {
-  const incorrectnessReporting = reporting.filter(
-    (item) => item.errorType === 'notStandardTerm'
-      || item.errorType === 'notNumberType'
-      || item.errorType === 'notStringType',
-  );
+  const incorrectnessReporting = reporting.filter((item) => checkAdherenceError(item));
   return Object.values(
     incorrectnessReporting.reduce(
       (accumulator, reportItem) => {
