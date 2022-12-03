@@ -27,8 +27,8 @@ export const generateEvaluationSummaryData = (spreadsheetData, reportingData) =>
       data: [errorSize, validSize],
       backgroundColor: [RED, GREEN],
     }],
-    hasCompletenessErrors: reportingData.filter((item) => checkCompletenessError(item)).length > 0,
-    hasAdherenceErrors: reportingData.filter((item) => checkAdherenceError(item)).length > 0,
+    hasCompletenessErrors: reportingData.some((item) => checkCompletenessError(item)),
+    hasAdherenceErrors: reportingData.some((item) => checkAdherenceError(item)),
   };
 };
 
@@ -123,15 +123,9 @@ export const checkRepairPatchPresent = (row, column, patches) => (
   && typeof patches[row][column].value !== 'undefined'
 );
 
-const isRepairCompleted = (rows, column, patches) => {
-  for (let i = 0; i < rows.length; i += 1) {
-    const row = rows[i];
-    if (!checkRepairPatchPresent(row, column, patches)) {
-      return false;
-    }
-  }
-  return true;
-};
+const isRepairCompleted = (rows, column, patches) => (
+  rows.every((row) => checkRepairPatchPresent(row, column, patches))
+);
 
 const determineRepairIncompletenessStatus = (rows, column, patches) => (
   isRepairCompleted(rows, column, patches)
