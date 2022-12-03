@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { FilePond } from 'react-filepond';
 import Container from '../../styles/Container';
 import logo from '../../logo.svg';
@@ -8,6 +8,7 @@ import 'filepond/dist/filepond.min.css';
 import './home.css';
 import { APP_DATA } from '../../constants/TestData';
 import { OVERVIEW_PATH } from '../../constants/Router';
+import BaseButton from '../../styles/BaseButton';
 
 const HomeContainer = styled(Container)({
   display: 'flex',
@@ -83,7 +84,7 @@ const Home = ({ setAppData }) => {
           />
         </InputSection>
         <SubmitBox>
-          <Button variant="contained" size="large" onClick={submitSpreadsheet}>Start Validating</Button>
+          <BaseButton variant="contained" size="large" onClick={submitSpreadsheet}>Start Validating</BaseButton>
         </SubmitBox>
       </InputArea>
     </HomeContainer>

@@ -1,6 +1,6 @@
 import { useContext, useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, List, styled } from '@mui/material';
+import { Box, List, styled } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -12,6 +12,7 @@ import { determineOverallRepairStatus, generateErrorSummaryData, generateNewSpre
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 import { OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 import { REPAIR_NOT_COMPLETED } from '../../constants/Status';
+import BaseButton from '../../styles/BaseButton';
 
 const SideBarContainer = styled(Container)({
   width: '380px',
@@ -142,7 +143,7 @@ const SideBar = () => {
         </NestedMenu>
       </MenuSection>
       <ButtonSection>
-        <Button
+        <BaseButton
           variant="contained"
           size="large"
           disabled={disabled}
@@ -155,7 +156,7 @@ const SideBar = () => {
           }}
         >
           Generate New Spreadsheet
-        </Button>
+        </BaseButton>
       </ButtonSection>
     </SideBarContainer>
   );
