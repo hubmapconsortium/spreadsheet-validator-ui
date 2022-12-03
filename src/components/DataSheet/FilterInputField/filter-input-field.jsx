@@ -4,12 +4,14 @@ import { TEXT } from '../../../constants/ValueType';
 
 const FilterInputField = ({ id, type, onChange, endAdornment }) => (
   <OutlinedInput
+    fullWidth
     key={id}
     type={type}
     size="small"
     placeholder="Filter text..."
     onChange={onChange}
     endAdornment={endAdornment}
+    sx={{ minWidth: '150px' }}
   />
 );
 

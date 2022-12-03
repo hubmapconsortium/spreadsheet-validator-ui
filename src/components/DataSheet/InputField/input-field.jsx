@@ -8,6 +8,7 @@ const InputField = (
   { id, value, type, placeholder, required, inputRef, onChange, onKeyPress, colorOnEmpty, endAdornment },
 ) => (
   <OutlinedInput
+    fullWidth
     key={id}
     size="small"
     value={value}
@@ -17,7 +18,7 @@ const InputField = (
     inputRef={inputRef}
     onChange={onChange}
     onKeyPress={onKeyPress}
-    sx={{ backgroundColor: value === '' ? colorOnEmpty : WHITE }}
+    sx={{ minWidth: '150px', backgroundColor: value === '' ? colorOnEmpty : WHITE }}
     endAdornment={endAdornment}
   />
 );
