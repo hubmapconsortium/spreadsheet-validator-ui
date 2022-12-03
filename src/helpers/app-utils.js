@@ -19,7 +19,7 @@ export const generateEvaluationSummaryData = (spreadsheetData, reportingData) =>
   const errorSize = [...new Set(reportingData.map((item) => item.row))].length;
   const validSize = dataSize - errorSize;
   return {
-    labels: ['Valid metadata record', 'Invalid metadata record'],
+    labels: ['Valid metadata', 'Invalid metadata'],
     innerTextTitle: `${errorSize} / ${dataSize}`,
     innerTextSubtitle: 'Overview',
     datasets: [{

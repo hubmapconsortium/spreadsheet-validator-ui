@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, styled } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import Section from '../../styles/Section';
 import Card from '../../styles/Card';
 import BaseButton from '../../styles/BaseButton';
+import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 
 const ChartCard = styled(Card)({
   display: 'flex',
@@ -61,62 +63,75 @@ const chartOptions = {
   cutout: '65%',
 };
 
-const EvaluationSummaryChart = ({ evaluationSummaryData }) => (
-  <ChartCard>
-    <ChartSection>
-      <Doughnut
-        data={evaluationSummaryData}
-        plugins={generatePlugins(evaluationSummaryData)}
-        options={chartOptions}
-        width={450}
-        height={450}
-      />
-    </ChartSection>
-    <DescriptionSection>
-      <h2>Validation Summary</h2>
-      <p>
-        The validity of a metadata record is measured by two metrics:
-        {' '}
-        <i>completeness</i>
-        {' '}
-        and
-        {' '}
-        <i>adherence.</i>
-      </p>
-      <p>
-        <b>Completeness</b>
-        {' '}
-        measures the presence of all required values in the
-        metadata record defined by the metadata specification.
-      </p>
-      <p>
-        <b>Adherence</b>
-        {' '}
-        measures the conformance of the stated value in the
-        metadata field to the data type defined by the metadata
-        specification.
-      </p>
-      <p>
-        A metadata record is called invalid when errors were found
-        in its fields using these two metrics.
-      </p>
-      <Box textAlign="center">
-        <BaseButton
-          variant="contained"
-          disabled={!evaluationSummaryData.hasCompletenessErrors}
-        >
-          Repair Completeness Errors
-        </BaseButton>
-        <BaseButton
-          variant="contained"
-          disabled={!evaluationSummaryData.hasAdherenceErrors}
-        >
-          Repair Adherence Errors
-        </BaseButton>
-      </Box>
-    </DescriptionSection>
-  </ChartCard>
-);
+const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
+  const navigate = useNavigate();
+  return (
+    <ChartCard>
+      <ChartSection>
+        <Doughnut
+          data={evaluationSummaryData}
+          plugins={generatePlugins(evaluationSummaryData)}
+          options={chartOptions}
+          width={400}
+          height={400}
+        />
+      </ChartSection>
+      <DescriptionSection>
+        <h2>Validation Summary</h2>
+        <p>
+          The validity of a metadata record is measured by two metrics:
+          {' '}
+          <i>completeness</i>
+          {' '}
+          and
+          {' '}
+          <i>adherence.</i>
+        </p>
+        <p>
+          <b>Completeness</b>
+          {' '}
+          measures the presence of all required values in the
+          metadata record defined by the metadata specification.
+        </p>
+        <p>
+          <b>Adherence</b>
+          {' '}
+          measures the conformance of the stated value in the
+          metadata field to the data type defined by the metadata
+          specification.
+        </p>
+        <p>
+          A metadata record is called invalid when errors were found
+          in its fields using these two metrics.
+        </p>
+        <Box textAlign="center">
+          <BaseButton
+            variant="contained"
+            disabled={!evaluationSummaryData.hasCompletenessErrors}
+            onClick={() => navigate(`../${REPAIR_INCOMPLENESS_PATH}`, {
+              state: {
+                selectedMenuItem: 'repair-incompleteness',
+              },
+            })}
+          >
+            Repair Completeness Errors
+          </BaseButton>
+          <BaseButton
+            variant="contained"
+            disabled={!evaluationSummaryData.hasAdherenceErrors}
+            onClick={() => navigate(`../${REPAIR_INCORRECTNESS_PATH}`, {
+              state: {
+                selectedMenuItem: 'repair-incorrectness',
+              },
+            })}
+          >
+            Repair Adherence Errors
+          </BaseButton>
+        </Box>
+      </DescriptionSection>
+    </ChartCard>
+  );
+};
 
 EvaluationSummaryChart.propTypes = {
   evaluationSummaryData: PropTypes.shape({
