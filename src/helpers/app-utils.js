@@ -71,7 +71,7 @@ export const generateCorrectnessChartData = (spreadsheetData, reportingData) => 
 };
 
 export const generateMissingValueAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
-  columns: ['Field name', 'Number of errors'],
+  columns: ['Field name', '# of invalid metadata records'],
   rows: errorSummaryData
     .filter((item) => checkCompletenessError(item))
     .sort((item1, item2) => (item2.rows.length - item1.rows.length))
@@ -85,7 +85,7 @@ export const generateMissingValueAnalysisChartData = (spreadsheetData, errorSumm
 });
 
 export const generateInvalidValueTypeAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
-  columns: ['Field name', 'Error flag', 'Number of errors'],
+  columns: ['Field name', 'Error flag', '# of invalid metadata records'],
   rows: errorSummaryData
     .filter((item) => checkAdherenceError(item))
     .sort((item1, item2) => (item2.rows.length - item1.rows.length))

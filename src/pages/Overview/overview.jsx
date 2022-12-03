@@ -43,12 +43,12 @@ const Overview = () => {
       />
       <ErrorAnalysisChart
         title="Missing Value Analysis"
-        subtitle={`Evaluating ${data.length} metadata records in the spreadsheet`}
+        subtitle={`Evaluating ${data.length} metadata records for completeness errors in the spreadsheet.`}
         analysisData={missingValueAnalysisChartData}
       />
       <ErrorAnalysisChart
         title="Invalid Value Type Analysis"
-        subtitle={`Evaluating ${data.length} metadata records in the spreadsheet`}
+        subtitle={`Evaluating ${data.length} metadata records for adherence errors in the spreadsheet.`}
         analysisData={invalidValueTypeAnalysisChartData}
       />
     </>

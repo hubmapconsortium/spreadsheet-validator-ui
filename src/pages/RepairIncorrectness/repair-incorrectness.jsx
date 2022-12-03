@@ -35,7 +35,7 @@ const RepairIncorrectness = () => {
       <Section>
         <PageTitle
           title={REPAIR_INCORRECTNESS}
-          subtitle={`${errorSize} values are found inconsistent with the metadata specification.`}
+          subtitle={`${errorSize} values are not in accordance with the metadata specification.`}
         />
       </Section>
       <DefaultInfoSection />
