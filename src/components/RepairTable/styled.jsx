@@ -1,7 +1,8 @@
-import { Box, Card, styled, Table, TableContainer, Typography } from '@mui/material';
+import { Box, styled, Table, TableContainer, Typography } from '@mui/material';
 import BaseButton from '../../styles/BaseButton';
 import { LIGHT_GRAY, WHITE } from '../../constants/Color';
 import SheetCell from '../DataSheet/SheetCell';
+import Card from '../../styles/Card';
 
 export const DataSheetCard = styled(Card)({
   display: 'block',
