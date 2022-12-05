@@ -8,7 +8,6 @@ import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairIncorrectnessTable from '../../components/RepairTable/RepairIncorrectnessTable';
 import Section from '../../styles/Section';
 import { getIncorrectnessReporting } from '../../helpers/data-utils';
-import { unCamelCase } from '../../helpers/string-utils';
 import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
 const WorkspaceArea = styled(Box)({
@@ -26,7 +25,6 @@ const RepairIncorrectnessWorkspace = () => {
     ),
     [reporting, incorrectnessType],
   );
-  const errorType = unCamelCase(incorrectnessType);
   const errorSize = incorrectnessReporting.length;
   return (
     <SnackbarProvider maxSnack={1}>
@@ -34,7 +32,7 @@ const RepairIncorrectnessWorkspace = () => {
         <Section>
           <PageTitle
             title={REPAIR_INCORRECTNESS}
-            subtitle={`${errorSize} cells contains a value that is ${errorType}.`}
+            subtitle={`${errorSize} issues were found.`}
           />
         </Section>
         <DefaultInfoSection />

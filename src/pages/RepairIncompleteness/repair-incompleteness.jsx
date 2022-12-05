@@ -16,13 +16,13 @@ const RepairBadgeSection = styled(Section)({
 
 const RepairIncompleteness = () => {
   const { appData, patches } = useContext(AppContext);
-  const { reporting } = appData;
+  const { schema, reporting } = appData;
   const incompletenessReporting = useMemo(
     () => getIncompletenessReporting(reporting),
     [reporting],
   );
   const errorSummaryData = useMemo(
-    () => generateErrorSummaryData(incompletenessReporting),
+    () => generateErrorSummaryData(incompletenessReporting, schema),
     [incompletenessReporting],
   );
   const buttonData = useMemo(

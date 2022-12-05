@@ -102,7 +102,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
         </p>
         <p>
           A metadata record is called invalid when errors were found
-          in its fields using these two metrics.
+          in its value using these two metrics.
         </p>
         <Box textAlign="center">
           <BaseButton
@@ -114,7 +114,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
               },
             })}
           >
-            Repair Completeness Errors
+            Repair Missing Values
           </BaseButton>
           <BaseButton
             variant="contained"
@@ -125,7 +125,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
               },
             })}
           >
-            Repair Adherence Errors
+            Repair Invalid Value Types
           </BaseButton>
         </Box>
       </DescriptionSection>

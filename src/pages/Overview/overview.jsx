@@ -12,13 +12,13 @@ import { VALIDATION_RESULT } from '../../constants/PageTitle';
 
 const Overview = () => {
   const { appData } = useContext(AppContext);
-  const { data, reporting } = appData;
+  const { schema, data, reporting } = appData;
   const evaluationSummaryData = useMemo(
     () => generateEvaluationSummaryData(data, reporting),
     [reporting],
   );
   const errorSummaryData = useMemo(
-    () => generateErrorSummaryData(reporting),
+    () => generateErrorSummaryData(reporting, schema),
     [reporting],
   );
   const missingValueAnalysisChartData = useMemo(
@@ -34,7 +34,7 @@ const Overview = () => {
       <Section>
         <PageTitle
           title={VALIDATION_RESULT}
-          subtitle={`${data.length} metadata records were found and validated.`}
+          subtitle={`${data.length} metadata records were found in the spreadsheet.`}
         />
       </Section>
       <DefaultInfoSection />
@@ -42,13 +42,13 @@ const Overview = () => {
         evaluationSummaryData={evaluationSummaryData}
       />
       <ErrorAnalysisChart
-        title="Missing Value Analysis"
-        subtitle={`Evaluating ${data.length} metadata records for completeness errors in the spreadsheet.`}
+        title="Analysis: Missing Values"
+        subtitle={`Evaluating ${data.length} metadata records for missing values in the spreadsheet.`}
         analysisData={missingValueAnalysisChartData}
       />
       <ErrorAnalysisChart
-        title="Invalid Value Type Analysis"
-        subtitle={`Evaluating ${data.length} metadata records for adherence errors in the spreadsheet.`}
+        title="Analysis: Invalid Value Types"
+        subtitle={`Evaluating ${data.length} metadata records for invalid value types in the spreadsheet.`}
         analysisData={invalidValueTypeAnalysisChartData}
       />
     </>

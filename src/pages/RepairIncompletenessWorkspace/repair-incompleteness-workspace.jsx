@@ -31,7 +31,7 @@ const RepairIncompletenessWorkspace = () => {
         <Section>
           <PageTitle
             title={REPAIR_INCOMPLETENESS}
-            subtitle={`${errorSize} rows were missing the ${targetColumn} value.`}
+            subtitle={`${errorSize} issues were found.`}
           />
         </Section>
         <DefaultInfoSection />

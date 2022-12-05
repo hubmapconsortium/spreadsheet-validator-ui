@@ -2,19 +2,22 @@ export const METADATA_SCHEMA = {
   title: 'Tissue Block',
   columns: {
     sample_ID: {
-      label: 'sample_ID',
+      name: 'sample_ID',
+      label: 'Sample ID',
       type: 'text',
       required: true,
       description: 'The HuBMAP ID for the sample assigned by the ingest portal. An example value might be "HBM743.CKJW.876".',
     },
     source_storage_time_value: {
-      label: 'source_storage_time_value',
+      name: 'source_storage_time_value',
+      label: 'Source Storage Time Value',
       type: 'number',
       required: true,
       description: 'How long was the source material stored, prior to this sample being processed? For tissue blocks, this would typically be the time between when the organ arrived in the lab and the processing of the organ began. In most cases this will likely be 0, while in some cases the organ might be stored (on ice) in the lab before dissection. For tissue sections, this would be how long the tissue block was stored, usually in a -80 freezer, prior to the section being cut. For suspensions, this would be the length of time the tissue block was stored prior to the initiation of the dissociation process.',
     },
     source_storage_time_unit: {
-      label: 'source_storage_time_unit',
+      name: 'source_storage_time_unit',
+      label: 'Source Storage Time Unit',
       type: 'text',
       permissibleValues: [{
         label: 'minute',
@@ -33,7 +36,8 @@ export const METADATA_SCHEMA = {
       description: 'Time unit',
     },
     preparation_medium: {
-      label: 'preparation_medium',
+      name: 'preparation_medium',
+      label: 'Preparation Medium',
       type: 'text',
       permissibleValues: [
         { label: 'PFA (4%)', meaning: '' },
@@ -58,7 +62,8 @@ export const METADATA_SCHEMA = {
       description: 'The medium used during preparation of the sample.',
     },
     preparation_temperature: {
-      label: 'preparation_temperature',
+      name: 'preparation_temperature',
+      label: 'Preparation Temperature',
       type: 'text',
       permissibleValues: [
         { label: 'Liquid Nitrogen', meaning: '' },
@@ -73,13 +78,15 @@ export const METADATA_SCHEMA = {
       description: 'The temperature for the preparation process.',
     },
     processing_time_value: {
-      label: 'processing_time_value',
+      name: 'processing_time_value',
+      label: 'Processing Time Value',
       type: 'number',
       required: true,
       description: 'How long was the tissue being handled before the initial preservation? For tissue blocks, this would typically be the length of time from when the organ was received in the lab to when the tissue block is frozen or otherwise preserved (e.g., imbedded in OCT). For a tissue section this would be how long it takes to slice the tissue block and fix the mounted slice, after removing the tissue block from the freezer. For a suspension this would be the length of time from when the tissue block is removed from the freezer, dissociated and processed to the point where by the suspension is put into the initial preservation buffer.',
     },
     processing_time_unit: {
-      label: 'processing_time_unit',
+      name: 'processing_time_unit',
+      label: 'Processing Time Unit',
       type: 'text',
       permissibleValues: [{
         label: 'minute',
@@ -95,7 +102,8 @@ export const METADATA_SCHEMA = {
       description: 'Time unit.',
     },
     storage_medium: {
-      label: 'storage_medium',
+      name: 'storage_medium',
+      label: 'Storage Medium',
       type: 'text',
       permissibleValues: [
         { label: 'PFA (4%)', meaning: '' },
@@ -125,7 +133,8 @@ export const METADATA_SCHEMA = {
       description: 'What was the sample preserved in.',
     },
     storage_temperature: {
-      label: 'storage_temperature',
+      name: 'storage_temperature',
+      label: 'Storage Temperature',
       type: 'text',
       permissibleValues: [
         { label: 'Liquid Nitrogen (Unspecified)', meaning: '' },
@@ -146,25 +155,29 @@ export const METADATA_SCHEMA = {
       description: 'The temperature during storage, after preparation and before the assay is performed.',
     },
     quality_criteria: {
-      label: 'quality_criteria',
+      name: 'quality_criteria',
+      label: 'Quality Criteria',
       type: 'text',
       required: false,
       description: 'For example, RIN: 8.7. For suspensions, measured by visual inspection prior to cell lysis or defined by known parameters such as wells with several cells or no cells. This can be captured at a high level. "OK" or "not OK", or with more specificity such as "debris", "clump", "low clump".',
     },
     histological_report: {
-      label: 'histological_report',
+      name: 'histological_report',
+      label: 'Histological Report',
       type: 'text',
       required: false,
       description: 'histopathological reporting of key variables that are important for the tissue (absence of necrosis, comment on composition, significant pathology description, high level inflammation/fibrosis assessment, etc.)',
     },
     thickness_value: {
-      label: 'thickness_value',
+      name: 'thickness_value',
+      label: 'Thickness Value',
       type: 'number',
       required: true,
       description: 'Thickness of a tissue section',
     },
     thickness_unit: {
-      label: 'thickness_unit',
+      name: 'thickness_unit',
+      label: 'Thickness Unit',
       type: 'text',
       permissibleValues: [{
         label: 'micrometer',
@@ -180,19 +193,22 @@ export const METADATA_SCHEMA = {
       description: 'Thickness unit',
     },
     section_index_number: {
-      label: 'section_index_number',
+      name: 'section_index_number',
+      label: 'Section Index Number',
       type: 'number',
       required: true,
       description: 'The index number for the section if the sample is a single section.',
     },
     area_value: {
-      label: 'area_value',
+      name: 'area_value',
+      label: 'Area Value',
       type: 'number',
       required: false,
       description: 'The area of a tissue section.',
     },
     area_unit: {
-      label: 'area_unit',
+      name: 'area_unit',
+      label: 'Area Unit',
       type: 'text',
       permissibleValues: [{
         label: 'mm^2',
@@ -205,7 +221,8 @@ export const METADATA_SCHEMA = {
       description: 'Area unit',
     },
     notes: {
-      label: 'notes',
+      name: 'notes',
+      label: 'Notes',
       type: 'text',
       required: false,
       description: 'Researcher note',

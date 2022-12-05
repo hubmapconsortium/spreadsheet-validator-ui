@@ -27,6 +27,7 @@ const printFrequency = (rows) => {
 const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInput }) => {
   const [open, setOpen] = useState(false);
   const { id, column: targetColumn, value, rows, records } = rowData;
+  const targetColumnLabel = schema.columns[targetColumn].label;
   return (
     <>
       <TableRow key={`summary-row-${id}`}>
@@ -42,7 +43,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
         <SheetCell key={`target-column-cell-${id}`}>
           <CellValue>
             <Stack direction="row" gap={1}>
-              <HeaderLabel>{targetColumn}</HeaderLabel>
+              <HeaderLabel>{targetColumnLabel}</HeaderLabel>
               <InfoTooltip title={getColumnDescription(targetColumn, schema)}>
                 <InfoOutlinedIcon fontSize="small" />
               </InfoTooltip>
@@ -123,34 +124,43 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ padding: 1, marginBottom: 2 }}>
               <Typography variant="h6" gutterBottom component="div">
-                Sheet Data
+                Spreadsheet Data
               </Typography>
               <SheetTable size="small">
                 <SheetHeader>
-                  {Object.keys(schema.columns).map((columnHeader) => (
-                    <SheetCell
-                      key={`table-header-${columnHeader}`}
-                      sx={{ backgroundColor: LIGHT_GRAY }}
-                    >
-                      {columnHeader}
-                    </SheetCell>
-                  ))}
+                  {Object.keys(schema.columns).map((columnHeader) => {
+                    const columnProperties = schema.columns[columnHeader];
+                    const { name: columnName, label: columnLabel } = columnProperties;
+                    return (
+                      <SheetCell
+                        key={`table-header-${columnName}`}
+                        sx={{ textAlign: 'center', backgroundColor: LIGHT_GRAY, minWidth: '100px' }}
+                      >
+                        {columnLabel}
+                      </SheetCell>
+                    );
+                  })}
                 </SheetHeader>
                 <SheetBody>
                   {records.map((record, index) => (
                     <TableRow>
-                      {Object.keys(schema.columns).map((columnHeader) => (
-                        <SheetCell
-                          // eslint-disable-next-line react/no-array-index-key
-                          key={`table-cell-row-${index}-column-${columnHeader}`}
-                          align="right"
-                        >
-                          <WrappedText
-                            text={record[columnHeader]}
-                            color={columnHeader === targetColumn ? RED : BLACK}
-                          />
-                        </SheetCell>
-                      ))}
+                      {Object.keys(schema.columns).map((columnHeader) => {
+                        const columnProperties = schema.columns[columnHeader];
+                        const { name: columnName } = columnProperties;
+                        return (
+                          <SheetCell
+                            // eslint-disable-next-line react/no-array-index-key
+                            key={`table-cell-row-${index}-column-${columnName}`}
+                            sx={{ textAlign: 'center' }}
+                            align="right"
+                          >
+                            <WrappedText
+                              text={record[columnName]}
+                              color={columnName === targetColumn ? RED : BLACK}
+                            />
+                          </SheetCell>
+                        );
+                      })}
                     </TableRow>
                   ))}
                 </SheetBody>

@@ -59,7 +59,7 @@ export const generateCorrectnessChartData = (spreadsheetData, reportingData) => 
   ].length;
   const validSize = dataSize - errorSize;
   return {
-    labels: ['Row has no data type errors', 'Row has some data type error'],
+    labels: ['Row has no value type errors', 'Row has some value type error'],
     innerTextTitle: `${validSize} / ${dataSize}`,
     innerTextSubtitle: 'Correctness',
     datasets: [{
@@ -137,11 +137,11 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
   const missingRequiredErrorList = errorSummaryData.filter((item) => checkCompletenessError(item));
   const subMenuItems = missingRequiredErrorList.map(
     (errorDetails) => {
-      const { column: errorColumnLocation, rows: errorRowLocations } = errorDetails;
+      const { column: errorColumnLocation, rows: errorRowLocations, columnLabel } = errorDetails;
       return ({
         errorId: `missing-required-${errorColumnLocation}`,
         name: `missing-required-${errorColumnLocation}`,
-        title: `Missing ${errorColumnLocation}`,
+        title: `Missing ${columnLabel}`,
         status: determineRepairIncompletenessStatus(
           errorRowLocations,
           errorColumnLocation,
@@ -176,7 +176,7 @@ const getNotStandardTermSubMenuItemData = (errorSummaryData, patches) => {
     return {
       errorId: 'not-standard-term-error',
       name: 'not-standard-term-error',
-      title: 'Value not standard term',
+      title: 'Value is not a standard term',
       status: determineRepairIncorrectnessStatus(notStandardTermErrorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStandardTerm`,
     };
@@ -192,7 +192,7 @@ const getNotNumberTypeSubMenuItemData = (errorSummaryData, patches) => {
     return {
       errorId: 'not-number-type-error',
       name: 'not-number-type-error',
-      title: 'Value not number type',
+      title: 'Value is not a number',
       status: determineRepairIncorrectnessStatus(notNumberTypeErrorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notNumberType`,
     };
@@ -208,7 +208,7 @@ const getNotStringTypeSubMenuItemData = (errorSummaryData, patches) => {
     return {
       errorId: 'not-string-type-error',
       name: 'not-string-type-error',
-      title: 'Value not string type',
+      title: 'Value is not a string',
       status: determineRepairIncorrectnessStatus(notStringTypeErrorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStringType`,
     };
@@ -233,7 +233,7 @@ export const generateRepairIncompletenessButtonData = (errorSummaryData, patches
   );
   return missingRequiredErrorList.map(
     (errorDetails) => {
-      const { column: errorColumnLocation, rows: errorRowLocations } = errorDetails;
+      const { column: errorColumnLocation, rows: errorRowLocations, columnLabel } = errorDetails;
       const errorSize = errorRowLocations.length;
       const subTitleText = errorSize === 1
         ? '1 record is incomplete'
@@ -241,7 +241,7 @@ export const generateRepairIncompletenessButtonData = (errorSummaryData, patches
       return ({
         errorId: `missing-required-${errorColumnLocation}`,
         name: `missing-required-${errorColumnLocation}`,
-        title: errorColumnLocation,
+        title: columnLabel,
         subtitle: subTitleText,
         status: determineRepairIncompletenessStatus(
           errorRowLocations,
@@ -273,7 +273,7 @@ const getNotStandardTermButtonItemData = (errorSummaryData, patches) => {
     return {
       errorId: 'not-standard-term-error',
       name: 'not-standard-term-error',
-      title: 'Value not standard term',
+      title: 'Value is not a standard term',
       subtitle: subTitleText,
       status: determineRepairIncorrectnessStatus(notStandardTermErrorList, patches),
       navigateTo: 'notStandardTerm',
@@ -294,7 +294,7 @@ const getNotNumberTypeButtonItemData = (errorSummaryData, patches) => {
     return {
       errorId: 'not-number-type-error',
       name: 'not-number-type-error',
-      title: 'Value is not a number type',
+      title: 'Value is not a number',
       subtitle: subTitleText,
       status: determineRepairIncorrectnessStatus(notNumberTypeErrorList, patches),
       navigateTo: 'notNumberType',
@@ -315,7 +315,7 @@ const getNotStringTypeButtonItemData = (errorSummaryData, patches) => {
     return {
       errorId: 'not-string-type-error',
       name: 'not-string-type-error',
-      title: 'Value is not a string type',
+      title: 'Value is not a string',
       subtitle: subTitleText,
       status: determineRepairIncorrectnessStatus(notStringTypeErrorList, patches),
       navigateTo: 'notStringType',
@@ -343,7 +343,7 @@ export const determineOverallRepairStatus = (reporting, patches) => {
   return REPAIR_COMPLETED;
 };
 
-export const generateErrorSummaryData = (reporting) => (
+export const generateErrorSummaryData = (reporting, schema) => (
   Object.values(
     reporting.reduce(
       (accumulator, reportItem) => {
@@ -354,6 +354,7 @@ export const generateErrorSummaryData = (reporting) => (
           accumulator[key] = accumulator[key] || {
             column,
             rows: [],
+            columnLabel: schema.columns[column].label,
             errorType,
           }
         );

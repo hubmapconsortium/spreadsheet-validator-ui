@@ -60,9 +60,9 @@ const SideBar = () => {
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(true);
   const { appData, patches } = useContext(AppContext);
-  const { data, reporting } = appData;
+  const { schema, data, reporting } = appData;
   const errorSummaryData = useMemo(
-    () => generateErrorSummaryData(reporting),
+    () => generateErrorSummaryData(reporting, schema),
     [reporting],
   );
   const repairIncompletenessSubMenu = useMemo(
