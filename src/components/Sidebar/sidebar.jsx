@@ -96,7 +96,7 @@ const SideBar = () => {
     () => {
       navigate(REPAIR_INCOMPLENESS_PATH, {
         state: {
-          selectedMenuItem: 'repair-incompleteness',
+          selectedMenuItem: 'repair-missing-values',
         },
       });
     },
@@ -107,7 +107,7 @@ const SideBar = () => {
     () => {
       navigate(REPAIR_INCORRECTNESS_PATH, {
         state: {
-          selectedMenuItem: 'repair-incorrectness',
+          selectedMenuItem: 'repair-invalid-value-types',
         },
       });
     },
@@ -128,14 +128,14 @@ const SideBar = () => {
           />
           <NestedMenuItem
             icon={<RepairIcon />}
-            name="repair-incompleteness"
+            name="repair-missing-values"
             title={REPAIR_INCOMPLETENESS}
             navigateTo={REPAIR_INCOMPLENESS_PATH}
             subMenu={repairIncompletenessSubMenu}
           />
           <NestedMenuItem
             icon={<RepairIcon />}
-            name="repair-incorrectness"
+            name="repair-invalid-value-types"
             title={REPAIR_INCORRECTNESS}
             navigateTo={REPAIR_INCORRECTNESS_PATH}
             subMenu={repairIncorrectnessSubMenu}

@@ -110,7 +110,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             disabled={!evaluationSummaryData.hasCompletenessErrors}
             onClick={() => navigate(`../${REPAIR_INCOMPLENESS_PATH}`, {
               state: {
-                selectedMenuItem: 'repair-incompleteness',
+                selectedMenuItem: 'repair-missing-values',
               },
             })}
           >
@@ -121,7 +121,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             disabled={!evaluationSummaryData.hasAdherenceErrors}
             onClick={() => navigate(`../${REPAIR_INCORRECTNESS_PATH}`, {
               state: {
-                selectedMenuItem: 'repair-incorrectness',
+                selectedMenuItem: 'repair-missing-values',
               },
             })}
           >
