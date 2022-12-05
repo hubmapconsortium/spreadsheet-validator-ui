@@ -9,7 +9,6 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import AppContext from '../../../pages/AppContext';
 import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
-import SheetCell from '../../DataSheet/SheetCell';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import Block from '../../../styles/Block';
 import { createReplaceOperationPatch, generateRepairIncorrectnessTableData, getPagedData } from '../../../helpers/app-utils';
@@ -17,7 +16,7 @@ import HeaderWithCheckbox from '../header-with-checkbox';
 import CollapsibleTableRow from '../collapsible-table-row';
 import InfoTooltip from '../info-tooltip';
 import { initUserInput } from './function';
-import { ButtonBox, CancelButton, DataSheetCard, FooterBox, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
+import { ButtonBox, CancelButton, DataSheetCard, FooterBox, HeaderCell, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { REPAIR_INCORRECTNESS_PATH } from '../../../constants/Router';
 
 // eslint-disable-next-line no-unused-vars
@@ -82,16 +81,16 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
         <SheetTableContainer>
           <SheetTable stickyHeader>
             <SheetHeader>
-              <SheetCell />
-              <SheetCell align="center" width="30%">
+              <HeaderCell />
+              <HeaderCell align="center" width="30%">
                 <HeaderLabel>Column name</HeaderLabel>
-              </SheetCell>
-              <SheetCell align="center" width="30%">
+              </HeaderCell>
+              <HeaderCell align="center" width="30%">
                 <HeaderLabel>Cell value</HeaderLabel>
-              </SheetCell>
-              <SheetCell align="center" width="30%">
+              </HeaderCell>
+              <HeaderCell align="center" width="30%">
                 <HeaderLabel>Suggested value</HeaderLabel>
-              </SheetCell>
+              </HeaderCell>
               <HeaderWithCheckbox
                 id={`checkbox-${errorId}`}
                 label="Approved?"

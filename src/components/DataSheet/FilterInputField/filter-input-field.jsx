@@ -1,5 +1,6 @@
 import { OutlinedInput } from '@mui/material';
 import PropTypes from 'prop-types';
+import { WHITE } from '../../../constants/Color';
 import { TEXT } from '../../../constants/ValueType';
 
 const FilterInputField = ({ id, type, onChange, endAdornment }) => (
@@ -11,7 +12,7 @@ const FilterInputField = ({ id, type, onChange, endAdornment }) => (
     placeholder="Filter text..."
     onChange={onChange}
     endAdornment={endAdornment}
-    sx={{ minWidth: '150px' }}
+    sx={{ minWidth: '150px', backgroundColor: WHITE }}
   />
 );
 

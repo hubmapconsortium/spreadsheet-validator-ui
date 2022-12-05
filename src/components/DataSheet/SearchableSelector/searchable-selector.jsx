@@ -1,6 +1,7 @@
 import { Autocomplete, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PropTypes from 'prop-types';
+import { WHITE } from '../../../constants/Color';
 
 const SearchableSelector = ({ id, options, onChange, onKeyPress }) => (
   <Autocomplete
@@ -10,7 +11,7 @@ const SearchableSelector = ({ id, options, onChange, onKeyPress }) => (
     options={options}
     onChange={onChange}
     onKeyPress={onKeyPress}
-    sx={{ height: '40px' }}
+    sx={{ height: '40px', backgroundColor: WHITE }}
     getOptionLabel={(option) => option.label}
     renderInput={(params) => (
       <TextField

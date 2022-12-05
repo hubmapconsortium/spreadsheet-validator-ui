@@ -24,6 +24,7 @@ export const SheetTable = styled(Table)({
 
 export const HeaderCell = styled(SheetCell)({
   verticalAlign: 'bottom',
+  borderBottom: '1px solid black',
 });
 
 export const HeaderLabel = styled(Typography)({
