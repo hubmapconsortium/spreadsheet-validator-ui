@@ -26,8 +26,9 @@ const InputArea = styled(Box)({
 const LogoBox = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
+  paddingBottom: '10px',
   img: {
-    width: '700px',
+    width: '600px',
     marginTop: 'auto',
   },
 });

@@ -24,7 +24,7 @@ const LogoSection = styled(Box)({
   padding: '20px',
   width: '340px',
   img: {
-    width: '300px',
+    width: '250px',
     marginTop: 'auto',
   },
 });
