@@ -1,13 +1,12 @@
 import { Checkbox } from '@mui/material';
 import PropTypes from 'prop-types';
-import SheetCell from '../DataSheet/SheetCell';
-import { HeaderLabel } from './styled';
+import { HeaderCell, HeaderLabel } from './styled';
 
 const HeaderWithCheckbox = ({ id, label, handleCheckAll }) => (
-  <SheetCell align="center">
+  <HeaderCell align="center">
     <HeaderLabel>{label}</HeaderLabel>
     <Checkbox sx={{ padding: 0 }} key={id} onChange={handleCheckAll} />
-  </SheetCell>
+  </HeaderCell>
 );
 
 HeaderWithCheckbox.propTypes = {

@@ -1,6 +1,7 @@
 import { Box, Card, styled, Table, TableContainer, Typography } from '@mui/material';
 import BaseButton from '../../styles/BaseButton';
 import { LIGHT_GRAY, WHITE } from '../../constants/Color';
+import SheetCell from '../DataSheet/SheetCell';
 
 export const DataSheetCard = styled(Card)({
   display: 'block',
@@ -19,6 +20,10 @@ export const SheetTableContainer = styled(TableContainer)({
 
 export const SheetTable = styled(Table)({
   borderRadius: '5px',
+});
+
+export const HeaderCell = styled(SheetCell)({
+  verticalAlign: 'bottom',
 });
 
 export const HeaderLabel = styled(Typography)({

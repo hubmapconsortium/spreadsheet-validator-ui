@@ -5,9 +5,8 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
 import InputField from '../DataSheet/InputField';
 import SearchableSelector from '../DataSheet/SearchableSelector';
-import SheetCell from '../DataSheet/SheetCell';
 import InfoTooltip from './info-tooltip';
-import { HeaderLabel } from './styled';
+import { HeaderCell, HeaderLabel } from './styled';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
 
 // eslint-disable-next-line max-len
@@ -21,7 +20,7 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
     }
   };
   return (
-    <SheetCell align="center" sticky>
+    <HeaderCell sticky>
       <Stack direction="row" gap={1}>
         <HeaderLabel>{label}</HeaderLabel>
         <InfoTooltip title={description}>
@@ -52,7 +51,7 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
             />
           )}
       </FormControl>
-    </SheetCell>
+    </HeaderCell>
   );
 };
 

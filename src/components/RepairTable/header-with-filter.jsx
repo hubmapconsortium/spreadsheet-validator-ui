@@ -5,9 +5,8 @@ import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
 import FilterInputField from '../DataSheet/FilterInputField';
-import SheetCell from '../DataSheet/SheetCell';
 import InfoTooltip from './info-tooltip';
-import { HeaderLabel } from './styled';
+import { HeaderCell, HeaderLabel } from './styled';
 
 const HeaderWithFilter = ({ id, label, description, setColumnFilters, setStaleBatch }) => {
   const [filterEnabled, setFilterEnabled] = useState(true);
@@ -46,7 +45,7 @@ const HeaderWithFilter = ({ id, label, description, setColumnFilters, setStaleBa
     event.preventDefault();
   };
   return (
-    <SheetCell align="center">
+    <HeaderCell>
       <Stack direction="row" gap={1}>
         <HeaderLabel>{label}</HeaderLabel>
         <InfoTooltip title={description}>
@@ -64,7 +63,7 @@ const HeaderWithFilter = ({ id, label, description, setColumnFilters, setStaleBa
           </InputAdornment>
         )}
       />
-    </SheetCell>
+    </HeaderCell>
   );
 };
 
