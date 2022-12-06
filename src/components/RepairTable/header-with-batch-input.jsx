@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FormControl, InputAdornment, Stack } from '@mui/material';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import SearchIcon from '@mui/icons-material/Search';
 import PropTypes from 'prop-types';
 import InputField from '../DataSheet/InputField';
 import SearchableSelector from '../DataSheet/SearchableSelector';
@@ -34,6 +35,11 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
               id={`${id}-selector-batch-field`}
               options={permissibleValues}
               onKeyPress={handleKeyPress}
+              startAdornment={(
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              )}
             />
           )
           : (
