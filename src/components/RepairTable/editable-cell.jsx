@@ -1,6 +1,6 @@
 import { FormControl } from '@mui/material';
 import PropTypes from 'prop-types';
-import DropDownSelector from '../DataSheet/DropDownSelector';
+import SearchableSelector from '../DataSheet/SearchableSelector';
 import InputField from '../DataSheet/InputField';
 import { LIGHT_RED } from '../../constants/Color';
 import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
@@ -11,7 +11,7 @@ const EditableCell = (
   <FormControl fullWidth>
     {permissibleValues
       ? (
-        <DropDownSelector
+        <SearchableSelector
           value={value}
           options={permissibleValues}
           onChange={handleInputChange}
@@ -35,8 +35,7 @@ EditableCell.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   required: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
-  permissibleValues: PropTypes.arrayOf(PropTypes.object),
+  permissibleValues: PropTypes.arrayOf(PropTypes.string),
   // eslint-disable-next-line react/forbid-prop-types
   inputRef: PropTypes.object,
   handleInputChange: PropTypes.func.isRequired,

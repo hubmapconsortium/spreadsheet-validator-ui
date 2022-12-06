@@ -167,12 +167,11 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                               type={getColumnType(column, schema)}
                               inputRef={saveChanges}
                               permissibleValues={getPermissibleValues(column, schema)}
-                              handleInputChange={(event) => {
-                                const { value } = event.target;
-                                if (value !== '') {
+                              handleInputChange={(event, newValue) => {
+                                if (newValue !== '') {
                                   setUserInput((currentUserInput) => {
                                     // eslint-disable-next-line no-param-reassign
-                                    currentUserInput[row] = value;
+                                    currentUserInput[row] = newValue;
                                   });
                                 }
                               }}

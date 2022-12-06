@@ -72,14 +72,13 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
             required={isColumnRequired(targetColumn, schema)}
             permissibleValues={getPermissibleValues(targetColumn, schema)}
             inputRef={inputRef}
-            handleInputChange={(event) => {
-              const { value: userValue } = event.target;
-              if (userValue !== '') {
+            handleInputChange={(event, newValue) => {
+              if (newValue !== '') {
                 setUserInput((currentUserInput) => {
                   // eslint-disable-next-line no-param-reassign
                   currentUserInput[id] = {
                     column: targetColumn,
-                    value: userValue,
+                    value: newValue,
                     rows,
                     approved: true,
                   };
