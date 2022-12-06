@@ -7,7 +7,8 @@ const PageContainer = styled(Container)({
   minHeight: '100vh',
   height: '100%',
   width: '100%',
-  paddingTop: '50px',
+  paddingTop: '35px',
+  paddingBottom: '35px',
   paddingLeft: '50px',
   backgroundColor: LIGHTER_GRAY,
 });
