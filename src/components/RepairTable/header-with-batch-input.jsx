@@ -66,8 +66,7 @@ HeaderWithBatchInput.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   description: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  permissibleValues: PropTypes.arrayOf(PropTypes.object),
+  permissibleValues: PropTypes.arrayOf(PropTypes.string),
   setBatchInput: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,
 };

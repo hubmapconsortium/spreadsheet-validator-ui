@@ -27,7 +27,7 @@ export const isColumnRequired = (column, schema) => {
 
 export const getPermissibleValues = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
-  return columnSchema.permissibleValues;
+  return columnSchema.permissibleValues?.map((v) => v.label);
 };
 
 export const getMissingRequiredReporting = (reporting) => (

@@ -12,8 +12,8 @@ const DropDownSelector = ({ value, options, onChange, colorOnEmpty }) => (
     onChange={onChange}
   >
     {options.map((option) => (
-      <MenuItem key={option.label} value={option.label}>
-        {option.label}
+      <MenuItem key={option} value={option}>
+        {option}
       </MenuItem>
     ))}
   </Select>
@@ -21,8 +21,7 @@ const DropDownSelector = ({ value, options, onChange, colorOnEmpty }) => (
 
 DropDownSelector.propTypes = {
   value: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChange: PropTypes.func,
   colorOnEmpty: PropTypes.string,
 };
