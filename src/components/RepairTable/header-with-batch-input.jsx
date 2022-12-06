@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { FormControl, InputAdornment, Stack } from '@mui/material';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import SearchIcon from '@mui/icons-material/Search';
 import PropTypes from 'prop-types';
 import InputField from '../DataSheet/InputField';
 import SearchableSelector from '../DataSheet/SearchableSelector';
@@ -12,7 +10,6 @@ import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueTyp
 
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues, setBatchInput, setStaleBatch }) => {
-  const [userTyping, setUserTyping] = useState(false);
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       setBatchInput(event.target.value);
@@ -36,9 +33,9 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
               placeholder="Enter batch value..."
               options={permissibleValues}
               onKeyPress={handleKeyPress}
-              startAdornment={(
-                <InputAdornment position="start">
-                  <SearchIcon />
+              endAdornment={(
+                <InputAdornment position="end">
+                  <KeyboardReturnIcon />
                 </InputAdornment>
               )}
             />
@@ -48,9 +45,8 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
               id={`${id}-input-batch-field`}
               type={type}
               placeholder="Enter batch value..."
-              onChange={(e) => setUserTyping(e.target.value !== '')}
               onKeyPress={handleKeyPress}
-              endAdornment={userTyping && (
+              endAdornment={(
                 <InputAdornment position="end">
                   <KeyboardReturnIcon />
                 </InputAdornment>

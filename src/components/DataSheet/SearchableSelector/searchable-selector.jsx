@@ -2,9 +2,8 @@ import { Autocomplete, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { WHITE } from '../../../constants/Color';
 
-const SearchableSelector = (
-  { id, placeholder, value, options, onChange, onKeyPress, colorOnEmpty, startAdornment },
-) => (
+// eslint-disable-next-line max-len
+const SearchableSelector = ({ id, placeholder, value, options, onChange, onKeyPress, colorOnEmpty, startAdornment, endAdornment }) => (
   <Autocomplete
     key={id}
     value={value}
@@ -24,6 +23,7 @@ const SearchableSelector = (
         InputProps={{
           ...params.InputProps,
           startAdornment,
+          endAdornment,
         }}
       />
     )}
@@ -44,6 +44,7 @@ SearchableSelector.propTypes = {
   onKeyPress: PropTypes.func,
   colorOnEmpty: PropTypes.string,
   startAdornment: PropTypes.element,
+  endAdornment: PropTypes.element,
 };
 
 SearchableSelector.defaultProps = {
@@ -54,6 +55,7 @@ SearchableSelector.defaultProps = {
   onKeyPress: undefined,
   colorOnEmpty: WHITE,
   startAdornment: undefined,
+  endAdornment: undefined,
 };
 
 export default SearchableSelector;
