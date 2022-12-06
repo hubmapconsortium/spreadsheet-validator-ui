@@ -33,6 +33,7 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
           ? (
             <SearchableSelector
               id={`${id}-selector-batch-field`}
+              placeholder="Enter batch value..."
               options={permissibleValues}
               onKeyPress={handleKeyPress}
               startAdornment={(
@@ -46,7 +47,7 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
             <InputField
               id={`${id}-input-batch-field`}
               type={type}
-              placeholder="Enter value..."
+              placeholder="Enter batch value..."
               onChange={(e) => setUserTyping(e.target.value !== '')}
               onKeyPress={handleKeyPress}
               endAdornment={userTyping && (
