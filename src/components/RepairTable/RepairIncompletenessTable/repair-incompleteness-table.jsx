@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Stack, TableRow, Typography } from '@mui/material';
+import { FormControl, Stack, TableRow, Typography } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -15,14 +15,16 @@ import SheetPagination from '../../DataSheet/SheetPagination';
 import Block from '../../../styles/Block';
 import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
-import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName } from '../../../helpers/data-utils';
+import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, hasPermissibleValues } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
-import EditableCell from '../editable-cell';
 import InfoTooltip from '../info-tooltip';
 import { ButtonBox, CancelButton, DataSheetCard, FooterBox, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { getFilteredData, initUserInput } from './function';
 import { REPAIR_INCOMPLENESS_PATH } from '../../../constants/Router';
+import SearchableSelector from '../../DataSheet/SearchableSelector';
+import { LIGHT_RED } from '../../../constants/Color';
+import InputField from '../../DataSheet/InputField';
 
 const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => {
   const navigate = useNavigate();
@@ -162,21 +164,38 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                       if (index === 0) {
                         component = (
                           <SheetCell key={`cell-${key}-${column}`} sx={{ zIndex: 998 }} sticky>
-                            <EditableCell
-                              required
-                              value={userInput[row] || ''}
-                              type={getColumnType(column, schema)}
-                              inputRef={saveChanges}
-                              permissibleValues={getPermissibleValues(column, schema)}
-                              handleInputChange={(event, newValue) => {
-                                if (newValue !== '') {
-                                  setUserInput((currentUserInput) => {
-                                    // eslint-disable-next-line no-param-reassign
-                                    currentUserInput[row] = newValue;
-                                  });
-                                }
-                              }}
-                            />
+                            <FormControl fullWidth>
+                              {hasPermissibleValues(column, schema)
+                                ? (
+                                  <SearchableSelector
+                                    value={userInput[row] || ''}
+                                    options={getPermissibleValues(column, schema)}
+                                    onChange={(event, newValue) => {
+                                      setUserInput((currentUserInput) => {
+                                        // eslint-disable-next-line no-param-reassign
+                                        currentUserInput[row] = newValue;
+                                      });
+                                    }}
+                                    colorOnEmpty={LIGHT_RED}
+                                  />
+                                )
+                                : (
+                                  <InputField
+                                    required
+                                    value={userInput[row] || ''}
+                                    type={getColumnType(column, schema)}
+                                    inputRef={saveChanges}
+                                    onChange={(event) => {
+                                      const newValue = event.target.value;
+                                      setUserInput((currentUserInput) => {
+                                        // eslint-disable-next-line no-param-reassign
+                                        currentUserInput[row] = newValue;
+                                      });
+                                    }}
+                                    colorOnEmpty={LIGHT_RED}
+                                  />
+                                )}
+                            </FormControl>
                           </SheetCell>
                         );
                       } else {

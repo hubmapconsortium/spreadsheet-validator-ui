@@ -30,6 +30,11 @@ export const isColumnRequired = (column, schema) => {
   return columnSchema.required;
 };
 
+export const hasPermissibleValues = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return 'permissibleValues' in columnSchema;
+};
+
 export const getPermissibleValues = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
   return columnSchema.permissibleValues?.map((v) => v.label);

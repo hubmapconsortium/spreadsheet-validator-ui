@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Checkbox, Collapse, IconButton, Stack, styled, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, Collapse, FormControl, IconButton, Stack, styled, TableRow, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -8,11 +8,12 @@ import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import WrappedText from '../DataSheet/WrappedText';
-import EditableCell from './editable-cell';
-import { HeaderLabel, SheetTable } from './styled';
-import { getColumnDescription, getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
-import { BLACK, DARK_GRAY, LIGHT_GRAY, RED } from '../../constants/Color';
+import SearchableSelector from '../DataSheet/SearchableSelector';
+import InputField from '../DataSheet/InputField';
 import InfoTooltip from './info-tooltip';
+import { HeaderLabel, SheetTable } from './styled';
+import { getColumnDescription, getColumnType, hasPermissibleValues, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
+import { BLACK, DARK_GRAY, LIGHT_GRAY, LIGHT_RED, RED } from '../../constants/Color';
 
 const CellValue = styled(Typography)({
   fontSize: '17px',
@@ -66,26 +67,48 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
           </Box>
         </SheetCell>
         <SheetCell key={`suggested-value-cell-${id}`}>
-          <EditableCell
-            value={userInput[id]?.value || ''}
-            type={getColumnType(targetColumn, schema)}
-            required={isColumnRequired(targetColumn, schema)}
-            permissibleValues={getPermissibleValues(targetColumn, schema)}
-            inputRef={inputRef}
-            handleInputChange={(event, newValue) => {
-              if (newValue !== '') {
-                setUserInput((currentUserInput) => {
-                  // eslint-disable-next-line no-param-reassign
-                  currentUserInput[id] = {
-                    column: targetColumn,
-                    value: newValue,
-                    rows,
-                    approved: true,
-                  };
-                });
-              }
-            }}
-          />
+          <FormControl fullWidth>
+            {hasPermissibleValues(targetColumn, schema)
+              ? (
+                <SearchableSelector
+                  value={userInput[id]?.value || ''}
+                  options={getPermissibleValues(targetColumn, schema)}
+                  onChange={(event, newValue) => {
+                    setUserInput((currentUserInput) => {
+                      // eslint-disable-next-line no-param-reassign
+                      currentUserInput[id] = {
+                        column: targetColumn,
+                        value: newValue,
+                        rows,
+                        approved: true,
+                      };
+                    });
+                  }}
+                  colorOnEmpty={LIGHT_RED}
+                />
+              )
+              : (
+                <InputField
+                  required={isColumnRequired(targetColumn, schema)}
+                  value={userInput[id]?.value || ''}
+                  type={getColumnType(targetColumn, schema)}
+                  inputRef={inputRef}
+                  onChange={(event) => {
+                    const newValue = event.target.value;
+                    setUserInput((currentUserInput) => {
+                      // eslint-disable-next-line no-param-reassign
+                      currentUserInput[id] = {
+                        column: targetColumn,
+                        value: newValue,
+                        rows,
+                        approved: true,
+                      };
+                    });
+                  }}
+                  colorOnEmpty={LIGHT_RED}
+                />
+              )}
+          </FormControl>
         </SheetCell>
         <SheetCell key={`approved-cell-${id}`} align="center">
           <Checkbox
