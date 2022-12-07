@@ -1,5 +1,4 @@
 import * as jsonpatch from 'fast-json-patch';
-import { unCamelCase } from './string-utils';
 import { GREEN, RED } from '../constants/Color';
 import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
@@ -84,6 +83,18 @@ export const generateMissingValueAnalysisChartData = (spreadsheetData, errorSumm
     ]),
 });
 
+const printErrorFlag = (errorType) => {
+  let errorFlag = 'Unknown error flag';
+  if (errorType === 'notStandardTerm') {
+    errorFlag = 'Value is not a standard term';
+  } else if (errorType === 'notNumberType') {
+    errorFlag = 'Value is not a number';
+  } else if (errorType === 'notStringType') {
+    errorFlag = 'Value is not a string';
+  }
+  return errorFlag;
+};
+
 export const generateInvalidValueTypeAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
   columns: ['Field name', 'Error flag', '# of invalid metadata records'],
   rows: errorSummaryData
@@ -91,7 +102,7 @@ export const generateInvalidValueTypeAnalysisChartData = (spreadsheetData, error
     .sort((item1, item2) => (item2.rows.length - item1.rows.length))
     .map((item) => [
       item.column,
-      `Value ${unCamelCase(item.errorType)}`,
+      printErrorFlag(item.errorType),
       [
         { value: item.rows.length, color: RED },
         { value: spreadsheetData.length - item.rows.length, color: GREEN },
