@@ -10,21 +10,22 @@ import AppContext from '../../../pages/AppContext';
 import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
 import SheetCell from '../../DataSheet/SheetCell';
+import InputField from '../../DataSheet/InputField';
 import WrappedText from '../../DataSheet/WrappedText';
 import SheetPagination from '../../DataSheet/SheetPagination';
+import SearchableSelector from '../../DataSheet/SearchableSelector';
 import Block from '../../../styles/Block';
 import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
-import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, hasPermissibleValues } from '../../../helpers/data-utils';
+import { nullOnEmpty } from '../../../helpers/string-utils';
+import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, hasPermissibleValues, isColumnRequired } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import InfoTooltip from '../info-tooltip';
 import { ButtonBox, CancelButton, DataSheetCard, FooterBox, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { getFilteredData, initUserInput } from './function';
 import { REPAIR_INCOMPLENESS_PATH } from '../../../constants/Router';
-import SearchableSelector from '../../DataSheet/SearchableSelector';
 import { LIGHT_RED } from '../../../constants/Color';
-import InputField from '../../DataSheet/InputField';
 
 const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => {
   const navigate = useNavigate();
@@ -97,7 +98,20 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
     Object.keys(userInput)
       .forEach((row) => {
         const value = userInput[row];
-        if (typeof value !== 'undefined') {
+        if (isColumnRequired(targetColumn, schema)) {
+          if (value !== null) {
+            const patch = createAddOperationPatch(row, targetColumn, value);
+            setPatches((existingPatches) => {
+              // eslint-disable-next-line no-param-reassign
+              existingPatches[row][targetColumn] = patch;
+            });
+          } else {
+            setPatches((existingPatches) => {
+              // eslint-disable-next-line no-param-reassign
+              delete existingPatches[row][targetColumn];
+            });
+          }
+        } else {
           const patch = createAddOperationPatch(row, targetColumn, value);
           setPatches((existingPatches) => {
             // eslint-disable-next-line no-param-reassign
@@ -107,6 +121,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
       });
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
   };
+
   const saveChanges = useHotkeys(
     ['ctrl+s', 'meta+s'],
     () => handleSaveChanges(),
@@ -173,7 +188,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                                     onChange={(event, newValue) => {
                                       setUserInput((currentUserInput) => {
                                         // eslint-disable-next-line no-param-reassign
-                                        currentUserInput[row] = newValue;
+                                        currentUserInput[row] = nullOnEmpty(newValue);
                                       });
                                     }}
                                     colorOnEmpty={LIGHT_RED}
@@ -189,7 +204,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                                       const newValue = event.target.value;
                                       setUserInput((currentUserInput) => {
                                         // eslint-disable-next-line no-param-reassign
-                                        currentUserInput[row] = newValue;
+                                        currentUserInput[row] = nullOnEmpty(newValue);
                                       });
                                     }}
                                     colorOnEmpty={LIGHT_RED}

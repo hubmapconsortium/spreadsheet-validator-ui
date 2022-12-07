@@ -11,6 +11,7 @@ import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import Block from '../../../styles/Block';
+import { isColumnRequired } from '../../../helpers/data-utils';
 import { createReplaceOperationPatch, generateRepairIncorrectnessTableData, getPagedData } from '../../../helpers/app-utils';
 import HeaderWithCheckbox from '../header-with-checkbox';
 import CollapsibleTableRow from '../collapsible-table-row';
@@ -56,15 +57,31 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
         const userInputPerMatchingGroup = userInput[key];
         const { column, value } = userInputPerMatchingGroup;
         userInputPerMatchingGroup.rows.forEach((row) => {
-          const patch = createReplaceOperationPatch(row, column, value);
-          setPatches((currentPatches) => {
-            // eslint-disable-next-line no-param-reassign
-            currentPatches[row][column] = patch;
-          });
+          if (isColumnRequired(column, schema)) {
+            if (value !== null) {
+              const patch = createReplaceOperationPatch(row, column, value);
+              setPatches((existingPatches) => {
+                // eslint-disable-next-line no-param-reassign
+                existingPatches[row][column] = patch;
+              });
+            } else {
+              setPatches((existingPatches) => {
+                // eslint-disable-next-line no-param-reassign
+                delete existingPatches[row][column];
+              });
+            }
+          } else {
+            const patch = createReplaceOperationPatch(row, column, value);
+            setPatches((existingPatches) => {
+              // eslint-disable-next-line no-param-reassign
+              existingPatches[row][column] = patch;
+            });
+          }
         });
       });
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
   };
+
   const saveChanges = useHotkeys(
     ['ctrl+s', 'meta+s'],
     () => handleSaveChanges(),

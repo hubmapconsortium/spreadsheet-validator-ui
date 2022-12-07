@@ -14,6 +14,7 @@ import InfoTooltip from './info-tooltip';
 import { HeaderLabel, SheetTable } from './styled';
 import { getColumnDescription, getColumnType, hasPermissibleValues, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
 import { BLACK, DARK_GRAY, LIGHT_GRAY, LIGHT_RED, RED } from '../../constants/Color';
+import { nullOnEmpty } from '../../helpers/string-utils';
 
 const CellValue = styled(Typography)({
   fontSize: '17px',
@@ -78,7 +79,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
                       // eslint-disable-next-line no-param-reassign
                       currentUserInput[id] = {
                         column: targetColumn,
-                        value: newValue,
+                        value: nullOnEmpty(newValue),
                         rows,
                         approved: true,
                       };
@@ -99,7 +100,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
                       // eslint-disable-next-line no-param-reassign
                       currentUserInput[id] = {
                         column: targetColumn,
-                        value: newValue,
+                        value: nullOnEmpty(newValue),
                         rows,
                         approved: true,
                       };

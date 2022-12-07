@@ -3,4 +3,13 @@ export const unCamelCase = (str) => str
   .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
   .toLowerCase();
 
-export default unCamelCase;
+export const nullOnEmpty = (value) => {
+  let newValue = value;
+  if (typeof value === 'string') {
+    newValue = value.trim();
+  }
+  if (newValue === '') {
+    return null;
+  }
+  return newValue;
+};
