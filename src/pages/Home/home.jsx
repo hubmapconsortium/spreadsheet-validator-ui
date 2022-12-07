@@ -71,7 +71,7 @@ const Home = ({ setAppData }) => {
           <img src={logo} alt="spreadsheet-validator-logo" />
         </LogoBox>
         <TaglineBox>
-          <h2>Upload and submit your spreadsheet file to validate the data</h2>
+          <h2>Upload and submit your spreadsheet file to validate the metadata records</h2>
         </TaglineBox>
         <InputSection>
           <FilePond
@@ -80,7 +80,7 @@ const Home = ({ setAppData }) => {
             allowMultiple={false}
             server="/api"
             name="files"
-            labelIdle='Drag & Drop your Excel file or <span class="filepond--label-action">Browse</span>'
+            labelIdle='Drag & Drop your spreadsheet file (.xslx, .tsv, .csv) or <span class="filepond--label-action">Browse</span>'
             sx={{ fontSize: '50pt' }}
           />
         </InputSection>
