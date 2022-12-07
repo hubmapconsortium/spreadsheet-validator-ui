@@ -18,7 +18,7 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
     }
   };
   return (
-    <HeaderCell sticky>
+    <HeaderCell sx={{ minWidth: '220px' }} sticky>
       <Stack direction="row" gap={1}>
         <HeaderLabel>{label}</HeaderLabel>
         <InfoTooltip title={description}>
