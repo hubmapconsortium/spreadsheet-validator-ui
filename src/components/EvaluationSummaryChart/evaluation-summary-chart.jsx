@@ -121,7 +121,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             disabled={!evaluationSummaryData.hasAdherenceErrors}
             onClick={() => navigate(`../${REPAIR_INCORRECTNESS_PATH}`, {
               state: {
-                selectedMenuItem: 'repair-missing-values',
+                selectedMenuItem: 'repair-invalid-value-types',
               },
             })}
           >
