@@ -12,11 +12,12 @@ const SearchableSelector = ({ id, placeholder, value, options, onChange, onKeyPr
     options={options}
     onChange={onChange}
     onKeyPress={onKeyPress}
-    sx={{ height: '40px', backgroundColor: value === '' ? colorOnEmpty : WHITE }}
+    sx={{ backgroundColor: value === '' ? colorOnEmpty : WHITE }}
     renderInput={(params) => (
       <TextField
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...params}
+        fullWidth
         size="small"
         disableunderline="true"
         placeholder={placeholder}
@@ -24,6 +25,9 @@ const SearchableSelector = ({ id, placeholder, value, options, onChange, onKeyPr
           ...params.InputProps,
           startAdornment,
           endAdornment,
+          style: {
+            paddingRight: '10px',
+          },
         }}
       />
     )}
