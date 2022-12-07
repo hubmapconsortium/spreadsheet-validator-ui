@@ -20,7 +20,7 @@ const DefaultInfoSection = () => {
   const navigate = useNavigate();
   const spreadsheetUrl = '/Users/JohnDoe/Experiments/X19/2022-08-31_SampleData.xlsx';
   const templateUrl = 'https://openview.metadatacenter.org/templates/https%3A%2F%2Frepo.metadatacenter.org%2Ftemplates%2F87046e67-c2da-40ac-be3c-f3e6c818ecc1';
-  const templateName = 'Sample Section Specification v2.1';
+  const templateName = 'Sample Section Specification v2.2';
   return (
     <InfoSection>
       <InfoBox>
