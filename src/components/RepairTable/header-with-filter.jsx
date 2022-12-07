@@ -8,17 +8,17 @@ import FilterInputField from '../DataSheet/FilterInputField';
 import InfoTooltip from './info-tooltip';
 import { HeaderCell, HeaderLabel } from './styled';
 
-const HeaderWithFilter = ({ id, label, description, setColumnFilters, setStaleBatch }) => {
+const HeaderWithFilter = ({ id, name, label, description, setColumnFilters, setStaleBatch }) => {
   const [filterEnabled, setFilterEnabled] = useState(true);
   const handleFilterChange = (event) => {
     const enteredValue = event.target.value;
     setColumnFilters((currentFilters) => {
       const foundFilter = currentFilters.filter(
-        (filter) => filter.column === label,
+        (filter) => filter.column === name,
       );
       if (foundFilter.length === 0) {
         currentFilters.push({
-          column: label,
+          column: name,
           value: enteredValue,
           enabled: true,
         });
@@ -69,6 +69,7 @@ const HeaderWithFilter = ({ id, label, description, setColumnFilters, setStaleBa
 
 HeaderWithFilter.propTypes = {
   id: PropTypes.string,
+  name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   description: PropTypes.string,
   setColumnFilters: PropTypes.func.isRequired,

@@ -5,6 +5,11 @@ export const getRows = (data) => data.map((row) => row['_id']);
 
 export const getColumnSchema = (column, schema) => schema.columns[column];
 
+export const getColumnName = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema.name;
+};
+
 export const getColumnLabel = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
   return columnSchema.label;

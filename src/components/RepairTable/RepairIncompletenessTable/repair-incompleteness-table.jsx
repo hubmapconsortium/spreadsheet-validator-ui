@@ -15,7 +15,7 @@ import SheetPagination from '../../DataSheet/SheetPagination';
 import Block from '../../../styles/Block';
 import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
-import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription } from '../../../helpers/data-utils';
+import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import EditableCell from '../editable-cell';
@@ -140,6 +140,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                     <HeaderWithFilter
                       key={`filter-${key}-${column}`}
                       id={`filter-${key}-${column}`}
+                      name={getColumnName(column, schema)}
                       label={getColumnLabel(column, schema)}
                       description={getColumnDescription(column, schema)}
                       setColumnFilters={setColumnFilters}
