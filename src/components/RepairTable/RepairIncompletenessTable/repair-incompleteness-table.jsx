@@ -259,7 +259,13 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
       <ButtonBox>
         <CancelButton
           variant="outlined"
-          onClick={() => navigate(`../${REPAIR_INCOMPLENESS_PATH}`)}
+          onClick={
+            () => navigate(`../${REPAIR_INCOMPLENESS_PATH}`, {
+              state: {
+                selectedMenuItem: 'repair-missing-values',
+              },
+            })
+          }
         >
           Cancel
         </CancelButton>

@@ -166,7 +166,13 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
       <ButtonBox>
         <CancelButton
           variant="outlined"
-          onClick={() => navigate(`../${REPAIR_INCORRECTNESS_PATH}`)}
+          onClick={
+            () => navigate(`../${REPAIR_INCORRECTNESS_PATH}`, {
+              state: {
+                selectedMenuItem: 'repair-invalid-value-types',
+              },
+            })
+          }
         >
           Cancel
         </CancelButton>
