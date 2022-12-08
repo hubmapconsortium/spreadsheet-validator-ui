@@ -2,6 +2,7 @@ import * as jsonpatch from 'fast-json-patch';
 import { GREEN, RED } from '../constants/Color';
 import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
+import { getEffectiveValue } from './data-utils';
 
 const checkCompletenessError = (reportItem) => (
   reportItem.errorType === 'missingRequired'
@@ -377,7 +378,25 @@ export const generateErrorSummaryData = (reporting, schema) => (
   )
 );
 
-export const generateRepairIncorrectnessTableData = (reporting, data) => {
+const getRepairedRecord = (record, data, patches) => {
+  const temp = { ...record };
+  Object.keys(record).forEach((column) => {
+    // eslint-disable-next-line dot-notation
+    const row = record['_id'];
+    temp[column] = getEffectiveValue(row, column, data, patches);
+  });
+  return temp;
+};
+
+export const generateRepairedTableData = (rows, data, patches) => (
+  rows.map(
+    (row) => data[row],
+  ).map(
+    (record) => getRepairedRecord(record, data, patches),
+  )
+);
+
+export const generateRepairIncorrectnessTableData = (reporting, data, patches) => {
   const incorrectnessReporting = reporting.filter((item) => checkAdherenceError(item));
   return Object.values(
     incorrectnessReporting.reduce(
@@ -397,7 +416,7 @@ export const generateRepairIncorrectnessTableData = (reporting, data) => {
           }
         );
         matchingGroup.rows.push(row);
-        matchingGroup.records.push(data[row]);
+        matchingGroup.records.push(getRepairedRecord(data[row], data, patches));
         return accumulator;
       },
       {},

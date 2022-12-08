@@ -35,8 +35,8 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
   const { enqueueSnackbar } = useSnackbar();
 
   const tableData = useMemo(
-    () => generateRepairIncorrectnessTableData(incorrectnessReporting, data),
-    [incorrectnessReporting],
+    () => generateRepairIncorrectnessTableData(incorrectnessReporting, data, patches),
+    [incorrectnessReporting, patches],
   );
   useEffect(
     () => {

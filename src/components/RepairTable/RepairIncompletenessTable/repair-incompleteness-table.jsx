@@ -15,10 +15,10 @@ import WrappedText from '../../DataSheet/WrappedText';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import SearchableSelector from '../../DataSheet/SearchableSelector';
 import Block from '../../../styles/Block';
-import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
+import { createAddOperationPatch, generateRepairedTableData, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
 import { nullOnEmpty } from '../../../helpers/string-utils';
-import { getRows, getEffectiveValue, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, hasPermissibleValues, isColumnRequired } from '../../../helpers/data-utils';
+import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, hasPermissibleValues, isColumnRequired } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import InfoTooltip from '../info-tooltip';
@@ -56,10 +56,8 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
     [incompletenessReporting],
   );
   const tableData = useMemo(
-    () => badRows.map(
-      (row) => data[row],
-    ),
-    [badRows, data],
+    () => generateRepairedTableData(badRows, data, patches),
+    [incompletenessReporting, data, patches],
   );
   useEffect(
     () => {
@@ -221,7 +219,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                             align="right"
                           >
                             <WrappedText
-                              text={getEffectiveValue(row, column, data, patches)}
+                              text={rowData[column]}
                             />
                           </SheetCell>
                         );
