@@ -31,7 +31,7 @@ const SearchableSelector = ({ id, placeholder, value, options, onChange, onKeyPr
         }}
       />
     )}
-    noOptionsText="Please contact admin@iec.org to propose a new categorical value."
+    noOptionsText="Please email help@ hubmapconsortium.org to propose a new categorical value."
   />
 );
 
