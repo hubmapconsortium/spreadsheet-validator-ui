@@ -24,7 +24,7 @@ const DefaultInfoSection = () => {
   return (
     <InfoSection>
       <InfoBox>
-        Spreadsheet is uploaded from&nbsp;
+        Spreadsheet is uploaded from:&nbsp;
         {spreadsheetUrl}
         <ChangeButton
           variant="contained"
@@ -35,7 +35,7 @@ const DefaultInfoSection = () => {
         </ChangeButton>
       </InfoBox>
       <InfoBox>
-        Spreadsheet is validated against&nbsp;
+        Spreadsheet is validated against CEDAR template:&nbsp;
         <Link
           href={templateUrl}
           underline="always"

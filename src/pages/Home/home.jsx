@@ -80,7 +80,7 @@ const Home = ({ setAppData }) => {
             allowMultiple={false}
             server="/api"
             name="files"
-            labelIdle='Drag & Drop your spreadsheet file (.xslx, .tsv, .csv) or <span class="filepond--label-action">Browse</span>'
+            labelIdle='Drag & Drop your spreadsheet file or <span class="filepond--label-action">Browse</span>'
             sx={{ fontSize: '50pt' }}
           />
         </InputSection>
