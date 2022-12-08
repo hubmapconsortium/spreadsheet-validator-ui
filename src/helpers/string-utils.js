@@ -4,12 +4,11 @@ export const unCamelCase = (str) => str
   .toLowerCase();
 
 export const nullOnEmpty = (value) => {
-  let newValue = value;
   if (typeof value === 'string') {
-    newValue = value.trim();
+    const newValue = value.trim();
+    if (newValue === '') {
+      return null;
+    }
   }
-  if (newValue === '') {
-    return null;
-  }
-  return newValue;
+  return value;
 };
