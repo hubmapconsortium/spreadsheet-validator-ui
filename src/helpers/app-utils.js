@@ -382,7 +382,7 @@ const getRepairedRecord = (record, data, patches) => {
   const temp = { ...record };
   Object.keys(record).forEach((column) => {
     // eslint-disable-next-line dot-notation
-    const row = record['_id'];
+    const row = record.rowNumber;
     temp[column] = getEffectiveValue(row, column, data, patches);
   });
   return temp;

@@ -6,6 +6,7 @@ export const METADATA_SCHEMA = {
       label: 'Sample ID',
       type: 'text',
       required: true,
+      permissibleValues: [],
       description: 'The HuBMAP ID for the sample assigned by the ingest portal. An example value might be "HBM743.CKJW.876".',
     },
     source_storage_time_value: {
@@ -13,6 +14,7 @@ export const METADATA_SCHEMA = {
       label: 'Source Storage Time Value',
       type: 'number',
       required: true,
+      permissibleValues: [],
       description: 'How long was the source material stored, prior to this sample being processed? For tissue blocks, this would typically be the time between when the organ arrived in the lab and the processing of the organ began. In most cases this will likely be 0, while in some cases the organ might be stored (on ice) in the lab before dissection. For tissue sections, this would be how long the tissue block was stored, usually in a -80 freezer, prior to the section being cut. For suspensions, this would be the length of time the tissue block was stored prior to the initiation of the dissociation process.',
     },
     source_storage_time_unit: {
@@ -84,6 +86,7 @@ export const METADATA_SCHEMA = {
       label: 'Processing Time Value',
       type: 'number',
       required: true,
+      permissibleValues: [],
       description: 'How long was the tissue being handled before the initial preservation? For tissue blocks, this would typically be the length of time from when the organ was received in the lab to when the tissue block is frozen or otherwise preserved (e.g., imbedded in OCT). For a tissue section this would be how long it takes to slice the tissue block and fix the mounted slice, after removing the tissue block from the freezer. For a suspension this would be the length of time from when the tissue block is removed from the freezer, dissociated and processed to the point where by the suspension is put into the initial preservation buffer.',
     },
     processing_time_unit: {
@@ -161,6 +164,7 @@ export const METADATA_SCHEMA = {
       label: 'Quality Criteria',
       type: 'text',
       required: false,
+      permissibleValues: [],
       description: 'For example, RIN: 8.7. For suspensions, measured by visual inspection prior to cell lysis or defined by known parameters such as wells with several cells or no cells. This can be captured at a high level. "OK" or "not OK", or with more specificity such as "debris", "clump", "low clump".',
     },
     histological_report: {
@@ -168,6 +172,7 @@ export const METADATA_SCHEMA = {
       label: 'Histological Report',
       type: 'text',
       required: false,
+      permissibleValues: [],
       description: 'histopathological reporting of key variables that are important for the tissue (absence of necrosis, comment on composition, significant pathology description, high level inflammation/fibrosis assessment, etc.)',
     },
     thickness_value: {
@@ -175,6 +180,7 @@ export const METADATA_SCHEMA = {
       label: 'Thickness Value',
       type: 'number',
       required: true,
+      permissibleValues: [],
       description: 'Thickness of a tissue section',
     },
     thickness_unit: {
@@ -199,6 +205,7 @@ export const METADATA_SCHEMA = {
       label: 'Section Index Number',
       type: 'number',
       required: true,
+      permissibleValues: [],
       description: 'The index number for the section if the sample is a single section.',
     },
     area_value: {
@@ -206,6 +213,7 @@ export const METADATA_SCHEMA = {
       label: 'Area Value',
       type: 'number',
       required: false,
+      permissibleValues: [],
       description: 'The area of a tissue section.',
     },
     area_unit: {
@@ -227,6 +235,7 @@ export const METADATA_SCHEMA = {
       label: 'Notes',
       type: 'text',
       required: false,
+      permissibleValues: [],
       description: 'Researcher note',
     },
   },
@@ -234,7 +243,7 @@ export const METADATA_SCHEMA = {
 
 export const METADATA_RECORDS = [
   {
-    _id: 0,
+    rowNumber: 0,
     sample_ID: 'Visium_9OLC_A4_S1',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -253,7 +262,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 1,
+    rowNumber: 1,
     sample_ID: 'Visium_9OLC_A4_S2',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -272,7 +281,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 2,
+    rowNumber: 2,
     sample_ID: 'Visium_9OLC_I4_S1',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -291,7 +300,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 3,
+    rowNumber: 3,
     sample_ID: 'Visium_9OLC_I4_S2',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -310,7 +319,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 4,
+    rowNumber: 4,
     sample_ID: '',
     source_storage_time_value: '86 days',
     source_storage_time_unit: 'days',
@@ -329,7 +338,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 5,
+    rowNumber: 5,
     sample_ID: '',
     source_storage_time_value: '86 days',
     source_storage_time_unit: 'days',
@@ -348,7 +357,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 6,
+    rowNumber: 6,
     sample_ID: '',
     source_storage_time_value: '86 days',
     source_storage_time_unit: 'days',
@@ -367,7 +376,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 7,
+    rowNumber: 7,
     sample_ID: '',
     source_storage_time_value: '86 days',
     source_storage_time_unit: 'days',
@@ -386,7 +395,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 8,
+    rowNumber: 8,
     sample_ID: '',
     source_storage_time_value: '86 days',
     source_storage_time_unit: 'days',
@@ -405,7 +414,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 9,
+    rowNumber: 9,
     sample_ID: 'Visium_40AZ_Q9_S1',
     source_storage_time_value: 100,
     source_storage_time_unit: 'd',
@@ -424,7 +433,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 10,
+    rowNumber: 10,
     sample_ID: 'Visium_40AZ_Q9_S2',
     source_storage_time_value: 100,
     source_storage_time_unit: 'd',
@@ -443,7 +452,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 11,
+    rowNumber: 11,
     sample_ID: 'Visium_40AZ_Q9_S3',
     source_storage_time_value: 100,
     source_storage_time_unit: 'd',
@@ -462,7 +471,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 12,
+    rowNumber: 12,
     sample_ID: 'Visium_40AZ_Q9_S4',
     source_storage_time_value: 100,
     source_storage_time_unit: 'd',
@@ -481,7 +490,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 13,
+    rowNumber: 13,
     sample_ID: 'Visium_90LC_W3_S1',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -500,7 +509,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 14,
+    rowNumber: 14,
     sample_ID: 'Visium_90LC_W3_S2',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -519,7 +528,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 15,
+    rowNumber: 15,
     sample_ID: 'Visium_90LC_W3_S3',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -538,7 +547,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 16,
+    rowNumber: 16,
     sample_ID: 'Visium_90LC_W3_S4',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -557,7 +566,7 @@ export const METADATA_RECORDS = [
     area_unit: 'mm^2',
     notes: '',
   }, {
-    _id: 17,
+    rowNumber: 17,
     sample_ID: 'Visium_90LC_W3_S5',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -576,7 +585,7 @@ export const METADATA_RECORDS = [
     area_unit: '',
     notes: '',
   }, {
-    _id: 18,
+    rowNumber: 18,
     sample_ID: 'Visium_90LC_W3_S6',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',
@@ -595,7 +604,7 @@ export const METADATA_RECORDS = [
     area_unit: '',
     notes: '',
   }, {
-    _id: 19,
+    rowNumber: 19,
     sample_ID: 'Visium_90LC_W3_S7',
     source_storage_time_value: 208,
     source_storage_time_unit: 'day',

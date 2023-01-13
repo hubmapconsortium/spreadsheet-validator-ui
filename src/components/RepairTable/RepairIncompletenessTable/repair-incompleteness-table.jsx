@@ -169,7 +169,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
             <SheetBody>
               {pagedData.map((rowData) => {
                 // eslint-disable-next-line dot-notation
-                const row = rowData['_id'];
+                const row = rowData.rowNumber;
                 return (
                   <TableRow key={`row-${row}`}>
                     {columnOrder.map((column, index) => {
