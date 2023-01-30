@@ -166,7 +166,8 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
                 </SheetHeader>
                 <SheetBody>
                   {records.map((record, index) => (
-                    <TableRow>
+                    // eslint-disable-next-line react/no-array-index-key
+                    <TableRow key={`table-${targetColumn}-row-${record.rowNumber}`}>
                       {Object.keys(schema.columns).map((columnHeader) => {
                         const columnProperties = schema.columns[columnHeader];
                         const { name: columnName } = columnProperties;
