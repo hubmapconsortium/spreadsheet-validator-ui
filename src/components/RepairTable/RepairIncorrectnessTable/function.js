@@ -11,7 +11,7 @@ export const initUserInput = (tableData, patches) => tableData
         rowData.rows[0], // select first item
         rowData.column,
         patches,
-      ) || rowData.suggestion,
+      ) || rowData.repairSuggestion,
       rows: rowData.rows,
       approved: checkRepairPatchPresent(rowData.rows[0], rowData.column, patches),
     },
