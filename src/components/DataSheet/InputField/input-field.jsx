@@ -1,6 +1,6 @@
 import { OutlinedInput } from '@mui/material';
 import PropTypes from 'prop-types';
-import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME, URL } from '../../../constants/ValueType';
+import { DATE, EMAIL, NUMBER, PHONE, STRING, TIME, URL } from '../../../constants/ValueType';
 import { WHITE } from '../../../constants/Color';
 
 const InputField = (
@@ -26,7 +26,7 @@ const InputField = (
 InputField.propTypes = {
   id: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
+  type: PropTypes.oneOf([STRING, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types

@@ -6,7 +6,7 @@ import InputField from '../DataSheet/InputField';
 import SearchableSelector from '../DataSheet/SearchableSelector';
 import InfoTooltip from './info-tooltip';
 import { HeaderCell, HeaderLabel } from './styled';
-import { DATE, EMAIL, NUMBER, PHONE, TEXT, TIME } from '../../constants/ValueType';
+import { DATE, EMAIL, NUMBER, PHONE, STRING, TIME } from '../../constants/ValueType';
 
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues, setBatchInput, setStaleBatch }) => {
@@ -61,7 +61,7 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
 HeaderWithBatchInput.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string.isRequired,
-  type: PropTypes.oneOf([TEXT, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
+  type: PropTypes.oneOf([STRING, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   description: PropTypes.string,
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
   setBatchInput: PropTypes.func.isRequired,
@@ -70,7 +70,7 @@ HeaderWithBatchInput.propTypes = {
 
 HeaderWithBatchInput.defaultProps = {
   id: undefined,
-  type: TEXT,
+  type: STRING,
   description: undefined,
   permissibleValues: undefined,
 };

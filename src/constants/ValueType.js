@@ -1,4 +1,4 @@
-export const TEXT = 'text';
+export const STRING = 'string';
 export const DATE = 'date';
 export const EMAIL = 'email';
 export const NUMBER = 'number';
