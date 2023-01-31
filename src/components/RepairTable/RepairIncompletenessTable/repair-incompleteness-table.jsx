@@ -287,7 +287,7 @@ RepairIncompletnessTable.propTypes = {
       row: PropTypes.number.isRequired,
       column: PropTypes.string.isRequired,
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-      suggestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+      repairSuggestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
       errorType: PropTypes.string.isRequired,
     }),
   ).isRequired,

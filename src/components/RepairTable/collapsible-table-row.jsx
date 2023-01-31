@@ -204,7 +204,7 @@ CollapsibleTableRow.propTypes = {
     value: PropTypes.oneOfType(
       [PropTypes.string, PropTypes.number, PropTypes.bool],
     ).isRequired,
-    suggestion: PropTypes.oneOfType(
+    repairSuggestion: PropTypes.oneOfType(
       [PropTypes.string, PropTypes.number, PropTypes.bool],
     ),
     rows: PropTypes.arrayOf(PropTypes.number).isRequired,

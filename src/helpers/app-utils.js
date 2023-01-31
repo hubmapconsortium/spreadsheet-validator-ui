@@ -401,7 +401,7 @@ export const generateRepairIncorrectnessTableData = (reporting, data, patches) =
   return Object.values(
     incorrectnessReporting.reduce(
       (accumulator, reportItem) => {
-        const { row, column, value, errorType, suggestion } = reportItem;
+        const { row, column, value, repairSuggestion, errorType } = reportItem;
         const key = `${column}-${value}-${errorType}`;
         const matchingGroup = (
           // eslint-disable-next-line no-multi-assign
@@ -409,7 +409,7 @@ export const generateRepairIncorrectnessTableData = (reporting, data, patches) =
             id: key,
             column,
             value,
-            suggestion,
+            repairSuggestion,
             errorType,
             rows: [],
             records: [],
