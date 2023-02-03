@@ -1,7 +1,8 @@
 import * as jsonpatch from 'fast-json-patch';
 import { GREEN, RED } from '../constants/Color';
-import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
+import { REPAIR_INCOMPLETENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
+import { add } from './array-utils';
 import { getEffectiveValue } from './data-utils';
 
 const checkCompletenessError = (reportItem) => (
@@ -145,6 +146,13 @@ const determineRepairIncompletenessStatus = (rows, column, patches) => (
     : REPAIR_NOT_COMPLETED
 );
 
+const countErrorRemaining = (errorDetails, patches) => {
+  const { rows, column } = errorDetails;
+  return rows.map((row) => checkRepairPatchPresent(row, column, patches))
+    .map((bool) => (bool ? 0 : 1))
+    .reduce(add, 0);
+};
+
 export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patches) => {
   const missingRequiredErrorList = errorSummaryData.filter((item) => checkCompletenessError(item));
   const subMenuItems = missingRequiredErrorList.map(
@@ -159,14 +167,12 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
           errorColumnLocation,
           patches,
         ),
-        navigateTo: `${REPAIR_INCOMPLENESS_PATH}/${errorColumnLocation}`,
+        navigateTo: `${REPAIR_INCOMPLETENESS_PATH}/${errorColumnLocation}`,
+        errorRemaining: countErrorRemaining(errorDetails, patches),
       });
     },
   );
-  return {
-    title: 'Types of Error',
-    items: subMenuItems,
-  };
+  return subMenuItems;
 };
 
 const determineRepairIncorrectnessStatus = (errorList, patches) => {
@@ -180,64 +186,69 @@ const determineRepairIncorrectnessStatus = (errorList, patches) => {
   return REPAIR_COMPLETED;
 };
 
+const countErrorRemainingFromList = (errorList, patches) => (
+  errorList.map((errorDetails) => countErrorRemaining(errorDetails, patches))
+    .reduce(add, 0)
+);
+
 const getNotStandardTermSubMenuItemData = (errorSummaryData, patches) => {
-  const notStandardTermErrorList = errorSummaryData.filter(
+  const errorList = errorSummaryData.filter(
     (item) => item.errorType === 'notStandardTerm',
   );
-  if (notStandardTermErrorList.length > 0) {
+  if (errorList.length > 0) {
     return {
       errorId: 'not-standard-term-error',
       name: 'not-standard-term-error',
       title: 'Value is not a standard term',
-      status: determineRepairIncorrectnessStatus(notStandardTermErrorList, patches),
+      status: determineRepairIncorrectnessStatus(errorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStandardTerm`,
+      errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }
   return null;
 };
 
 const getNotNumberTypeSubMenuItemData = (errorSummaryData, patches) => {
-  const notNumberTypeErrorList = errorSummaryData.filter(
+  const errorList = errorSummaryData.filter(
     (item) => item.errorType === 'notNumberType',
   );
-  if (notNumberTypeErrorList.length > 0) {
+  if (errorList.length > 0) {
     return {
       errorId: 'not-number-type-error',
       name: 'not-number-type-error',
       title: 'Value is not a number',
-      status: determineRepairIncorrectnessStatus(notNumberTypeErrorList, patches),
+      status: determineRepairIncorrectnessStatus(errorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notNumberType`,
+      errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }
   return null;
 };
 
 const getNotStringTypeSubMenuItemData = (errorSummaryData, patches) => {
-  const notStringTypeErrorList = errorSummaryData.filter(
+  const errorList = errorSummaryData.filter(
     (item) => item.errorType === 'notStringType',
   );
-  if (notStringTypeErrorList.length > 0) {
+  if (errorList.length > 0) {
     return {
       errorId: 'not-string-type-error',
       name: 'not-string-type-error',
       title: 'Value is not a string',
-      status: determineRepairIncorrectnessStatus(notStringTypeErrorList, patches),
+      status: determineRepairIncorrectnessStatus(errorList, patches),
       navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStringType`,
+      errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }
   return null;
 };
 
-export const generateRepairIncorrectnessSubMenuData = (errorSummaryData, patches) => ({
-  title: 'Types of Error',
-  items: [
-    getNotStandardTermSubMenuItemData(errorSummaryData, patches),
-    getNotNumberTypeSubMenuItemData(errorSummaryData, patches),
-    getNotStringTypeSubMenuItemData(errorSummaryData, patches),
-  ].filter(
-    (item) => item !== null,
-  ),
-});
+export const generateRepairIncorrectnessSubMenuData = (errorSummaryData, patches) => [
+  getNotStandardTermSubMenuItemData(errorSummaryData, patches),
+  getNotNumberTypeSubMenuItemData(errorSummaryData, patches),
+  getNotStringTypeSubMenuItemData(errorSummaryData, patches),
+].filter(
+  (item) => item !== null,
+);
 
 export const generateRepairIncompletenessButtonData = (errorSummaryData, patches) => {
   const missingRequiredErrorList = errorSummaryData.filter(

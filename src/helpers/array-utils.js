@@ -8,3 +8,5 @@ export const generateFalses = (size) => Array
 
 export const generateEmptyObjects = (size) => Array
   .from({ length: size }, () => ({}));
+
+export const add = (a, b) => a + b;

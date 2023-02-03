@@ -9,7 +9,6 @@ const HeaderCell = styled(TableCell)({
 
 const TextCell = styled(TableCell)({
   fontSize: '13pt',
-  width: '25%',
   paddingRight: '5px',
 });
 

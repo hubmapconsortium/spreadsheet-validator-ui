@@ -1,45 +1,31 @@
-import { styled, Typography } from '@mui/material';
+import { styled } from '@mui/material';
 import Card from '../../styles/Card';
-import Section from '../../styles/Section';
+import Block from '../../styles/Block';
+import Title from '../../styles/Title';
+import SubTitle from '../../styles/SubTitle';
 import TableStackedBar from '../TableStackedBar';
-import { DARK_GRAY } from '../../constants/Color';
 
-const ChartCard = styled(Card)({
-  width: '75%',
-  justifyContent: 'center',
+const TitleBlock = styled(Block)({
+  width: '400px',
+  padding: '10px 30px 0px 30px',
 });
 
-const TitleSection = styled(Section)({
-  width: '90%',
-  padding: '50px',
-});
-
-const ChartSection = styled(Section)({
-  width: '90%',
-  padding: '0 50px 50px 50px',
-});
-
-const Title = styled(Typography)({
-  fontSize: '24pt',
-  fontWeight: 'bold',
-});
-
-const SubTitle = styled(Typography)({
-  fontSize: '17pt',
-  color: DARK_GRAY,
+const ChartBlock = styled(Block)({
+  width: '100%',
+  padding: '10px 30px 20px 20px',
 });
 
 // eslint-disable-next-line react/prop-types
 const ErrorAnalysisChart = ({ title, subtitle, analysisData }) => (
-  <ChartCard>
-    <TitleSection>
-      <Title variant="h4">{title}</Title>
-      <SubTitle variant="h5">{subtitle}</SubTitle>
-    </TitleSection>
-    <ChartSection>
+  <Card>
+    <TitleBlock>
+      <Title variant="h2">{title}</Title>
+      <SubTitle variant="p">{subtitle}</SubTitle>
+    </TitleBlock>
+    <ChartBlock>
       <TableStackedBar data={analysisData} />
-    </ChartSection>
-  </ChartCard>
+    </ChartBlock>
+  </Card>
 );
 
 export default ErrorAnalysisChart;

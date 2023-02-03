@@ -1,8 +1,7 @@
 import { Box, styled } from '@mui/material';
 
 const Block = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
+  display: 'block',
 });
 
 export default Block;

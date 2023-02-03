@@ -6,6 +6,7 @@ import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
 import EvaluationSummaryChart from '../../components/EvaluationSummaryChart/evaluation-summary-chart';
 import ErrorAnalysisChart from '../../components/ErrorAnalysisChart';
+import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { generateErrorSummaryData, generateEvaluationSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
 import { VALIDATION_RESULT } from '../../constants/PageTitle';
@@ -30,7 +31,7 @@ const Overview = () => {
     [errorSummaryData],
   );
   return (
-    <>
+    <Container>
       <Section>
         <PageTitle
           title={VALIDATION_RESULT}
@@ -38,20 +39,24 @@ const Overview = () => {
         />
       </Section>
       <DefaultInfoSection />
-      <EvaluationSummaryChart
-        evaluationSummaryData={evaluationSummaryData}
-      />
-      <ErrorAnalysisChart
-        title="Analysis: Missing Values"
-        subtitle={`Evaluating ${data.length} metadata records for missing values in the spreadsheet.`}
-        analysisData={missingValueAnalysisChartData}
-      />
-      <ErrorAnalysisChart
-        title="Analysis: Invalid Value Types"
-        subtitle={`Evaluating ${data.length} metadata records for invalid value types in the spreadsheet.`}
-        analysisData={invalidValueTypeAnalysisChartData}
-      />
-    </>
+      <Section>
+        <EvaluationSummaryChart evaluationSummaryData={evaluationSummaryData} />
+      </Section>
+      <Section>
+        <ErrorAnalysisChart
+          title="Completeness Error Analysis"
+          subtitle={`Evaluating ${data.length} metadata records for detecting missing values in the spreadsheet.`}
+          analysisData={missingValueAnalysisChartData}
+        />
+      </Section>
+      <Section>
+        <ErrorAnalysisChart
+          title="Adherence Error Analysis"
+          subtitle={`Evaluating ${data.length} metadata records for detecting invalid value types in the spreadsheet.`}
+          analysisData={invalidValueTypeAnalysisChartData}
+        />
+      </Section>
+    </Container>
   );
 };
 

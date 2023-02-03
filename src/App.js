@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
-import { Stack } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, Outlet, Link } from 'react-router-dom';
+import { Stack, styled } from '@mui/material';
 import PropTypes from 'prop-types';
 import './App.css';
 import Home from './pages/Home';
@@ -11,17 +11,45 @@ import Overview from './pages/Overview';
 import RepairIncompleteness from './pages/RepairIncompleteness';
 import RepairIncompletenessWorkspace from './pages/RepairIncompletenessWorkspace';
 import RepairIncorrectness from './pages/RepairIncorrectness';
+import Container from './styles/Container';
 import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
-import SideBar from './components/Sidebar';
 import ContentArea from './components/ContentArea';
-import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from './constants/Router';
+import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLETENESS_PATH, REPAIR_INCORRECTNESS_PATH } from './constants/Router';
+import { BLACK, LIGHTER_GRAY } from './constants/Color';
 import { generateEmptyObjects } from './helpers/array-utils';
 import RepairIncorrectnessWorkspace from './pages/RepairIncorrectnessWorkspace';
 
+const MainContainer = styled(Container)({
+  backgroundColor: LIGHTER_GRAY,
+});
+
+const NavLink = styled(Link)({
+  fontSize: '14pt',
+  fontStyle: 'normal',
+  '&:link': {
+    textDecoration: 'none',
+    color: BLACK,
+  },
+  '&:visited': {
+    textDecoration: 'none',
+    color: BLACK,
+  },
+  '&:hover': {
+    textDecoration: 'none',
+  },
+  '&:active': {
+    textDecoration: 'none',
+    color: BLACK,
+  },
+});
+
 const LandingPageContainer = () => (
   <Stack direction="column">
-    <Navbar />
+    <Stack direction="row" spacing={4} sx={{ padding: '30px' }}>
+      <NavLink to="about">About</NavLink>
+      <NavLink to="help">Help</NavLink>
+    </Stack>
     <Outlet />
   </Stack>
 );
@@ -34,10 +62,10 @@ const WorkspaceContainer = ({ appData }) => {
   const appContextData = useMemo(() => ({ appData, patches, setPatches }), [patches]);
   return (
     <AppContext.Provider value={appContextData}>
-      <Stack direction="row">
-        <SideBar />
+      <MainContainer>
+        <Navbar />
         <ContentArea />
-      </Stack>
+      </MainContainer>
     </AppContext.Provider>
   );
 };
@@ -72,8 +100,8 @@ const App = () => {
         </Route>
         <Route element={(<WorkspaceContainer appData={appData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
-          <Route path={REPAIR_INCOMPLENESS_PATH} element={<RepairIncompleteness />} />
-          <Route path={`${REPAIR_INCOMPLENESS_PATH}/:targetColumn`} element={<RepairIncompletenessWorkspace />} />
+          <Route path={REPAIR_INCOMPLETENESS_PATH} element={<RepairIncompleteness />} />
+          <Route path={`${REPAIR_INCOMPLETENESS_PATH}/:targetColumn`} element={<RepairIncompletenessWorkspace />} />
           <Route path={REPAIR_INCORRECTNESS_PATH} element={<RepairIncorrectness />} />
           <Route path={`${REPAIR_INCORRECTNESS_PATH}/:incorrectnessType`} element={<RepairIncorrectnessWorkspace />} />
         </Route>

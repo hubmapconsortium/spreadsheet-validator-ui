@@ -10,14 +10,14 @@ import AppContext from '../../../pages/AppContext';
 import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
 import SheetPagination from '../../DataSheet/SheetPagination';
-import Block from '../../../styles/Block';
+import Flex from '../../../styles/Panel';
 import { isColumnRequired } from '../../../helpers/data-utils';
 import { createReplaceOperationPatch, generateRepairIncorrectnessTableData, getPagedData } from '../../../helpers/app-utils';
 import HeaderWithCheckbox from '../header-with-checkbox';
 import CollapsibleTableRow from '../collapsible-table-row';
 import InfoTooltip from '../info-tooltip';
 import { initUserInput } from './function';
-import { ButtonBox, CancelButton, DataSheetCard, FooterBox, HeaderCell, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
+import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, HeaderCell, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { REPAIR_INCORRECTNESS_PATH } from '../../../constants/Router';
 
 // eslint-disable-next-line no-unused-vars
@@ -138,8 +138,8 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
             </SheetBody>
           </SheetTable>
         </SheetTableContainer>
-        <FooterBox>
-          <Block sx={{ width: '400px', paddingLeft: '5px' }}>
+        <FooterPanel>
+          <Flex sx={{ width: '400px', paddingLeft: '5px' }}>
             <Stack direction="row" gap={1}>
               <InfoTooltip
                 title="INSTRUCTION: The table below shows all the metadata records that contain values
@@ -153,7 +153,7 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
               </InfoTooltip>
               <Typography>Help Tooltip</Typography>
             </Stack>
-          </Block>
+          </Flex>
           <SheetPagination
             data={tableData}
             page={page}
@@ -161,9 +161,9 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
           />
-        </FooterBox>
+        </FooterPanel>
       </DataSheetCard>
-      <ButtonBox>
+      <ButtonPanel>
         <CancelButton
           variant="outlined"
           onClick={
@@ -182,7 +182,7 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
         >
           Save
         </SaveButton>
-      </ButtonBox>
+      </ButtonPanel>
     </>
   );
 };

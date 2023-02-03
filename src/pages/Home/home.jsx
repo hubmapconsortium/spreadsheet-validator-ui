@@ -14,7 +14,6 @@ const HomeContainer = styled(Container)({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  top: 0,
   position: 'absolute',
 });
 
@@ -121,7 +120,6 @@ const Home = ({ setAppData }) => {
   const submitSpreadsheet = () => {
     const validateData = async () => {
       const response = await validateSpreadsheet(data, template);
-      console.log(response);
       setAppData(response);
       navigate(OVERVIEW_PATH, {
         state: {

@@ -1,12 +1,12 @@
-import { Box, styled, Table, TableContainer, Typography } from '@mui/material';
+import { styled, Table, TableContainer, Typography } from '@mui/material';
 import BaseButton from '../../styles/BaseButton';
 import { LIGHT_GRAY, WHITE } from '../../constants/Color';
 import SheetCell from '../DataSheet/SheetCell';
 import Card from '../../styles/Card';
+import Flex from '../../styles/Panel';
 
 export const DataSheetCard = styled(Card)({
   display: 'block',
-  width: '65vw',
   padding: '30px 30px 5px 30px',
   marginBottom: '25px',
   overflow: 'hidden',
@@ -16,7 +16,6 @@ export const SheetTableContainer = styled(TableContainer)({
   border: '2px solid',
   borderColor: LIGHT_GRAY,
   borderRadius: '5px',
-  maxHeight: '800px',
 });
 
 export const SheetTable = styled(Table)({
@@ -34,19 +33,18 @@ export const HeaderLabel = styled(Typography)({
   paddingBottom: '10px',
 });
 
-export const ButtonBox = styled(Box)({
-  display: 'flex',
-  width: '90%',
+export const ButtonPanel = styled(Flex)({
   justifyContent: 'right',
 });
 
-export const FooterBox = styled(Box)({
-  display: 'flex',
+export const FooterPanel = styled(Flex)({
 });
 
 export const CancelButton = styled(BaseButton)({
   backgroundColor: WHITE,
+  width: '150px',
 });
 
 export const SaveButton = styled(BaseButton)({
+  width: '150px',
 });

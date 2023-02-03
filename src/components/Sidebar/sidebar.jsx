@@ -10,7 +10,7 @@ import logo from '../../logo.svg';
 import Container from '../../styles/Container';
 import { determineOverallRepairStatus, generateErrorSummaryData, generateNewSpreadsheet, generateRepairIncompletenessSubMenuData, generateRepairIncorrectnessSubMenuData } from '../../helpers/app-utils';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
-import { OVERVIEW_PATH, REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
+import { OVERVIEW_PATH, REPAIR_INCOMPLETENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 import { REPAIR_NOT_COMPLETED } from '../../constants/Status';
 import BaseButton from '../../styles/BaseButton';
 
@@ -94,7 +94,7 @@ const SideBar = () => {
   useHotkeys(
     ['ctrl+2', 'meta+2'],
     () => {
-      navigate(REPAIR_INCOMPLENESS_PATH, {
+      navigate(REPAIR_INCOMPLETENESS_PATH, {
         state: {
           selectedMenuItem: 'repair-missing-values',
         },
@@ -130,7 +130,7 @@ const SideBar = () => {
             icon={<RepairIcon />}
             name="repair-missing-values"
             title={REPAIR_INCOMPLETENESS}
-            navigateTo={REPAIR_INCOMPLENESS_PATH}
+            navigateTo={REPAIR_INCOMPLETENESS_PATH}
             subMenu={repairIncompletenessSubMenu}
           />
           <NestedMenuItem

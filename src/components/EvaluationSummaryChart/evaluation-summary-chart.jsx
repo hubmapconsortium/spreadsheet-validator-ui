@@ -1,28 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
-import Section from '../../styles/Section';
 import Card from '../../styles/Card';
+import Block from '../../styles/Block';
+import Title from '../../styles/Title';
+import Paragraph from '../../styles/Paragraph';
 import BaseButton from '../../styles/BaseButton';
-import { REPAIR_INCOMPLENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
+import { REPAIR_INCOMPLETENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 
-const ChartCard = styled(Card)({
-  display: 'flex',
-  width: '75%',
-  justifyContent: 'center',
+const ChartBlock = styled(Block)({
+  width: '420px',
+  height: '420px',
+  padding: '10px 20px 10px 40px',
 });
 
-const ChartSection = styled(Section)({
-  width: '75%',
-  padding: '50px 40px 0 50px',
-});
-
-const DescriptionSection = styled(Section)({
+const DescriptionBlock = styled(Block)({
   fontSize: '13pt',
-  alignContent: 'end',
-  padding: '50px 50px 0 0',
+  padding: '10px 40px 10px 40px',
 });
 
 const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -66,8 +62,8 @@ const chartOptions = {
 const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
   const navigate = useNavigate();
   return (
-    <ChartCard>
-      <ChartSection>
+    <Card>
+      <ChartBlock>
         <Doughnut
           data={evaluationSummaryData}
           plugins={generatePlugins(evaluationSummaryData)}
@@ -75,48 +71,52 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
           width={400}
           height={400}
         />
-      </ChartSection>
-      <DescriptionSection>
-        <h2>Validation Summary</h2>
-        <p>
-          The validity of a metadata record is measured by two metrics:
-          {' '}
-          <i>completeness</i>
-          {' '}
-          and
-          {' '}
-          <i>adherence.</i>
-        </p>
-        <p>
-          <b>Completeness</b>
-          {' '}
-          measures the presence of all required values in the
-          metadata record defined by the metadata specification.
-        </p>
-        <p>
-          <b>Adherence</b>
-          {' '}
-          measures the conformance of the stated value in the
-          metadata field to the data type defined by the metadata
-          specification.
-        </p>
-        <p>
-          A metadata record is called invalid when errors were found
-          in its value using these two metrics.
-        </p>
-        <Box textAlign="center">
+      </ChartBlock>
+      <DescriptionBlock>
+        <Block>
+          <Title variant="h2" sx={{ paddingBottom: '40px' }}>Validation Summary</Title>
+          <Paragraph>
+            The validity of a metadata record is measured by two metrics:
+            {' '}
+            <i>completeness</i>
+            {' '}
+            and
+            {' '}
+            <i>adherence.</i>
+          </Paragraph>
+          <Paragraph>
+            <b>Completeness</b>
+            {' '}
+            measures the presence of all required values in the
+            metadata record defined by the metadata specification.
+          </Paragraph>
+          <Paragraph>
+            <b>Adherence</b>
+            {' '}
+            measures the conformance of the stated value in the
+            metadata field to the data type defined by the metadata
+            specification.
+          </Paragraph>
+          <Paragraph>
+            A metadata record is called invalid when errors were found
+            in its value using these two metrics.
+          </Paragraph>
+        </Block>
+        <Block textAlign="center" sx={{ paddingTop: '30px' }}>
           <BaseButton
+            sx={{ width: '310px' }}
             variant="contained"
             disabled={!evaluationSummaryData.hasCompletenessErrors}
-            onClick={() => navigate(`../${REPAIR_INCOMPLENESS_PATH}`, {
+            onClick={() => navigate(`../${REPAIR_INCOMPLETENESS_PATH}`, {
               state: {
                 selectedMenuItem: 'repair-missing-values',
               },
             })}
           >
-            Repair Missing Values
+            Repair Completeness Errors
           </BaseButton>
           <BaseButton
+            sx={{ width: '310px' }}
             variant="contained"
             disabled={!evaluationSummaryData.hasAdherenceErrors}
             onClick={() => navigate(`../${REPAIR_INCORRECTNESS_PATH}`, {
@@ -125,11 +125,11 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
               },
             })}
           >
-            Repair Invalid Value Types
+            Repair Adherence Errors
           </BaseButton>
-        </Box>
-      </DescriptionSection>
-    </ChartCard>
+        </Block>
+      </DescriptionBlock>
+    </Card>
   );
 };
 

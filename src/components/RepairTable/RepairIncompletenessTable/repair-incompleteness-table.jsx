@@ -14,7 +14,7 @@ import InputField from '../../DataSheet/InputField';
 import WrappedText from '../../DataSheet/WrappedText';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import SearchableSelector from '../../DataSheet/SearchableSelector';
-import Block from '../../../styles/Block';
+import Flex from '../../../styles/Panel';
 import { createAddOperationPatch, generateRepairedTableData, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
 import { nullOnEmpty } from '../../../helpers/string-utils';
@@ -22,10 +22,11 @@ import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumn
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import InfoTooltip from '../info-tooltip';
-import { ButtonBox, CancelButton, DataSheetCard, FooterBox, SaveButton, SheetTable, SheetTableContainer } from '../styled';
+import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { getFilteredData, initUserInput } from './function';
-import { REPAIR_INCOMPLENESS_PATH } from '../../../constants/Router';
+import { REPAIR_INCOMPLETENESS_PATH } from '../../../constants/Router';
 import { LIGHT_RED } from '../../../constants/Color';
+import Container from '../../../styles/Container';
 
 const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => {
   const navigate = useNavigate();
@@ -130,7 +131,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
     [userInput],
   );
   return (
-    <>
+    <Container>
       <DataSheetCard>
         <SheetTableContainer>
           <SheetTable stickyHeader>
@@ -232,8 +233,8 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
             </SheetBody>
           </SheetTable>
         </SheetTableContainer>
-        <FooterBox>
-          <Block sx={{ width: '400px', paddingLeft: '5px' }}>
+        <FooterPanel>
+          <Flex sx={{ width: '400px', paddingLeft: '5px' }}>
             <Stack direction="row" gap={1}>
               <InfoTooltip
                 title="INSTRUCTION: The table below shows all the metadata records with missing required
@@ -246,7 +247,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
               </InfoTooltip>
               <Typography>Help Tooltip</Typography>
             </Stack>
-          </Block>
+          </Flex>
           <SheetPagination
             data={filteredData}
             page={page}
@@ -254,13 +255,13 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
           />
-        </FooterBox>
+        </FooterPanel>
       </DataSheetCard>
-      <ButtonBox>
+      <ButtonPanel>
         <CancelButton
           variant="outlined"
           onClick={
-            () => navigate(`../${REPAIR_INCOMPLENESS_PATH}`, {
+            () => navigate(`../${REPAIR_INCOMPLETENESS_PATH}`, {
               state: {
                 selectedMenuItem: 'repair-missing-values',
               },
@@ -275,8 +276,8 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
         >
           Save
         </SaveButton>
-      </ButtonBox>
-    </>
+      </ButtonPanel>
+    </Container>
   );
 };
 

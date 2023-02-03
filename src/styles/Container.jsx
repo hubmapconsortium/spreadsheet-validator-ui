@@ -1,8 +1,9 @@
 import { Box, styled } from '@mui/material';
 
 const Container = styled(Box)({
-  height: '100vh',
-  minHeight: '25vh',
+  display: 'block',
+  width: '100%',
+  minHeight: '100vh',
 });
 
 export default Container;
