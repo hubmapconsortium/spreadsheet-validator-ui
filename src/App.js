@@ -8,7 +8,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Help from './pages/Help';
 import Overview from './pages/Overview';
-import RepairIncompletenessOverview from './pages/RepairIncompletenessOverview';
+import CompletenessErrorOverview from './pages/CompletenessErrorOverview';
 import RepairIncompletenessWorkspace from './pages/RepairIncompletenessWorkspace';
 import RepairIncorrectness from './pages/RepairIncorrectness';
 import Container from './styles/Container';
@@ -100,11 +100,11 @@ const App = () => {
         <Route element={(<WorkspaceContainer appData={appData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
           <Route
-            path={REPAIR_INCOMPLETENESS_OVERVIEW_PATH}
-            element={<RepairIncompletenessOverview />}
+            path={COMPLETENESS_ERROR_OVERVIEW_PATH}
+            element={<CompletenessErrorOverview />}
           />
           <Route
-            path={`${REPAIR_INCOMPLETENESS_OVERVIEW_PATH}/:targetColumn`}
+            path={`${COMPLETENESS_ERROR_OVERVIEW_PATH}/:targetColumn`}
             element={<RepairIncompletenessWorkspace />}
           />
           <Route

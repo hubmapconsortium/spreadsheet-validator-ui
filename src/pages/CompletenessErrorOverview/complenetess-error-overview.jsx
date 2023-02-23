@@ -12,7 +12,7 @@ import { getColumnLabel, getIncompletenessReporting } from '../../helpers/data-u
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 import Paragraph from '../../styles/Paragraph';
 
-const RepairIncompletenessOerview = () => {
+const CompletenessErrorOverview = () => {
   const { appData, patches } = useContext(AppContext);
   const { schema, reporting } = appData;
   const incompletenessReporting = useMemo(
@@ -60,4 +60,4 @@ const RepairIncompletenessOerview = () => {
   );
 };
 
-export default RepairIncompletenessOerview;
+export default CompletenessErrorOverview;
