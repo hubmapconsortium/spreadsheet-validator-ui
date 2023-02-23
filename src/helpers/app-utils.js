@@ -140,7 +140,7 @@ const isRepairCompleted = (rows, column, patches) => (
   rows.every((row) => checkRepairPatchPresent(row, column, patches))
 );
 
-const determineRepairIncompletenessStatus = (rows, column, patches) => (
+const determineCompletenessErrorStatus = (rows, column, patches) => (
   isRepairCompleted(rows, column, patches)
     ? REPAIR_COMPLETED
     : REPAIR_NOT_COMPLETED
@@ -162,7 +162,7 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
         errorId: `missing-required-${errorColumnLocation}`,
         name: `missing-required-${errorColumnLocation}`,
         title: `Missing ${columnLabel}`,
-        status: determineRepairIncompletenessStatus(
+        status: determineCompletenessErrorStatus(
           errorRowLocations,
           errorColumnLocation,
           patches,
@@ -250,28 +250,18 @@ export const generateRepairIncorrectnessSubMenuData = (errorSummaryData, patches
   (item) => item !== null,
 );
 
-export const generateRepairIncompletenessButtonData = (errorSummaryData, patches) => {
+export const generateCompletenessErrorStatusList = (errorSummaryData, patches) => {
   const missingRequiredErrorList = errorSummaryData.filter(
     (item) => checkCompletenessError(item),
   );
   return missingRequiredErrorList.map(
     (errorDetails) => {
-      const { column: errorColumnLocation, rows: errorRowLocations, columnLabel } = errorDetails;
-      const errorSize = errorRowLocations.length;
-      const subTitleText = errorSize === 1
-        ? '1 record is incomplete'
-        : `${errorSize} records are incomplete`;
+      const { column, rows } = errorDetails;
       return ({
-        errorId: `missing-required-${errorColumnLocation}`,
-        name: `missing-required-${errorColumnLocation}`,
-        title: columnLabel,
-        subtitle: subTitleText,
-        status: determineRepairIncompletenessStatus(
-          errorRowLocations,
-          errorColumnLocation,
-          patches,
-        ),
-        navigateTo: errorColumnLocation,
+        errorId: `missing-required-${column}`,
+        column,
+        rows,
+        errorCount: countErrorRemaining(errorDetails, patches),
       });
     },
   );
