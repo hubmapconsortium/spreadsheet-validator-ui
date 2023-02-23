@@ -5,7 +5,7 @@ import AppContext from '../../pages/AppContext';
 import NavMenu from '../NavMenu/nav-menu';
 import { generateErrorSummaryReport, generateRepairIncompletenessSubMenuData, generateRepairIncorrectnessSubMenuData } from '../../helpers/app-utils';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
-import { OVERVIEW_PATH, REPAIR_INCOMPLETENESS_OVERVIEW_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
+import { ADHERENCE_ERROR_OVERVIEW_PATH, COMPLETENESS_ERROR_OVERVIEW_PATH, OVERVIEW_PATH, REPAIR_INCOMPLETENESS_OVERVIEW_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 
 const Navbar = () => {
   const { appData, patches } = useContext(AppContext);
@@ -55,13 +55,13 @@ const Navbar = () => {
             <NavMenu
               id="repair-incompleteness-menu"
               title={REPAIR_INCOMPLETENESS}
-              navigateTo={REPAIR_INCOMPLETENESS_OVERVIEW_PATH}
+              navigateTo={COMPLETENESS_ERROR_OVERVIEW_PATH}
               subMenus={repairIncompletenessSubMenus}
             />
             <NavMenu
               id="repair-incorrectness-menu"
               title={REPAIR_INCORRECTNESS}
-              navigateTo={REPAIR_INCORRECTNESS_PATH}
+              navigateTo={ADHERENCE_ERROR_OVERVIEW_PATH}
               subMenus={repairIncorrectnessSubMenus}
             />
           </Box>

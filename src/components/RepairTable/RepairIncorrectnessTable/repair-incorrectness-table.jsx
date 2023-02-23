@@ -18,7 +18,7 @@ import CollapsibleTableRow from '../collapsible-table-row';
 import InfoTooltip from '../info-tooltip';
 import { initUserInput } from './function';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, HeaderCell, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
-import { REPAIR_INCORRECTNESS_PATH } from '../../../constants/Router';
+import { ADHERENCE_ERROR_OVERVIEW_PATH } from '../../../constants/Router';
 
 // eslint-disable-next-line no-unused-vars
 const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting }) => {
@@ -167,7 +167,7 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
         <CancelButton
           variant="outlined"
           onClick={
-            () => navigate(`../${REPAIR_INCORRECTNESS_PATH}`, {
+            () => navigate(`../${ADHERENCE_ERROR_OVERVIEW_PATH}`, {
               state: {
                 selectedMenuItem: 'repair-invalid-value-types',
               },

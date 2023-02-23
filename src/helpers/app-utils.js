@@ -1,6 +1,6 @@
 import * as jsonpatch from 'fast-json-patch';
 import { GREEN, RED } from '../constants/Color';
-import { REPAIR_INCOMPLETENESS_OVERVIEW_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
+import { COMPLETENESS_ERROR_OVERVIEW_PATH, ADHERENCE_ERROR_OVERVIEW_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 import { add } from './array-utils';
 import { getEffectiveValue } from './data-utils';
@@ -167,7 +167,7 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
           errorColumnLocation,
           patches,
         ),
-        navigateTo: `${REPAIR_INCOMPLETENESS_OVERVIEW_PATH}/${errorColumnLocation}`,
+        navigateTo: `${COMPLETENESS_ERROR_OVERVIEW_PATH}/${errorColumnLocation}`,
         errorRemaining: countErrorRemaining(errorDetails, patches),
       });
     },
@@ -201,7 +201,7 @@ const getNotStandardTermSubMenuItemData = (errorSummaryData, patches) => {
       name: 'not-standard-term-error',
       title: 'Value is not a standard term',
       status: determineRepairIncorrectnessStatus(errorList, patches),
-      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStandardTerm`,
+      navigateTo: `${ADHERENCE_ERROR_OVERVIEW_PATH}/notStandardTerm`,
       errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }
@@ -218,7 +218,7 @@ const getNotNumberTypeSubMenuItemData = (errorSummaryData, patches) => {
       name: 'not-number-type-error',
       title: 'Value is not a number',
       status: determineRepairIncorrectnessStatus(errorList, patches),
-      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notNumberType`,
+      navigateTo: `${ADHERENCE_ERROR_OVERVIEW_PATH}/notNumberType`,
       errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }
@@ -235,7 +235,7 @@ const getNotStringTypeSubMenuItemData = (errorSummaryData, patches) => {
       name: 'not-string-type-error',
       title: 'Value is not a string',
       status: determineRepairIncorrectnessStatus(errorList, patches),
-      navigateTo: `${REPAIR_INCORRECTNESS_PATH}/notStringType`,
+      navigateTo: `${ADHERENCE_ERROR_OVERVIEW_PATH}/notStringType`,
       errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }

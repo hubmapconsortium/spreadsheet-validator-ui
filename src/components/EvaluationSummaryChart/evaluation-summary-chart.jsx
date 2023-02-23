@@ -8,7 +8,7 @@ import Block from '../../styles/Block';
 import Title from '../../styles/Title';
 import Paragraph from '../../styles/Paragraph';
 import BaseButton from '../../styles/BaseButton';
-import { REPAIR_INCOMPLETENESS_OVERVIEW_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
+import { COMPLETENESS_ERROR_OVERVIEW_PATH, ADHERENCE_ERROR_OVERVIEW_PATH } from '../../constants/Router';
 
 const ChartBlock = styled(Block)({
   width: '420px',
@@ -107,7 +107,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             sx={{ width: '310px' }}
             variant="contained"
             disabled={!evaluationSummaryData.hasCompletenessErrors}
-            onClick={() => navigate(`../${REPAIR_INCOMPLETENESS_OVERVIEW_PATH}`, {
+            onClick={() => navigate(`../${COMPLETENESS_ERROR_OVERVIEW_PATH}`, {
               state: {
                 selectedMenuItem: 'repair-missing-values',
               },
@@ -119,7 +119,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             sx={{ width: '310px' }}
             variant="contained"
             disabled={!evaluationSummaryData.hasAdherenceErrors}
-            onClick={() => navigate(`../${REPAIR_INCORRECTNESS_PATH}`, {
+            onClick={() => navigate(`../${ADHERENCE_ERROR_OVERVIEW_PATH}`, {
               state: {
                 selectedMenuItem: 'repair-invalid-value-types',
               },

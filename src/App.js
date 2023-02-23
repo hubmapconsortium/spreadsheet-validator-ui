@@ -9,13 +9,13 @@ import About from './pages/About';
 import Help from './pages/Help';
 import Overview from './pages/Overview';
 import CompletenessErrorOverview from './pages/CompletenessErrorOverview';
+import AdherenceErrorOverview from './pages/AdherenceErrorOverview';
 import RepairIncompletenessWorkspace from './pages/RepairIncompletenessWorkspace';
-import RepairIncorrectness from './pages/RepairIncorrectness';
 import Container from './styles/Container';
 import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import ContentArea from './components/ContentArea';
-import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLETENESS_OVERVIEW_PATH, REPAIR_INCORRECTNESS_PATH } from './constants/Router';
+import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, COMPLETENESS_ERROR_OVERVIEW_PATH, ADHERENCE_ERROR_OVERVIEW_PATH } from './constants/Router';
 import { BLACK, LIGHTER_GRAY } from './constants/Color';
 import { generateEmptyObjects } from './helpers/array-utils';
 import RepairIncorrectnessWorkspace from './pages/RepairIncorrectnessWorkspace';
@@ -108,11 +108,11 @@ const App = () => {
             element={<RepairIncompletenessWorkspace />}
           />
           <Route
-            path={REPAIR_INCORRECTNESS_PATH}
-            element={<RepairIncorrectness />}
+            path={ADHERENCE_ERROR_OVERVIEW_PATH}
+            element={<AdherenceErrorOverview />}
           />
           <Route
-            path={`${REPAIR_INCORRECTNESS_PATH}/:incorrectnessType`}
+            path={`${ADHERENCE_ERROR_OVERVIEW_PATH}/:incorrectnessType`}
             element={<RepairIncorrectnessWorkspace />}
           />
         </Route>

@@ -13,7 +13,7 @@ import { getIncorrectnessReporting } from '../../helpers/data-utils';
 import { generateErrorSummaryReport, generateRepairIncorrectnessButtonData } from '../../helpers/app-utils';
 import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
-const RepairIncorrectness = () => {
+const AdherenceErrorOverview = () => {
   const { appData, patches } = useContext(AppContext);
   const { reporting } = appData;
   const incorrectnessReporting = useMemo(
@@ -67,4 +67,4 @@ const RepairIncorrectness = () => {
   );
 };
 
-export default RepairIncorrectness;
+export default AdherenceErrorOverview;
