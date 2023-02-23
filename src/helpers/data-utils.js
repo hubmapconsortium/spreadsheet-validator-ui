@@ -44,8 +44,15 @@ export const getMissingRequiredReporting = (reporting) => (
   reporting.filter((reportItem) => reportItem.errorType === 'missingRequired')
 );
 
-export const getIncompletenessReporting = (reporting) => (
+export const getCompletenessErrorReport = (reporting) => (
   getMissingRequiredReporting(reporting)
+);
+
+export const getCompletenessErrorReportByColumn = (reporting, column) => (
+  reporting.filter(
+    (reportItem) => reportItem.errorType === 'missingRequired'
+      && reportItem.column === column,
+  )
 );
 
 export const getNotStandardTermReporting = (reporting) => (
@@ -60,12 +67,16 @@ export const getNotStringTypeReporting = (reporting) => (
   reporting.filter((reportItem) => reportItem.errorType === 'notStringType')
 );
 
-export const getIncorrectnessReporting = (reporting) => (
+export const getAdherenceErrorReport = (reporting) => (
   reporting.filter(
     (reportItem) => reportItem.errorType === 'notStandardTerm'
       || reportItem.errorType === 'notNumberType'
       || reportItem.errorType === 'notStringType',
   )
+);
+
+export const getAdherenceErrorReportByType = (reporting, errorType) => (
+  reporting.filter((reportItem) => reportItem.errorType === errorType)
 );
 
 export const getPatchGroup = (row, patches) => {

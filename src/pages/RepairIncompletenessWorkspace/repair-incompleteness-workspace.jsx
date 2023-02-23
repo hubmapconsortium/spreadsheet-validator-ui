@@ -8,16 +8,14 @@ import RepairIncompletnessTable from '../../components/RepairTable/RepairIncompl
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
-import { getIncompletenessReporting } from '../../helpers/data-utils';
+import { getCompletenessErrorReportByColumn } from '../../helpers/data-utils';
 
 const RepairIncompletenessWorkspace = () => {
   const { appData } = useContext(AppContext);
   const { reporting } = appData;
   const { targetColumn } = useParams();
   const incompletenessReporting = useMemo(
-    () => getIncompletenessReporting(reporting).filter(
-      (reportItem) => reportItem.column === targetColumn,
-    ),
+    () => getCompletenessErrorReportByColumn(reporting, targetColumn),
     [reporting, targetColumn],
   );
   const errorSize = incompletenessReporting.length;

@@ -5,14 +5,30 @@ import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 import { add } from './array-utils';
 import { getEffectiveValue } from './data-utils';
 
-const checkCompletenessError = (reportItem) => (
+const checkMissingRequiredError = (reportItem) => (
   reportItem.errorType === 'missingRequired'
 );
 
-const checkAdherenceError = (reportItem) => (
+const checkCompletenessError = (reportItem) => (
+  checkMissingRequiredError(reportItem)
+);
+
+const checkNotStandardTermError = (reportItem) => (
   reportItem.errorType === 'notStandardTerm'
-  || reportItem.errorType === 'notNumberType'
-  || reportItem.errorType === 'notStringType'
+);
+
+const checkNotNumberTypeError = (reportItem) => (
+  reportItem.errorType === 'notNumberType'
+);
+
+const checkNotStringTypeError = (reportItem) => (
+  reportItem.errorType === 'notStringType'
+);
+
+const checkAdherenceError = (reportItem) => (
+  checkNotStandardTermError(reportItem)
+  || checkNotNumberTypeError(reportItem)
+  || checkNotStringTypeError(reportItem)
 );
 
 export const generateEvaluationSummaryData = (spreadsheetData, reportingData) => {
@@ -146,7 +162,7 @@ const determineCompletenessErrorStatus = (rows, column, patches) => (
     : REPAIR_NOT_COMPLETED
 );
 
-const countErrorRemaining = (errorDetails, patches) => {
+const countRemainingErrors = (errorDetails, patches) => {
   const { rows, column } = errorDetails;
   return rows.map((row) => checkRepairPatchPresent(row, column, patches))
     .map((bool) => (bool ? 0 : 1))
@@ -168,7 +184,7 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
           patches,
         ),
         navigateTo: `${COMPLETENESS_ERROR_OVERVIEW_PATH}/${errorColumnLocation}`,
-        errorRemaining: countErrorRemaining(errorDetails, patches),
+        errorRemaining: countRemainingErrors(errorDetails, patches),
       });
     },
   );
@@ -187,7 +203,7 @@ const determineRepairIncorrectnessStatus = (errorList, patches) => {
 };
 
 const countErrorRemainingFromList = (errorList, patches) => (
-  errorList.map((errorDetails) => countErrorRemaining(errorDetails, patches))
+  errorList.map((errorDetails) => countRemainingErrors(errorDetails, patches))
     .reduce(add, 0)
 );
 
@@ -259,88 +275,68 @@ export const generateCompletenessErrorStatusList = (errorSummaryData, patches) =
       const { column, rows } = errorDetails;
       return ({
         errorId: `missing-required-${column}`,
+        errorType: 'missingRequired',
         column,
         rows,
-        errorCount: countErrorRemaining(errorDetails, patches),
+        errorCount: countRemainingErrors(errorDetails, patches),
       });
     },
   );
 };
 
-const getErrorSize = (errorList) => (
+const countRemainingErrorsFromSummaryReport = (errorList, patches) => (
   errorList.reduce(
-    (accumulator, errorDetails) => accumulator + errorDetails.rows.length,
+    (accumulator, errorDetails) => accumulator + countRemainingErrors(errorDetails, patches),
     0,
   )
 );
 
-const getNotStandardTermButtonItemData = (errorSummaryData, patches) => {
-  const notStandardTermErrorList = errorSummaryData.filter(
-    (item) => item.errorType === 'notStandardTerm',
+const getNotStandardTermButtonItemData = (errorSummaryReport, patches) => {
+  const notStandardTermErrorSummary = errorSummaryReport.filter(
+    (reportItem) => checkNotStandardTermError(reportItem),
   );
-  const errorSize = getErrorSize(notStandardTermErrorList);
-  const subTitleText = errorSize === 1
-    ? '1 value is incorrect'
-    : `${errorSize} values are incorrect`;
-  if (notStandardTermErrorList.length > 0) {
+  if (notStandardTermErrorSummary.length > 0) {
     return {
       errorId: 'not-standard-term-error',
-      name: 'not-standard-term-error',
-      title: 'Value is not a standard term',
-      subtitle: subTitleText,
-      status: determineRepairIncorrectnessStatus(notStandardTermErrorList, patches),
-      navigateTo: 'notStandardTerm',
+      errorType: 'notStandardTerm',
+      errorCount: countRemainingErrorsFromSummaryReport(notStandardTermErrorSummary, patches),
     };
   }
   return null;
 };
 
-const getNotNumberTypeButtonItemData = (errorSummaryData, patches) => {
-  const notNumberTypeErrorList = errorSummaryData.filter(
-    (item) => item.errorType === 'notNumberType',
+const getNotNumberTypeButtonItemData = (errorSummaryReport, patches) => {
+  const notNumberTypeErrorSummary = errorSummaryReport.filter(
+    (reportItem) => checkNotNumberTypeError(reportItem),
   );
-  const errorSize = getErrorSize(notNumberTypeErrorList);
-  const subTitleText = errorSize === 1
-    ? '1 value is incorrect'
-    : `${errorSize} values are incorrect`;
-  if (notNumberTypeErrorList.length > 0) {
+  if (notNumberTypeErrorSummary.length > 0) {
     return {
       errorId: 'not-number-type-error',
-      name: 'not-number-type-error',
-      title: 'Value is not a number',
-      subtitle: subTitleText,
-      status: determineRepairIncorrectnessStatus(notNumberTypeErrorList, patches),
-      navigateTo: 'notNumberType',
+      errorType: 'notNumberType',
+      errorCount: countRemainingErrorsFromSummaryReport(notNumberTypeErrorSummary, patches),
     };
   }
   return null;
 };
 
-const getNotStringTypeButtonItemData = (errorSummaryData, patches) => {
-  const notStringTypeErrorList = errorSummaryData.filter(
-    (item) => item.errorType === 'notStringType',
+const getNotStringTypeButtonItemData = (errorSummaryReport, patches) => {
+  const notStringTypeErrorSummary = errorSummaryReport.filter(
+    (reportItem) => checkNotStringTypeError(reportItem),
   );
-  const errorSize = getErrorSize(notStringTypeErrorList);
-  const subTitleText = errorSize === 1
-    ? '1 value is incorrect'
-    : `${errorSize} values are incorrect`;
-  if (notStringTypeErrorList.length > 0) {
+  if (notStringTypeErrorSummary.length > 0) {
     return {
       errorId: 'not-string-type-error',
-      name: 'not-string-type-error',
-      title: 'Value is not a string',
-      subtitle: subTitleText,
-      status: determineRepairIncorrectnessStatus(notStringTypeErrorList, patches),
-      navigateTo: 'notStringType',
+      errorType: 'notStringType',
+      errorCount: countRemainingErrorsFromSummaryReport(notStringTypeErrorSummary, patches),
     };
   }
   return null;
 };
 
-export const generateRepairIncorrectnessButtonData = (errorSummaryData, patches) => [
-  getNotStandardTermButtonItemData(errorSummaryData, patches),
-  getNotNumberTypeButtonItemData(errorSummaryData, patches),
-  getNotStringTypeButtonItemData(errorSummaryData, patches),
+export const generateAdherenceErrorStatusList = (errorSummaryReport, patches) => [
+  getNotStandardTermButtonItemData(errorSummaryReport, patches),
+  getNotNumberTypeButtonItemData(errorSummaryReport, patches),
+  getNotStringTypeButtonItemData(errorSummaryReport, patches),
 ].filter(
   (item) => item !== null,
 );

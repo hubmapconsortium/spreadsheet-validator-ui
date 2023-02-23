@@ -7,21 +7,19 @@ import DefaultInfoSection from '../../components/DefaultInfoSection';
 import RepairIncorrectnessTable from '../../components/RepairTable/RepairIncorrectnessTable';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
-import { getIncorrectnessReporting } from '../../helpers/data-utils';
+import { getAdherenceErrorReportByType } from '../../helpers/data-utils';
 import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
 const RepairIncorrectnessWorkspace = () => {
   const { appData } = useContext(AppContext);
   const { reporting } = appData;
-  const { incorrectnessType } = useParams();
+  const { errorType } = useParams();
 
-  const incorrectnessReporting = useMemo(
-    () => getIncorrectnessReporting(reporting).filter(
-      (reportItem) => reportItem.errorType === incorrectnessType,
-    ),
-    [reporting, incorrectnessType],
+  const adherenceErrorReport = useMemo(
+    () => getAdherenceErrorReportByType(reporting, errorType),
+    [reporting, errorType],
   );
-  const errorSize = incorrectnessReporting.length;
+  const errorSize = adherenceErrorReport.length;
   return (
     <SnackbarProvider maxSnack={1}>
       <Container>
@@ -33,8 +31,8 @@ const RepairIncorrectnessWorkspace = () => {
         </Section>
         <DefaultInfoSection />
         <RepairIncorrectnessTable
-          incorrectnessType={incorrectnessType}
-          incorrectnessReporting={incorrectnessReporting}
+          incorrectnessType={errorType}
+          incorrectnessReporting={adherenceErrorReport}
         />
       </Container>
     </SnackbarProvider>

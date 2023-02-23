@@ -8,26 +8,27 @@ import Card from '../../styles/Card';
 import Block from '../../styles/Block';
 import Section from '../../styles/Section';
 import { generateErrorSummaryReport, generateCompletenessErrorStatusList } from '../../helpers/app-utils';
-import { getColumnLabel, getIncompletenessReporting } from '../../helpers/data-utils';
+import { getColumnLabel, getCompletenessErrorReport } from '../../helpers/data-utils';
+import { getActionButtonTitle } from '../../helpers/title-utils';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 import Paragraph from '../../styles/Paragraph';
 
 const CompletenessErrorOverview = () => {
   const { appData, patches } = useContext(AppContext);
   const { schema, reporting } = appData;
-  const incompletenessReporting = useMemo(
-    () => getIncompletenessReporting(reporting),
+  const completenessErrorReport = useMemo(
+    () => getCompletenessErrorReport(reporting),
     [reporting],
   );
   const errorSummaryReport = useMemo(
-    () => generateErrorSummaryReport(incompletenessReporting),
-    [incompletenessReporting],
+    () => generateErrorSummaryReport(completenessErrorReport),
+    [completenessErrorReport],
   );
   const errorStatusList = useMemo(
-    () => generateCompletenessErrorStatusList(errorSummaryReport, schema, patches),
+    () => generateCompletenessErrorStatusList(errorSummaryReport, patches),
     [patches],
   );
-  const errorSize = incompletenessReporting.length;
+  const errorSize = completenessErrorReport.length;
   return (
     <Container>
       <Section>
@@ -48,7 +49,7 @@ const CompletenessErrorOverview = () => {
         <Block sx={{ width: '80%', padding: '20px 20px 20px 20px' }}>
           {errorStatusList.map((data) => (
             <ActionButton
-              title={`Fill out missing "${getColumnLabel(data.column, schema)}" values`}
+              title={getActionButtonTitle(data.errorType, getColumnLabel(data.column, schema))}
               errorCount={data.errorCount}
               errorStatus={data.errorStatus}
               navigateTo={data.column}
