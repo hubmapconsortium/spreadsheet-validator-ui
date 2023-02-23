@@ -8,14 +8,14 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Help from './pages/Help';
 import Overview from './pages/Overview';
-import RepairIncompleteness from './pages/RepairIncompleteness';
+import RepairIncompletenessOverview from './pages/RepairIncompletenessOverview';
 import RepairIncompletenessWorkspace from './pages/RepairIncompletenessWorkspace';
 import RepairIncorrectness from './pages/RepairIncorrectness';
 import Container from './styles/Container';
 import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import ContentArea from './components/ContentArea';
-import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLETENESS_PATH, REPAIR_INCORRECTNESS_PATH } from './constants/Router';
+import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, REPAIR_INCOMPLETENESS_OVERVIEW_PATH, REPAIR_INCORRECTNESS_PATH } from './constants/Router';
 import { BLACK, LIGHTER_GRAY } from './constants/Color';
 import { generateEmptyObjects } from './helpers/array-utils';
 import RepairIncorrectnessWorkspace from './pages/RepairIncorrectnessWorkspace';
@@ -58,7 +58,6 @@ const WorkspaceContainer = ({ appData }) => {
   const { data } = appData;
   const initPatches = generateEmptyObjects(data.length);
   const [patches, setPatches] = useImmer(initPatches);
-  // eslint-disable-next-line max-len
   const appContextData = useMemo(() => ({ appData, patches, setPatches }), [patches]);
   return (
     <AppContext.Provider value={appContextData}>
@@ -100,10 +99,22 @@ const App = () => {
         </Route>
         <Route element={(<WorkspaceContainer appData={appData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
-          <Route path={REPAIR_INCOMPLETENESS_PATH} element={<RepairIncompleteness />} />
-          <Route path={`${REPAIR_INCOMPLETENESS_PATH}/:targetColumn`} element={<RepairIncompletenessWorkspace />} />
-          <Route path={REPAIR_INCORRECTNESS_PATH} element={<RepairIncorrectness />} />
-          <Route path={`${REPAIR_INCORRECTNESS_PATH}/:incorrectnessType`} element={<RepairIncorrectnessWorkspace />} />
+          <Route
+            path={REPAIR_INCOMPLETENESS_OVERVIEW_PATH}
+            element={<RepairIncompletenessOverview />}
+          />
+          <Route
+            path={`${REPAIR_INCOMPLETENESS_OVERVIEW_PATH}/:targetColumn`}
+            element={<RepairIncompletenessWorkspace />}
+          />
+          <Route
+            path={REPAIR_INCORRECTNESS_PATH}
+            element={<RepairIncorrectness />}
+          />
+          <Route
+            path={`${REPAIR_INCORRECTNESS_PATH}/:incorrectnessType`}
+            element={<RepairIncorrectnessWorkspace />}
+          />
         </Route>
       </Routes>
     </Router>

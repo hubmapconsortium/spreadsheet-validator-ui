@@ -24,7 +24,7 @@ import HeaderWithFilter from '../header-with-filter';
 import InfoTooltip from '../info-tooltip';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { getFilteredData, initUserInput } from './function';
-import { REPAIR_INCOMPLETENESS_PATH } from '../../../constants/Router';
+import { REPAIR_INCOMPLETENESS_OVERVIEW_PATH } from '../../../constants/Router';
 import { LIGHT_RED } from '../../../constants/Color';
 import Container from '../../../styles/Container';
 
@@ -261,7 +261,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
         <CancelButton
           variant="outlined"
           onClick={
-            () => navigate(`../${REPAIR_INCOMPLETENESS_PATH}`, {
+            () => navigate(`../${REPAIR_INCOMPLETENESS_OVERVIEW_PATH}`, {
               state: {
                 selectedMenuItem: 'repair-missing-values',
               },

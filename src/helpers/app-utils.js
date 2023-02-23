@@ -1,6 +1,6 @@
 import * as jsonpatch from 'fast-json-patch';
 import { GREEN, RED } from '../constants/Color';
-import { REPAIR_INCOMPLETENESS_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
+import { REPAIR_INCOMPLETENESS_OVERVIEW_PATH, REPAIR_INCORRECTNESS_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 import { add } from './array-utils';
 import { getEffectiveValue } from './data-utils';
@@ -167,7 +167,7 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
           errorColumnLocation,
           patches,
         ),
-        navigateTo: `${REPAIR_INCOMPLETENESS_PATH}/${errorColumnLocation}`,
+        navigateTo: `${REPAIR_INCOMPLETENESS_OVERVIEW_PATH}/${errorColumnLocation}`,
         errorRemaining: countErrorRemaining(errorDetails, patches),
       });
     },
