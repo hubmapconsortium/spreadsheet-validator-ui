@@ -366,7 +366,7 @@ export const determineOverallRepairStatus = (reporting, patches) => {
   return REPAIR_COMPLETED;
 };
 
-export const generateErrorSummaryData = (reporting, schema) => (
+export const generateErrorSummaryReport = (reporting) => (
   Object.values(
     reporting.reduce(
       (accumulator, reportItem) => {
@@ -377,7 +377,6 @@ export const generateErrorSummaryData = (reporting, schema) => (
           accumulator[key] = accumulator[key] || {
             column,
             rows: [],
-            columnLabel: schema.columns[column].label,
             errorType,
           }
         );

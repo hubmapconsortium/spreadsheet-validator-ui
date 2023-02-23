@@ -8,18 +8,18 @@ import EvaluationSummaryChart from '../../components/EvaluationSummaryChart/eval
 import ErrorAnalysisChart from '../../components/ErrorAnalysisChart';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
-import { generateErrorSummaryData, generateEvaluationSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
+import { generateErrorSummaryReport, generateEvaluationSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
 import { VALIDATION_RESULT } from '../../constants/PageTitle';
 
 const Overview = () => {
   const { appData } = useContext(AppContext);
-  const { schema, data, reporting } = appData;
+  const { data, reporting } = appData;
   const evaluationSummaryData = useMemo(
     () => generateEvaluationSummaryData(data, reporting),
     [reporting],
   );
   const errorSummaryData = useMemo(
-    () => generateErrorSummaryData(reporting, schema),
+    () => generateErrorSummaryReport(reporting),
     [reporting],
   );
   const missingValueAnalysisChartData = useMemo(

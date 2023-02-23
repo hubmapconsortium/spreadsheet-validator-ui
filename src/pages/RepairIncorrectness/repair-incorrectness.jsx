@@ -10,18 +10,18 @@ import Section from '../../styles/Section';
 import Block from '../../styles/Block';
 import Paragraph from '../../styles/Paragraph';
 import { getIncorrectnessReporting } from '../../helpers/data-utils';
-import { generateErrorSummaryData, generateRepairIncorrectnessButtonData } from '../../helpers/app-utils';
+import { generateErrorSummaryReport, generateRepairIncorrectnessButtonData } from '../../helpers/app-utils';
 import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
 const RepairIncorrectness = () => {
   const { appData, patches } = useContext(AppContext);
-  const { schema, reporting } = appData;
+  const { reporting } = appData;
   const incorrectnessReporting = useMemo(
     () => getIncorrectnessReporting(reporting),
     [reporting],
   );
   const errorSummaryData = useMemo(
-    () => generateErrorSummaryData(incorrectnessReporting, schema),
+    () => generateErrorSummaryReport(incorrectnessReporting),
     [incorrectnessReporting],
   );
   const buttonData = useMemo(

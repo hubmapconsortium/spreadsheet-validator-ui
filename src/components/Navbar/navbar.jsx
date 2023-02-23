@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Toolbar, IconButton, Typography, Container } from '@mui/material';
 import AppContext from '../../pages/AppContext';
 import NavMenu from '../NavMenu/nav-menu';
-import { generateErrorSummaryData, generateRepairIncompletenessSubMenuData, generateRepairIncorrectnessSubMenuData } from '../../helpers/app-utils';
+import { generateErrorSummaryReport, generateRepairIncompletenessSubMenuData, generateRepairIncorrectnessSubMenuData } from '../../helpers/app-utils';
 import { OVERVIEW, REPAIR_INCOMPLETENESS, REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 import { OVERVIEW_PATH, REPAIR_INCOMPLETENESS_OVERVIEW_PATH, REPAIR_INCORRECTNESS_PATH } from '../../constants/Router';
 
@@ -12,7 +12,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { schema, reporting } = appData;
   const errorSummaryData = useMemo(
-    () => generateErrorSummaryData(reporting, schema),
+    () => generateErrorSummaryReport(reporting, schema),
     [reporting],
   );
   const repairIncompletenessSubMenus = useMemo(

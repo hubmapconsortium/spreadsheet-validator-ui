@@ -8,25 +8,25 @@ import Container from '../../styles/Container';
 import Card from '../../styles/Card';
 import Block from '../../styles/Block';
 import Section from '../../styles/Section';
-import { generateErrorSummaryData, generateRepairIncompletenessButtonData } from '../../helpers/app-utils';
+import { generateErrorSummaryReport, generateRepairIncompletenessButtonData } from '../../helpers/app-utils';
 import { getIncompletenessReporting } from '../../helpers/data-utils';
 import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 import Paragraph from '../../styles/Paragraph';
 
 const RepairIncompleteness = () => {
   const { appData, patches } = useContext(AppContext);
-  const { schema, reporting } = appData;
+  const { reporting } = appData;
   const incompletenessReporting = useMemo(
     () => getIncompletenessReporting(reporting),
     [reporting],
   );
-  const errorSummaryData = useMemo(
-    () => generateErrorSummaryData(incompletenessReporting, schema),
+  const errorSummaryReport = useMemo(
+    () => generateErrorSummaryReport(incompletenessReporting),
     [incompletenessReporting],
   );
   const buttonData = useMemo(
-    () => generateRepairIncompletenessButtonData(errorSummaryData, patches),
-    [errorSummaryData, patches],
+    () => generateRepairIncompletenessButtonData(errorSummaryReport, patches),
+    [errorSummaryReport, patches],
   );
   const errorSize = incompletenessReporting.length;
   return (
