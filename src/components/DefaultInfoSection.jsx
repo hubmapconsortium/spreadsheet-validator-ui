@@ -4,7 +4,7 @@ import Section from '../styles/Section';
 import InfoBox from './InfoBox';
 
 const InfoSection = styled(Section)({
-  paddingBottom: '50px',
+  paddingBottom: '40px',
 });
 
 const ChangeButton = styled(Button)({

@@ -28,7 +28,7 @@ export const HeaderCell = styled(SheetCell)({
 });
 
 export const HeaderLabel = styled(Typography)({
-  fontSize: '18px',
+  fontSize: '17px',
   fontWeight: 'bold',
   paddingBottom: '10px',
 });

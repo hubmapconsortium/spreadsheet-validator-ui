@@ -2,7 +2,7 @@ import { styled, Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const CellValue = styled(Typography)({
-  fontSize: '17px',
+  fontSize: '16px',
 });
 
 const WrappedText = ({ text, color }) => {

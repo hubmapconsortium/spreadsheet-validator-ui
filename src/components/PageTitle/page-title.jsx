@@ -2,12 +2,12 @@ import { styled, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const Title = styled(Typography)({
-  fontSize: '32pt',
+  fontSize: '27pt',
   fontWeight: 'bold',
 });
 
 const SubTitle = styled(Typography)({
-  fontSize: '17pt',
+  fontSize: '16pt',
 });
 
 const PageTitle = ({ title, subtitle }) => (

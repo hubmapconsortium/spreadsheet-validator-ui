@@ -19,6 +19,7 @@ const ChartBlock = styled(Block)({
 const DescriptionBlock = styled(Block)({
   fontSize: '13pt',
   padding: '10px 40px 10px 40px',
+  minWidth: '200px',
 });
 
 const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
