@@ -9,21 +9,21 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import AppContext from '../../../pages/AppContext';
 import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
-import SheetCell from '../../DataSheet/SheetCell';
-import WrappedText from '../../DataSheet/WrappedText';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import Flex from '../../../styles/Panel';
-import { createAddOperationPatch, generateRepairTableData, getPagedData } from '../../../helpers/app-utils';
+import { createAddOperationPatch, generateCompletenessErrorTableData, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
 import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, isColumnRequired } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
-import StickySheetCell from '../sticky-sheet-cell';
 import InfoTooltip from '../info-tooltip';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { getFilteredData, initUserInput } from './function';
 import { COMPLETENESS_ERROR_PATH } from '../../../constants/Router';
 import Container from '../../../styles/Container';
+import { nullOnEmpty } from '../../../helpers/string-utils';
+import EditableSheetCell from '../editable-sheet-cell';
+import StaticSheetCell from '../static-sheet-cell';
 
 const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
     [errorReport],
   );
   const tableData = useMemo(
-    () => generateRepairTableData(errorReport, data, patches),
+    () => generateCompletenessErrorTableData(errorReport, data, patches),
     [errorReport, data, patches],
   );
   useEffect(
@@ -169,26 +169,27 @@ const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
                       let component;
                       if (index === 0) {
                         component = (
-                          <StickySheetCell
-                            id={`sheet-cell-on-${column}-${row}-to-repair-${targetColumn}`}
-                            row={row}
+                          <EditableSheetCell
+                            sticky
+                            key={`sheet-cell-on-${column}-${row}-to-repair-${targetColumn}`}
                             value={userInput[row] || ''}
                             type={getColumnType(column, schema)}
                             permissibleValues={getPermissibleValues(column, schema)}
                             inputRef={saveChangesHotKeys}
-                            setUserInput={setUserInput}
+                            onSave={(userValue) => {
+                              setUserInput((currentUserInput) => {
+                                // eslint-disable-next-line no-param-reassign
+                                currentUserInput[row] = nullOnEmpty(userValue);
+                              });
+                            }}
                           />
                         );
                       } else {
                         component = (
-                          <SheetCell
+                          <StaticSheetCell
                             key={`sheet-cell-on-${column}-${row}-to-repair-${targetColumn}`}
-                            align="right"
-                          >
-                            <WrappedText
-                              text={record[column]}
-                            />
-                          </SheetCell>
+                            value={record[column]}
+                          />
                         );
                       }
                       return component;

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useImmer } from 'use-immer';
@@ -12,7 +12,7 @@ import SheetBody from '../../DataSheet/SheetBody';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import Flex from '../../../styles/Panel';
 import { isColumnRequired } from '../../../helpers/data-utils';
-import { createReplaceOperationPatch, generateRepairIncorrectnessTableData, getPagedData } from '../../../helpers/app-utils';
+import { createReplaceOperationPatch, generateAdherenceErrorTableData, getPagedData } from '../../../helpers/app-utils';
 import HeaderWithCheckbox from '../header-with-checkbox';
 import CollapsibleTableRow from '../collapsible-table-row';
 import InfoTooltip from '../info-tooltip';
@@ -20,11 +20,8 @@ import { initUserInput } from './function';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, HeaderCell, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { ADHERENCE_ERROR_PATH } from '../../../constants/Router';
 
-// eslint-disable-next-line no-unused-vars
-const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting }) => {
+const AdherenceErrorRepairTable = ({ errorType, errorReport }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { errorId } = location.state;
   const { appData, patches, setPatches } = useContext(AppContext);
   const { data, schema } = appData;
 
@@ -35,8 +32,8 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
   const { enqueueSnackbar } = useSnackbar();
 
   const tableData = useMemo(
-    () => generateRepairIncorrectnessTableData(incorrectnessReporting, data, patches),
-    [incorrectnessReporting, patches],
+    () => generateAdherenceErrorTableData(errorReport, data, patches),
+    [errorReport, patches],
   );
   useEffect(
     () => {
@@ -109,7 +106,7 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
                 <HeaderLabel>Suggested value</HeaderLabel>
               </HeaderCell>
               <HeaderWithCheckbox
-                id={`checkbox-${errorId}`}
+                id={`checkbox-${errorType}`}
                 label="Approved?"
                 handleCheckAll={(event) => {
                   setUserInput((currentUserInput) => {
@@ -123,11 +120,10 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
               />
             </SheetHeader>
             <SheetBody>
-              {pagedData.map((rowData, index) => (
+              {pagedData.map((rowData) => (
                 <CollapsibleTableRow
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={`collapsible-row-${index}`}
-                  id={`collapsible-row-${index}`}
+                  key={`collapsible-row-${rowData.rowNumber}`}
+                  id={`collapsible-row-${rowData.rowNumber}`}
                   rowData={rowData}
                   schema={schema}
                   inputRef={saveChanges}
@@ -187,9 +183,9 @@ const RepairIncorrectnessTable = ({ incorrectnessType, incorrectnessReporting })
   );
 };
 
-RepairIncorrectnessTable.propTypes = {
-  incorrectnessType: PropTypes.string.isRequired,
-  incorrectnessReporting: PropTypes.arrayOf(
+AdherenceErrorRepairTable.propTypes = {
+  errorType: PropTypes.string.isRequired,
+  errorReport: PropTypes.arrayOf(
     PropTypes.shape({
       row: PropTypes.number.isRequired,
       column: PropTypes.string.isRequired,
@@ -200,4 +196,4 @@ RepairIncorrectnessTable.propTypes = {
   ).isRequired,
 };
 
-export default RepairIncorrectnessTable;
+export default AdherenceErrorRepairTable;

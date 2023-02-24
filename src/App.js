@@ -11,6 +11,7 @@ import Overview from './pages/Overview';
 import CompletenessErrorOverview from './pages/CompletenessErrorOverview';
 import AdherenceErrorOverview from './pages/AdherenceErrorOverview';
 import CompletenessErrorRepair from './pages/CompletenessErrorRepair';
+import AdherenceErrorRepair from './pages/AdherenceErrorRepair';
 import Container from './styles/Container';
 import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
@@ -18,7 +19,6 @@ import ContentArea from './components/ContentArea';
 import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from './constants/Router';
 import { BLACK, LIGHTER_GRAY } from './constants/Color';
 import { generateEmptyObjects } from './helpers/array-utils';
-import RepairIncorrectnessWorkspace from './pages/RepairIncorrectnessWorkspace';
 
 const MainContainer = styled(Container)({
   backgroundColor: LIGHTER_GRAY,
@@ -112,8 +112,8 @@ const App = () => {
             element={<AdherenceErrorOverview />}
           />
           <Route
-            path={`${ADHERENCE_ERROR_PATH}/:incorrectnessType`}
-            element={<RepairIncorrectnessWorkspace />}
+            path={`${ADHERENCE_ERROR_PATH}/:errorType`}
+            element={<AdherenceErrorRepair />}
           />
         </Route>
       </Routes>

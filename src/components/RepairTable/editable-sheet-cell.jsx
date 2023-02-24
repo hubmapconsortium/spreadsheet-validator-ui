@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import SheetCell from '../DataSheet/SheetCell';
 import InputField from '../DataSheet/InputField';
 import SearchableSelector from '../DataSheet/SearchableSelector';
-import { nullOnEmpty } from '../../helpers/string-utils';
 import { LIGHT_RED } from '../../constants/Color';
 import { DATE, EMAIL, NUMBER, PHONE, STRING, TIME } from '../../constants/ValueType';
 
-const StickySheetCell = ({ id, row, value, type, permissibleValues, inputRef, setUserInput }) => (
-  <SheetCell key={id} sx={{ zIndex: 998 }} sticky>
+const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, onSave }) => (
+  <SheetCell sx={{ zIndex: sticky ? 998 : 0 }} sticky={sticky}>
     <FormControl fullWidth>
       {permissibleValues && permissibleValues.length > 0
         ? (
@@ -16,10 +15,7 @@ const StickySheetCell = ({ id, row, value, type, permissibleValues, inputRef, se
             value={value}
             options={permissibleValues}
             onChange={(event, newValue) => {
-              setUserInput((currentUserInput) => {
-                // eslint-disable-next-line no-param-reassign
-                currentUserInput[row] = nullOnEmpty(newValue);
-              });
+              onSave(newValue);
             }}
             colorOnEmpty={LIGHT_RED}
           />
@@ -32,10 +28,7 @@ const StickySheetCell = ({ id, row, value, type, permissibleValues, inputRef, se
             inputRef={inputRef}
             onChange={(event) => {
               const newValue = event.target.value;
-              setUserInput((currentUserInput) => {
-                // eslint-disable-next-line no-param-reassign
-                currentUserInput[row] = nullOnEmpty(newValue);
-              });
+              onSave(newValue);
             }}
             colorOnEmpty={LIGHT_RED}
           />
@@ -44,21 +37,20 @@ const StickySheetCell = ({ id, row, value, type, permissibleValues, inputRef, se
   </SheetCell>
 );
 
-StickySheetCell.propTypes = {
-  id: PropTypes.string,
-  row: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+EditableSheetCell.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]).isRequired,
   type: PropTypes.oneOf([STRING, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
-  // eslint-disable-next-line react/forbid-prop-types
-  inputRef: PropTypes.object.isRequired,
-  setUserInput: PropTypes.func.isRequired,
+  sticky: PropTypes.bool,
+  inputRef: PropTypes.oneOfType([PropTypes.object]),
+  onSave: PropTypes.func.isRequired,
 };
 
-StickySheetCell.defaultProps = {
-  id: undefined,
+EditableSheetCell.defaultProps = {
   type: STRING,
   permissibleValues: undefined,
+  inputRef: undefined,
+  sticky: false,
 };
 
-export default StickySheetCell;
+export default EditableSheetCell;

@@ -38,8 +38,7 @@ const SheetPagination = ({ data, page, setPage, rowsPerPage, setRowsPerPage }) =
 };
 
 SheetPagination.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
   page: PropTypes.number.isRequired,
   setPage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number.isRequired,

@@ -403,7 +403,7 @@ export const generateRepairedTableData = (rows, data, patches) => (
   )
 );
 
-export const generateRepairTableData = (errorReport, data, patches) => (
+export const generateCompletenessErrorTableData = (errorReport, data, patches) => (
   errorReport.map(
     (reportItem) => {
       const { row } = reportItem;
@@ -412,32 +412,27 @@ export const generateRepairTableData = (errorReport, data, patches) => (
   )
 );
 
-export const generateRepairIncorrectnessTableData = (reporting, data, patches) => {
-  const incorrectnessReporting = reporting.filter((item) => checkAdherenceError(item));
-  return Object.values(
-    incorrectnessReporting.reduce(
-      (accumulator, reportItem) => {
-        const { row, column, value, repairSuggestion, errorType } = reportItem;
-        const key = `${column}-${value}-${errorType}`;
-        const matchingGroup = (
-          // eslint-disable-next-line no-multi-assign
-          accumulator[key] = accumulator[key] || {
-            id: key,
-            column,
-            value,
-            repairSuggestion,
-            errorType,
-            rows: [],
-            records: [],
-          }
-        );
-        matchingGroup.rows.push(row);
-        matchingGroup.records.push(getRepairedRecord(data[row], data, patches));
-        return accumulator;
-      },
-      {},
-    ),
+export const generateAdherenceErrorTableData = (errorReport, data, patches) => {
+  const result = errorReport.reduce(
+    (accumulator, reportItem) => {
+      const { row, column, value, errorType } = reportItem;
+      const key = `${column}-${value}-${errorType}`;
+      const matchingGroup = (
+        // eslint-disable-next-line no-multi-assign
+        accumulator[key] = accumulator[key] || {
+          ...reportItem,
+          id: key,
+          rows: [],
+          records: [],
+        }
+      );
+      matchingGroup.rows.push(row);
+      matchingGroup.records.push(getRecord(row, data, patches));
+      return accumulator;
+    },
+    {},
   );
+  return Object.values(result);
 };
 
 export const generateNewSpreadsheet = (data, patches) => {

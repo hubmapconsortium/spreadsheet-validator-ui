@@ -29,8 +29,7 @@ InputField.propTypes = {
   type: PropTypes.oneOf([STRING, NUMBER, DATE, TIME, EMAIL, URL, PHONE]).isRequired,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
-  inputRef: PropTypes.object,
+  inputRef: PropTypes.oneOfType([PropTypes.object]),
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
   colorOnEmpty: PropTypes.string,

@@ -4,13 +4,13 @@ import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
-import RepairIncorrectnessTable from '../../components/RepairTable/RepairIncorrectnessTable';
+import AdherenceErrorRepairTable from '../../components/RepairTable/AdherenceErrorRepairTable';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { getAdherenceErrorReportByType } from '../../helpers/data-utils';
 import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
 
-const RepairIncorrectnessWorkspace = () => {
+const AdherenceErrorRepair = () => {
   const { appData } = useContext(AppContext);
   const { reporting } = appData;
   const { errorType } = useParams();
@@ -19,6 +19,7 @@ const RepairIncorrectnessWorkspace = () => {
     () => getAdherenceErrorReportByType(reporting, errorType),
     [reporting, errorType],
   );
+
   const errorSize = adherenceErrorReport.length;
   return (
     <SnackbarProvider maxSnack={1}>
@@ -30,13 +31,13 @@ const RepairIncorrectnessWorkspace = () => {
           />
         </Section>
         <DefaultInfoSection />
-        <RepairIncorrectnessTable
-          incorrectnessType={errorType}
-          incorrectnessReporting={adherenceErrorReport}
+        <AdherenceErrorRepairTable
+          errorType={errorType}
+          errorReport={adherenceErrorReport}
         />
       </Container>
     </SnackbarProvider>
   );
 };
 
-export default RepairIncorrectnessWorkspace;
+export default AdherenceErrorRepair;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Checkbox, Collapse, FormControl, IconButton, Stack, styled, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, Collapse, IconButton, Stack, styled, TableRow, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -8,13 +8,12 @@ import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import WrappedText from '../DataSheet/WrappedText';
-import SearchableSelector from '../DataSheet/SearchableSelector';
-import InputField from '../DataSheet/InputField';
 import InfoTooltip from './info-tooltip';
 import { HeaderLabel, SheetTable } from './styled';
-import { getColumnDescription, getColumnType, hasPermissibleValues, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
-import { BLACK, DARK_GRAY, LIGHT_GRAY, LIGHT_RED, RED } from '../../constants/Color';
+import { getColumnDescription, getColumnType, getPermissibleValues } from '../../helpers/data-utils';
+import { BLACK, DARK_GRAY, LIGHT_GRAY, RED } from '../../constants/Color';
 import { nullOnEmpty } from '../../helpers/string-utils';
+import EditableSheetCell from './editable-sheet-cell';
 
 const CellValue = styled(Typography)({
   fontSize: '17px',
@@ -43,14 +42,12 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
           </IconButton>
         </SheetCell>
         <SheetCell key={`target-column-cell-${id}`}>
-          <CellValue>
-            <Stack direction="row" gap={1}>
-              <HeaderLabel>{targetColumnLabel}</HeaderLabel>
-              <InfoTooltip title={getColumnDescription(targetColumn, schema)}>
-                <InfoOutlinedIcon fontSize="small" />
-              </InfoTooltip>
-            </Stack>
-          </CellValue>
+          <Stack direction="row" gap={1}>
+            <HeaderLabel>{targetColumnLabel}</HeaderLabel>
+            <InfoTooltip title={getColumnDescription(targetColumn, schema)}>
+              <InfoOutlinedIcon fontSize="small" />
+            </InfoTooltip>
+          </Stack>
         </SheetCell>
         <SheetCell key={`target-value-cell-${id}`}>
           <Box sx={{ display: 'flex' }}>
@@ -67,50 +64,24 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
             </CellValue>
           </Box>
         </SheetCell>
-        <SheetCell key={`suggested-value-cell-${id}`}>
-          <FormControl fullWidth>
-            {hasPermissibleValues(targetColumn, schema)
-              ? (
-                <SearchableSelector
-                  value={userInput[id]?.value || ''}
-                  options={getPermissibleValues(targetColumn, schema)}
-                  onChange={(event, newValue) => {
-                    setUserInput((currentUserInput) => {
-                      // eslint-disable-next-line no-param-reassign
-                      currentUserInput[id] = {
-                        column: targetColumn,
-                        value: nullOnEmpty(newValue),
-                        rows,
-                        approved: true,
-                      };
-                    });
-                  }}
-                  colorOnEmpty={LIGHT_RED}
-                />
-              )
-              : (
-                <InputField
-                  required={isColumnRequired(targetColumn, schema)}
-                  value={userInput[id]?.value || ''}
-                  type={getColumnType(targetColumn, schema)}
-                  inputRef={inputRef}
-                  onChange={(event) => {
-                    const newValue = event.target.value;
-                    setUserInput((currentUserInput) => {
-                      // eslint-disable-next-line no-param-reassign
-                      currentUserInput[id] = {
-                        column: targetColumn,
-                        value: nullOnEmpty(newValue),
-                        rows,
-                        approved: true,
-                      };
-                    });
-                  }}
-                  colorOnEmpty={LIGHT_RED}
-                />
-              )}
-          </FormControl>
-        </SheetCell>
+        <EditableSheetCell
+          key={`suggested-value-cell-${id}`}
+          value={userInput[id]?.value || ''}
+          type={getColumnType(targetColumn, schema)}
+          permissibleValues={getPermissibleValues(targetColumn, schema)}
+          inputRef={inputRef}
+          onSave={(userValue) => {
+            setUserInput((currentUserInput) => {
+              // eslint-disable-next-line no-param-reassign
+              currentUserInput[id] = {
+                column: targetColumn,
+                value: nullOnEmpty(userValue),
+                rows,
+                approved: true,
+              };
+            });
+          }}
+        />
         <SheetCell key={`approved-cell-${id}`} align="center">
           <Checkbox
             key={`checkbox-${id}`}
@@ -208,19 +179,16 @@ CollapsibleTableRow.propTypes = {
       [PropTypes.string, PropTypes.number, PropTypes.bool],
     ),
     rows: PropTypes.arrayOf(PropTypes.number).isRequired,
-    // eslint-disable-next-line react/forbid-prop-types
-    records: PropTypes.arrayOf(PropTypes.object).isRequired,
+    records: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
   }).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  schema: PropTypes.object.isRequired,
+  schema: PropTypes.oneOfType([PropTypes.object]).isRequired,
   userInput: PropTypes.shape({
     column: PropTypes.string,
     value: PropTypes.string,
     rows: PropTypes.arrayOf(PropTypes.number),
     approved: PropTypes.bool,
   }),
-  // eslint-disable-next-line react/forbid-prop-types
-  inputRef: PropTypes.object,
+  inputRef: PropTypes.oneOfType([PropTypes.object]),
   setUserInput: PropTypes.func.isRequired,
 };
 
