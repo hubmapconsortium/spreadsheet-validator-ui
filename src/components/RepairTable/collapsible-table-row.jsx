@@ -7,13 +7,13 @@ import PropTypes from 'prop-types';
 import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
-import WrappedText from '../DataSheet/WrappedText';
 import InfoTooltip from './info-tooltip';
 import { HeaderLabel, SheetTable } from './styled';
 import { getColumnDescription, getColumnType, getPermissibleValues } from '../../helpers/data-utils';
-import { BLACK, DARK_GRAY, LIGHT_GRAY, RED } from '../../constants/Color';
+import { BLACK, DARK_GRAY, LIGHTER_GRAY, RED } from '../../constants/Color';
 import { nullOnEmpty } from '../../helpers/string-utils';
 import EditableSheetCell from './editable-sheet-cell';
+import StaticSheetCell from './static-sheet-cell';
 
 const CellValue = styled(Typography)({
   fontSize: '17px',
@@ -126,34 +126,27 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
                     const columnProperties = schema.columns[columnHeader];
                     const { name: columnName, label: columnLabel } = columnProperties;
                     return (
-                      <SheetCell
+                      <StaticSheetCell
                         key={`table-header-${columnName}`}
-                        sx={{ textAlign: 'center', backgroundColor: LIGHT_GRAY, minWidth: '100px' }}
-                      >
-                        {columnLabel}
-                      </SheetCell>
+                        value={columnLabel}
+                        backgroundColor={LIGHTER_GRAY}
+                        minWidth="120px"
+                      />
                     );
                   })}
                 </SheetHeader>
                 <SheetBody>
-                  {records.map((record, index) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <TableRow key={`table-${targetColumn}-row-${record.rowNumber}`}>
+                  {records.map((record) => (
+                    <TableRow key={`row-${record.rowNumber}`}>
                       {Object.keys(schema.columns).map((columnHeader) => {
                         const columnProperties = schema.columns[columnHeader];
                         const { name: columnName } = columnProperties;
                         return (
-                          <SheetCell
-                            // eslint-disable-next-line react/no-array-index-key
-                            key={`table-cell-row-${index}-column-${columnName}`}
-                            sx={{ textAlign: 'center' }}
-                            align="right"
-                          >
-                            <WrappedText
-                              text={record[columnName]}
-                              color={columnName === targetColumn ? RED : BLACK}
-                            />
-                          </SheetCell>
+                          <StaticSheetCell
+                            key={`cell-${columnName}-${record.rowNumber}`}
+                            value={record[columnName]}
+                            color={columnName === targetColumn ? RED : BLACK}
+                          />
                         );
                       })}
                     </TableRow>

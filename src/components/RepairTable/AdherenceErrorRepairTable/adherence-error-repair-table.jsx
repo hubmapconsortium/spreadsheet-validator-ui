@@ -122,8 +122,8 @@ const AdherenceErrorRepairTable = ({ errorType, errorReport }) => {
             <SheetBody>
               {pagedData.map((rowData) => (
                 <CollapsibleTableRow
-                  key={`collapsible-row-${rowData.rowNumber}`}
-                  id={`collapsible-row-${rowData.rowNumber}`}
+                  key={`collapsible-row-${rowData.id}`}
+                  id={`collapsible-row-${rowData.id}`}
                   rowData={rowData}
                   schema={schema}
                   inputRef={saveChanges}
