@@ -9,7 +9,7 @@ import ErrorAnalysisChart from '../../components/ErrorAnalysisChart';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { generateErrorSummaryReport, generateEvaluationSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
-import { VALIDATION_RESULT } from '../../constants/PageTitle';
+import { getValidationResultTitle } from '../../helpers/title-utils';
 
 const Overview = () => {
   const { appData } = useContext(AppContext);
@@ -34,7 +34,7 @@ const Overview = () => {
     <Container>
       <Section>
         <PageTitle
-          title={VALIDATION_RESULT}
+          title={getValidationResultTitle()}
           subtitle={`${data.length} metadata records were found in the spreadsheet.`}
         />
       </Section>

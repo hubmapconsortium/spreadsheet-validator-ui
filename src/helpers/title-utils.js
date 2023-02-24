@@ -2,6 +2,10 @@ export const getOverviewTitle = () => (
   'Overview'
 );
 
+export const getValidationResultTitle = () => (
+  'Validation Result'
+);
+
 export const getCompletenessErrorRepairTitle = () => (
   'Repair Completeness Errors'
 );
@@ -27,6 +31,10 @@ export const getNavigationSubMenuTitle = (errorType, column = '') => {
   }
   return title;
 };
+
+export const getErrorFlagTitle = (errorType, column = '') => (
+  getNavigationSubMenuTitle(errorType, column)
+);
 
 export const getActionButtonTitle = (errorType, column = '') => {
   let title = `Unknown error type: ${errorType}`;

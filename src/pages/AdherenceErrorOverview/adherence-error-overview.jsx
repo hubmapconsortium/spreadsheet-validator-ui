@@ -10,8 +10,7 @@ import Block from '../../styles/Block';
 import Paragraph from '../../styles/Paragraph';
 import { getAdherenceErrorReport } from '../../helpers/data-utils';
 import { generateErrorSummaryReport, generateAdherenceErrorStatusList } from '../../helpers/app-utils';
-import { getActionButtonTitle } from '../../helpers/title-utils';
-import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
+import { getActionButtonTitle, getAdherenceErrorRepairTitle } from '../../helpers/title-utils';
 
 const AdherenceErrorOverview = () => {
   const { appData, patches } = useContext(AppContext);
@@ -33,7 +32,7 @@ const AdherenceErrorOverview = () => {
     <Container>
       <Section>
         <PageTitle
-          title={REPAIR_INCORRECTNESS}
+          title={getAdherenceErrorRepairTitle()}
           subtitle={`${errorSize} values are not in accordance with the metadata specification.`}
         />
       </Section>

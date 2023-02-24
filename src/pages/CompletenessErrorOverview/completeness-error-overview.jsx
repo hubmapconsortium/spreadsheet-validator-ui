@@ -7,11 +7,10 @@ import Container from '../../styles/Container';
 import Card from '../../styles/Card';
 import Block from '../../styles/Block';
 import Section from '../../styles/Section';
+import Paragraph from '../../styles/Paragraph';
 import { generateErrorSummaryReport, generateCompletenessErrorStatusList } from '../../helpers/app-utils';
 import { getColumnLabel, getCompletenessErrorReport } from '../../helpers/data-utils';
-import { getActionButtonTitle } from '../../helpers/title-utils';
-import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
-import Paragraph from '../../styles/Paragraph';
+import { getActionButtonTitle, getCompletenessErrorRepairTitle } from '../../helpers/title-utils';
 
 const CompletenessErrorOverview = () => {
   const { appData, patches } = useContext(AppContext);
@@ -33,7 +32,7 @@ const CompletenessErrorOverview = () => {
     <Container>
       <Section>
         <PageTitle
-          title={REPAIR_INCOMPLETENESS}
+          title={getCompletenessErrorRepairTitle()}
           subtitle={`${errorSize} required values are missing from the metadata records.`}
         />
       </Section>

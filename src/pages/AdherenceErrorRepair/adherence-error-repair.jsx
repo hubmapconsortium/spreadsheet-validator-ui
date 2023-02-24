@@ -8,7 +8,7 @@ import AdherenceErrorRepairTable from '../../components/RepairTable/AdherenceErr
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { getAdherenceErrorReportByType } from '../../helpers/data-utils';
-import { REPAIR_INCORRECTNESS } from '../../constants/PageTitle';
+import { getAdherenceErrorRepairTitle } from '../../helpers/title-utils';
 
 const AdherenceErrorRepair = () => {
   const { appData } = useContext(AppContext);
@@ -26,7 +26,7 @@ const AdherenceErrorRepair = () => {
       <Container>
         <Section>
           <PageTitle
-            title={REPAIR_INCORRECTNESS}
+            title={getAdherenceErrorRepairTitle()}
             subtitle={`${errorSize} issues were found.`}
           />
         </Section>
