@@ -1,3 +1,33 @@
+export const getOverviewTitle = () => (
+  'Overview'
+);
+
+export const getCompletenessErrorRepairTitle = () => (
+  'Repair Completeness Errors'
+);
+
+export const getAdherenceErrorRepairTitle = () => (
+  'Repair Adherence Errors'
+);
+
+export const getTotalErrorCountTitle = (report) => (
+  `${report.length} issues were found`
+);
+
+export const getNavigationSubMenuTitle = (errorType, column = '') => {
+  let title = `Unknown error type: ${errorType}`;
+  if (errorType === 'missingRequired') {
+    title = `Missing "${column}" value`;
+  } else if (errorType === 'notStandardTerm') {
+    title = 'Value is not a standard term';
+  } else if (errorType === 'notNumberType') {
+    title = 'Value is not number';
+  } else if (errorType === 'notStringType') {
+    title = 'Value is not string';
+  }
+  return title;
+};
+
 export const getActionButtonTitle = (errorType, column = '') => {
   let title = `Unknown error type: ${errorType}`;
   if (errorType === 'missingRequired') {
@@ -11,7 +41,3 @@ export const getActionButtonTitle = (errorType, column = '') => {
   }
   return title;
 };
-
-export const print = () => (
-  'Print'
-);

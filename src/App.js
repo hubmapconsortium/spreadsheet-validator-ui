@@ -10,12 +10,12 @@ import Help from './pages/Help';
 import Overview from './pages/Overview';
 import CompletenessErrorOverview from './pages/CompletenessErrorOverview';
 import AdherenceErrorOverview from './pages/AdherenceErrorOverview';
-import RepairIncompletenessWorkspace from './pages/RepairIncompletenessWorkspace';
+import CompletenessErrorRepair from './pages/CompletenessErrorRepair';
 import Container from './styles/Container';
 import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import ContentArea from './components/ContentArea';
-import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, COMPLETENESS_ERROR_OVERVIEW_PATH, ADHERENCE_ERROR_OVERVIEW_PATH } from './constants/Router';
+import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from './constants/Router';
 import { BLACK, LIGHTER_GRAY } from './constants/Color';
 import { generateEmptyObjects } from './helpers/array-utils';
 import RepairIncorrectnessWorkspace from './pages/RepairIncorrectnessWorkspace';
@@ -100,19 +100,19 @@ const App = () => {
         <Route element={(<WorkspaceContainer appData={appData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
           <Route
-            path={COMPLETENESS_ERROR_OVERVIEW_PATH}
+            path={COMPLETENESS_ERROR_PATH}
             element={<CompletenessErrorOverview />}
           />
           <Route
-            path={`${COMPLETENESS_ERROR_OVERVIEW_PATH}/:targetColumn`}
-            element={<RepairIncompletenessWorkspace />}
+            path={`${COMPLETENESS_ERROR_PATH}/:targetColumn`}
+            element={<CompletenessErrorRepair />}
           />
           <Route
-            path={ADHERENCE_ERROR_OVERVIEW_PATH}
+            path={ADHERENCE_ERROR_PATH}
             element={<AdherenceErrorOverview />}
           />
           <Route
-            path={`${ADHERENCE_ERROR_OVERVIEW_PATH}/:incorrectnessType`}
+            path={`${ADHERENCE_ERROR_PATH}/:incorrectnessType`}
             element={<RepairIncorrectnessWorkspace />}
           />
         </Route>

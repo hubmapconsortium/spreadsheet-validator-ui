@@ -26,10 +26,10 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
         </InfoTooltip>
       </Stack>
       <FormControl fullWidth>
-        {permissibleValues
+        {permissibleValues && permissibleValues.length > 0
           ? (
             <SearchableSelector
-              id={`${id}-selector-batch-field`}
+              key={`${id}-searchable-selector`}
               placeholder="Enter batch value..."
               options={permissibleValues}
               onKeyPress={handleKeyPress}
@@ -42,7 +42,7 @@ const HeaderWithBatchInput = ({ id, label, description, type, permissibleValues,
           )
           : (
             <InputField
-              id={`${id}-input-batch-field`}
+              key={`${id}-input-field`}
               type={type}
               placeholder="Enter batch value..."
               onKeyPress={handleKeyPress}

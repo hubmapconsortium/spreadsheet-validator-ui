@@ -1,3 +1,3 @@
-import CompletenessErrorOverview from './complenetess-error-overview';
+import CompletenessErrorOverview from './completeness-error-overview';
 
 export default CompletenessErrorOverview;

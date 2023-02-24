@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { WHITE } from '../../../constants/Color';
 
 // eslint-disable-next-line max-len
-const SearchableSelector = ({ id, placeholder, value, options, onChange, onKeyPress, colorOnEmpty, startAdornment, endAdornment }) => (
+const SearchableSelector = ({ key, placeholder, value, options, onChange, onKeyPress, colorOnEmpty, startAdornment, endAdornment }) => (
   <Autocomplete
-    key={id}
+    key={key}
     value={value}
     forcePopupIcon={false}
     autoHighlight
@@ -36,7 +36,7 @@ const SearchableSelector = ({ id, placeholder, value, options, onChange, onKeyPr
 );
 
 SearchableSelector.propTypes = {
-  id: PropTypes.string,
+  key: PropTypes.string,
   placeholder: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
@@ -52,7 +52,7 @@ SearchableSelector.propTypes = {
 };
 
 SearchableSelector.defaultProps = {
-  id: undefined,
+  key: undefined,
   placeholder: undefined,
   value: undefined,
   onChange: undefined,

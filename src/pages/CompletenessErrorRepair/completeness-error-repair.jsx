@@ -4,38 +4,37 @@ import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import DefaultInfoSection from '../../components/DefaultInfoSection';
-import RepairIncompletnessTable from '../../components/RepairTable/RepairIncompletenessTable';
+import CompletenessErrorRepairTable from '../../components/RepairTable/CompletenessErrorRepairTable';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
-import { REPAIR_INCOMPLETENESS } from '../../constants/PageTitle';
 import { getCompletenessErrorReportByColumn } from '../../helpers/data-utils';
+import { getCompletenessErrorRepairTitle, getTotalErrorCountTitle } from '../../helpers/title-utils';
 
-const RepairIncompletenessWorkspace = () => {
+const CompletenessErrorRepair = () => {
   const { appData } = useContext(AppContext);
   const { reporting } = appData;
   const { targetColumn } = useParams();
-  const incompletenessReporting = useMemo(
+  const completenessErrorReport = useMemo(
     () => getCompletenessErrorReportByColumn(reporting, targetColumn),
     [reporting, targetColumn],
   );
-  const errorSize = incompletenessReporting.length;
   return (
     <SnackbarProvider maxSnack={1}>
       <Container>
         <Section>
           <PageTitle
-            title={REPAIR_INCOMPLETENESS}
-            subtitle={`${errorSize} issues were found.`}
+            title={getCompletenessErrorRepairTitle()}
+            subtitle={getTotalErrorCountTitle(completenessErrorReport)}
           />
         </Section>
         <DefaultInfoSection />
-        <RepairIncompletnessTable
+        <CompletenessErrorRepairTable
           targetColumn={targetColumn}
-          incompletenessReporting={incompletenessReporting}
+          errorReport={completenessErrorReport}
         />
       </Container>
     </SnackbarProvider>
   );
 };
 
-export default RepairIncompletenessWorkspace;
+export default CompletenessErrorRepair;

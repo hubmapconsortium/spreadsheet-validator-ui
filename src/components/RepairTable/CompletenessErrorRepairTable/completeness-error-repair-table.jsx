@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { FormControl, Stack, TableRow, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Stack, TableRow, Typography } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -10,28 +10,23 @@ import AppContext from '../../../pages/AppContext';
 import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
 import SheetCell from '../../DataSheet/SheetCell';
-import InputField from '../../DataSheet/InputField';
 import WrappedText from '../../DataSheet/WrappedText';
 import SheetPagination from '../../DataSheet/SheetPagination';
-import SearchableSelector from '../../DataSheet/SearchableSelector';
 import Flex from '../../../styles/Panel';
-import { createAddOperationPatch, generateRepairedTableData, getPagedData } from '../../../helpers/app-utils';
+import { createAddOperationPatch, generateRepairTableData, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
-import { nullOnEmpty } from '../../../helpers/string-utils';
-import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, hasPermissibleValues, isColumnRequired } from '../../../helpers/data-utils';
+import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, isColumnRequired } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
+import StickySheetCell from '../sticky-sheet-cell';
 import InfoTooltip from '../info-tooltip';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { getFilteredData, initUserInput } from './function';
-import { COMPLETENESS_ERROR_OVERVIEW_PATH } from '../../../constants/Router';
-import { LIGHT_RED } from '../../../constants/Color';
+import { COMPLETENESS_ERROR_PATH } from '../../../constants/Router';
 import Container from '../../../styles/Container';
 
-const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => {
+const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { key } = location.state;
   const { appData, patches, setPatches } = useContext(AppContext);
   const { schema, data } = appData;
 
@@ -51,14 +46,14 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
   );
 
   const badRows = useMemo(
-    () => incompletenessReporting.map(
+    () => errorReport.map(
       (reportItem) => reportItem.row,
     ),
-    [incompletenessReporting],
+    [errorReport],
   );
   const tableData = useMemo(
-    () => generateRepairedTableData(badRows, data, patches),
-    [incompletenessReporting, data, patches],
+    () => generateRepairTableData(errorReport, data, patches),
+    [errorReport, data, patches],
   );
   useEffect(
     () => {
@@ -121,7 +116,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
   };
 
-  const saveChanges = useHotkeys(
+  const saveChangesHotKeys = useHotkeys(
     ['ctrl+s', 'meta+s'],
     () => handleSaveChanges(),
     {
@@ -141,8 +136,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                 if (index === 0) {
                   component = (
                     <HeaderWithBatchInput
-                      key={`batch-input-${key}-${column}`}
-                      id={`batch-input-${key}-${column}`}
+                      key={`header-with-batch-input-on-${column}-to-repair-${targetColumn}`}
                       label={getColumnLabel(column, schema)}
                       description={getColumnDescription(column, schema)}
                       type={getColumnType(column, schema)}
@@ -154,8 +148,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
                 } else {
                   component = (
                     <HeaderWithFilter
-                      key={`filter-${key}-${column}`}
-                      id={`filter-${key}-${column}`}
+                      key={`header-with-filter-on-${column}-to-repair-${targetColumn}`}
                       name={getColumnName(column, schema)}
                       label={getColumnLabel(column, schema)}
                       description={getColumnDescription(column, schema)}
@@ -168,59 +161,32 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
               })}
             </SheetHeader>
             <SheetBody>
-              {pagedData.map((rowData) => {
-                // eslint-disable-next-line dot-notation
-                const row = rowData.rowNumber;
+              {pagedData.map((record) => {
+                const row = record.rowNumber;
                 return (
-                  <TableRow key={`row-${row}`}>
+                  <TableRow key={`table-row-on-${row}-to-repair-${targetColumn}`}>
                     {columnOrder.map((column, index) => {
                       let component;
                       if (index === 0) {
                         component = (
-                          <SheetCell key={`cell-${key}-${column}`} sx={{ zIndex: 998 }} sticky>
-                            <FormControl fullWidth>
-                              {hasPermissibleValues(column, schema)
-                                ? (
-                                  <SearchableSelector
-                                    value={userInput[row] || ''}
-                                    options={getPermissibleValues(column, schema)}
-                                    onChange={(event, newValue) => {
-                                      setUserInput((currentUserInput) => {
-                                        // eslint-disable-next-line no-param-reassign
-                                        currentUserInput[row] = nullOnEmpty(newValue);
-                                      });
-                                    }}
-                                    colorOnEmpty={LIGHT_RED}
-                                  />
-                                )
-                                : (
-                                  <InputField
-                                    required
-                                    value={userInput[row] || ''}
-                                    type={getColumnType(column, schema)}
-                                    inputRef={saveChanges}
-                                    onChange={(event) => {
-                                      const newValue = event.target.value;
-                                      setUserInput((currentUserInput) => {
-                                        // eslint-disable-next-line no-param-reassign
-                                        currentUserInput[row] = nullOnEmpty(newValue);
-                                      });
-                                    }}
-                                    colorOnEmpty={LIGHT_RED}
-                                  />
-                                )}
-                            </FormControl>
-                          </SheetCell>
+                          <StickySheetCell
+                            id={`sheet-cell-on-${column}-${row}-to-repair-${targetColumn}`}
+                            row={row}
+                            value={userInput[row] || ''}
+                            type={getColumnType(column, schema)}
+                            permissibleValues={getPermissibleValues(column, schema)}
+                            inputRef={saveChangesHotKeys}
+                            setUserInput={setUserInput}
+                          />
                         );
                       } else {
                         component = (
                           <SheetCell
-                            key={`cell-${key}-${column}`}
-                            id={`cell-${key}-${column}`}
+                            key={`sheet-cell-on-${column}-${row}-to-repair-${targetColumn}`}
                             align="right"
                           >
                             <WrappedText
-                              text={rowData[column]}
+                              text={record[column]}
                             />
                           </SheetCell>
                         );
@@ -261,11 +227,7 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
         <CancelButton
           variant="outlined"
           onClick={
-            () => navigate(`../${COMPLETENESS_ERROR_OVERVIEW_PATH}`, {
-              state: {
-                selectedMenuItem: 'repair-missing-values',
-              },
-            })
+            () => navigate(`../${COMPLETENESS_ERROR_PATH}`)
           }
         >
           Cancel
@@ -281,9 +243,9 @@ const RepairIncompletnessTable = ({ targetColumn, incompletenessReporting }) => 
   );
 };
 
-RepairIncompletnessTable.propTypes = {
+CompletenessErrorRepairTable.propTypes = {
   targetColumn: PropTypes.string.isRequired,
-  incompletenessReporting: PropTypes.arrayOf(
+  errorReport: PropTypes.arrayOf(
     PropTypes.shape({
       row: PropTypes.number.isRequired,
       column: PropTypes.string.isRequired,
@@ -294,4 +256,4 @@ RepairIncompletnessTable.propTypes = {
   ).isRequired,
 };
 
-export default RepairIncompletnessTable;
+export default CompletenessErrorRepairTable;

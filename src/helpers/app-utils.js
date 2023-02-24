@@ -1,6 +1,6 @@
 import * as jsonpatch from 'fast-json-patch';
 import { GREEN, RED } from '../constants/Color';
-import { COMPLETENESS_ERROR_OVERVIEW_PATH, ADHERENCE_ERROR_OVERVIEW_PATH } from '../constants/Router';
+import { COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from '../constants/Router';
 import { REPAIR_COMPLETED, REPAIR_NOT_COMPLETED } from '../constants/Status';
 import { add } from './array-utils';
 import { getEffectiveValue } from './data-utils';
@@ -169,7 +169,7 @@ const countRemainingErrors = (errorDetails, patches) => {
     .reduce(add, 0);
 };
 
-export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patches) => {
+export const generateRepairCompletenessErrorSubMenuList = (errorSummaryData, patches) => {
   const missingRequiredErrorList = errorSummaryData.filter((item) => checkCompletenessError(item));
   const subMenuItems = missingRequiredErrorList.map(
     (errorDetails) => {
@@ -183,7 +183,7 @@ export const generateRepairIncompletenessSubMenuData = (errorSummaryData, patche
           errorColumnLocation,
           patches,
         ),
-        navigateTo: `${COMPLETENESS_ERROR_OVERVIEW_PATH}/${errorColumnLocation}`,
+        navigateTo: `${COMPLETENESS_ERROR_PATH}/${errorColumnLocation}`,
         errorRemaining: countRemainingErrors(errorDetails, patches),
       });
     },
@@ -217,7 +217,7 @@ const getNotStandardTermSubMenuItemData = (errorSummaryData, patches) => {
       name: 'not-standard-term-error',
       title: 'Value is not a standard term',
       status: determineRepairIncorrectnessStatus(errorList, patches),
-      navigateTo: `${ADHERENCE_ERROR_OVERVIEW_PATH}/notStandardTerm`,
+      navigateTo: `${ADHERENCE_ERROR_PATH}/notStandardTerm`,
       errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }
@@ -234,7 +234,7 @@ const getNotNumberTypeSubMenuItemData = (errorSummaryData, patches) => {
       name: 'not-number-type-error',
       title: 'Value is not a number',
       status: determineRepairIncorrectnessStatus(errorList, patches),
-      navigateTo: `${ADHERENCE_ERROR_OVERVIEW_PATH}/notNumberType`,
+      navigateTo: `${ADHERENCE_ERROR_PATH}/notNumberType`,
       errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }
@@ -251,7 +251,7 @@ const getNotStringTypeSubMenuItemData = (errorSummaryData, patches) => {
       name: 'not-string-type-error',
       title: 'Value is not a string',
       status: determineRepairIncorrectnessStatus(errorList, patches),
-      navigateTo: `${ADHERENCE_ERROR_OVERVIEW_PATH}/notStringType`,
+      navigateTo: `${ADHERENCE_ERROR_PATH}/notStringType`,
       errorRemaining: countErrorRemainingFromList(errorList, patches),
     };
   }
@@ -272,13 +272,12 @@ export const generateCompletenessErrorStatusList = (errorSummaryData, patches) =
   );
   return missingRequiredErrorList.map(
     (errorDetails) => {
-      const { column, rows } = errorDetails;
+      const { column } = errorDetails;
       return ({
         errorId: `missing-required-${column}`,
         errorType: 'missingRequired',
-        column,
-        rows,
         errorCount: countRemainingErrors(errorDetails, patches),
+        errorLocation: column,
       });
     },
   );
@@ -300,6 +299,7 @@ const getNotStandardTermButtonItemData = (errorSummaryReport, patches) => {
       errorId: 'not-standard-term-error',
       errorType: 'notStandardTerm',
       errorCount: countRemainingErrorsFromSummaryReport(notStandardTermErrorSummary, patches),
+      errorLocation: null,
     };
   }
   return null;
@@ -314,6 +314,7 @@ const getNotNumberTypeButtonItemData = (errorSummaryReport, patches) => {
       errorId: 'not-number-type-error',
       errorType: 'notNumberType',
       errorCount: countRemainingErrorsFromSummaryReport(notNumberTypeErrorSummary, patches),
+      pageId: 'notNumberType',
     };
   }
   return null;
@@ -328,6 +329,7 @@ const getNotStringTypeButtonItemData = (errorSummaryReport, patches) => {
       errorId: 'not-string-type-error',
       errorType: 'notStringType',
       errorCount: countRemainingErrorsFromSummaryReport(notStringTypeErrorSummary, patches),
+      pageId: 'notStringType',
     };
   }
   return null;
@@ -384,11 +386,29 @@ const getRepairedRecord = (record, data, patches) => {
   return temp;
 };
 
+const getRecord = (row, data, patches) => {
+  const oldRecord = data[row];
+  const newRecord = { ...oldRecord };
+  Object.keys(newRecord).forEach((column) => {
+    newRecord[column] = getEffectiveValue(row, column, data, patches);
+  });
+  return newRecord;
+};
+
 export const generateRepairedTableData = (rows, data, patches) => (
   rows.map(
     (row) => data[row],
   ).map(
     (record) => getRepairedRecord(record, data, patches),
+  )
+);
+
+export const generateRepairTableData = (errorReport, data, patches) => (
+  errorReport.map(
+    (reportItem) => {
+      const { row } = reportItem;
+      return getRecord(row, data, patches);
+    },
   )
 );
 

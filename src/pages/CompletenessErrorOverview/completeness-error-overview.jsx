@@ -49,10 +49,13 @@ const CompletenessErrorOverview = () => {
         <Block sx={{ width: '80%', padding: '20px 20px 20px 20px' }}>
           {errorStatusList.map((data) => (
             <ActionButton
-              title={getActionButtonTitle(data.errorType, getColumnLabel(data.column, schema))}
+              key={`action-button-${data.errorId}`}
+              title={getActionButtonTitle(
+                data.errorType,
+                getColumnLabel(data.errorLocation, schema),
+              )}
               errorCount={data.errorCount}
-              errorStatus={data.errorStatus}
-              navigateTo={data.column}
+              navigateTo={data.errorLocation}
             />
           ))}
         </Block>

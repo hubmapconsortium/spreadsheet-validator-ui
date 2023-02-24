@@ -49,6 +49,7 @@ const AdherenceErrorOverview = () => {
         <Block sx={{ width: '80%', padding: '20px 20px 20px 20px' }}>
           {errorStatusList.map((data) => (
             <ActionButton
+              key={`action-button-${data.errorId}`}
               title={getActionButtonTitle(data.errorType)}
               errorCount={data.errorCount}
               navigateTo={data.errorType}
