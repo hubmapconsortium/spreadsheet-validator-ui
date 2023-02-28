@@ -101,12 +101,18 @@ export const checkRepairPatchPresent = (row, column, patches) => (
   && typeof patches[row][column].value !== 'undefined'
 );
 
-export const isRepairCompleted = (rows, column, patches) => (
-  rows.every((row) => checkRepairPatchPresent(row, column, patches))
+export const isRepairCompleted = (reporting, patches) => (
+  reporting.reduce(
+    (accumulator, errorDetails) => {
+      const { row, column } = errorDetails;
+      return accumulator && checkRepairPatchPresent(row, column, patches);
+    },
+    true,
+  )
 );
 
-const countRemainingErrors = (errorDetails, patches) => {
-  const { rows, column } = errorDetails;
+const countRemainingErrors = (summaryItem, patches) => {
+  const { rows, column } = summaryItem;
   return rows.map((row) => checkRepairPatchPresent(row, column, patches))
     .map((bool) => (bool ? 0 : 1))
     .reduce(add, 0);

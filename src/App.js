@@ -16,9 +16,10 @@ import Container from './styles/Container';
 import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import ContentArea from './components/ContentArea';
+import GenerateSpreadsheetButton from './components/GenerateSpreadsheetButton';
+import { generateEmptyObjects } from './helpers/array-utils';
 import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from './constants/Router';
 import { BLACK, LIGHTER_GRAY } from './constants/Color';
-import { generateEmptyObjects } from './helpers/array-utils';
 
 const MainContainer = styled(Container)({
   backgroundColor: LIGHTER_GRAY,
@@ -64,6 +65,7 @@ const WorkspaceContainer = ({ appData }) => {
       <MainContainer>
         <Navbar />
         <ContentArea />
+        <GenerateSpreadsheetButton />
       </MainContainer>
     </AppContext.Provider>
   );
