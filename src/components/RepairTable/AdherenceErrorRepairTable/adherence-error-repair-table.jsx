@@ -12,7 +12,7 @@ import SheetBody from '../../DataSheet/SheetBody';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import Flex from '../../../styles/Panel';
 import { isColumnRequired } from '../../../helpers/data-utils';
-import { createReplaceOperationPatch, generateAdherenceErrorTableData, getPagedData } from '../../../helpers/app-utils';
+import { createReplaceOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import HeaderWithCheckbox from '../header-with-checkbox';
 import CollapsibleTableRow from '../collapsible-table-row';
 import InfoTooltip from '../info-tooltip';
@@ -20,10 +20,10 @@ import { initUserInput } from './function';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, HeaderCell, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { ADHERENCE_ERROR_PATH } from '../../../constants/Router';
 
-const AdherenceErrorRepairTable = ({ errorType, errorReport }) => {
+const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
   const navigate = useNavigate();
   const { appData, patches, setPatches } = useContext(AppContext);
-  const { data, schema } = appData;
+  const { schema } = appData;
 
   const [userInput, setUserInput] = useImmer({});
   const [page, setPage] = useState(0);
@@ -31,10 +31,6 @@ const AdherenceErrorRepairTable = ({ errorType, errorReport }) => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const tableData = useMemo(
-    () => generateAdherenceErrorTableData(errorReport, data, patches),
-    [errorReport, patches],
-  );
   useEffect(
     () => {
       const existingUserInput = initUserInput(tableData, patches);
@@ -185,14 +181,8 @@ const AdherenceErrorRepairTable = ({ errorType, errorReport }) => {
 
 AdherenceErrorRepairTable.propTypes = {
   errorType: PropTypes.string.isRequired,
-  errorReport: PropTypes.arrayOf(
-    PropTypes.shape({
-      row: PropTypes.number.isRequired,
-      column: PropTypes.string.isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-      repairSuggestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-      errorType: PropTypes.string.isRequired,
-    }),
+  tableData: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.object]),
   ).isRequired,
 };
 

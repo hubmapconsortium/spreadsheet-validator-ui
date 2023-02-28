@@ -3,7 +3,7 @@ export const getDataValue = (row, column, data) => data[row][column];
 // eslint-disable-next-line dot-notation
 export const getRows = (data) => data.map((row) => row.rowNumber);
 
-export const getColumnSchema = (column, schema) => schema.columns[column];
+export const getColumnSchema = (column, schema) => schema.columnDescription[column];
 
 export const getColumnName = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);

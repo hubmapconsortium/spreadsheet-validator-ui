@@ -1,12 +1,15 @@
 import { getPatchValue } from '../../../helpers/data-utils';
 
-export const initUserInput = (rows, column, patches) => rows
-  .reduce((result, row) => (
-    {
-      ...result,
-      [row]: getPatchValue(row, column, patches),
-    }
-  ), {});
+export const initUserInput = (tableData, column, patches) => (
+  tableData.reduce((result, record) => {
+    const { rowNumber } = record;
+    return (
+      {
+        ...result,
+        [rowNumber]: getPatchValue(rowNumber, column, patches),
+      });
+  }, {})
+);
 
 export const getFilteredData = (data, filters) => data.filter(
   (row) => filters

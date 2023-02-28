@@ -8,15 +8,20 @@ import CompletenessErrorRepairTable from '../../components/RepairTable/Completen
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { getCompletenessErrorReportByColumn } from '../../helpers/data-utils';
+import { generateCompletenessErrorTableData } from '../../helpers/app-utils';
 import { getCompletenessErrorRepairTitle, getTotalErrorCountTitle } from '../../helpers/title-utils';
 
 const CompletenessErrorRepair = () => {
-  const { appData } = useContext(AppContext);
-  const { reporting } = appData;
+  const { appData, patches } = useContext(AppContext);
+  const { data, reporting } = appData;
   const { targetColumn } = useParams();
-  const completenessErrorReport = useMemo(
+  const errorReport = useMemo(
     () => getCompletenessErrorReportByColumn(reporting, targetColumn),
     [reporting, targetColumn],
+  );
+  const tableData = useMemo(
+    () => generateCompletenessErrorTableData(errorReport, data, patches),
+    [errorReport, data, patches],
   );
   return (
     <SnackbarProvider maxSnack={1}>
@@ -24,13 +29,13 @@ const CompletenessErrorRepair = () => {
         <Section>
           <PageTitle
             title={getCompletenessErrorRepairTitle()}
-            subtitle={getTotalErrorCountTitle(completenessErrorReport)}
+            subtitle={getTotalErrorCountTitle(errorReport)}
           />
         </Section>
         <DefaultInfoSection />
         <CompletenessErrorRepairTable
           targetColumn={targetColumn}
-          errorReport={completenessErrorReport}
+          tableData={tableData}
         />
       </Container>
     </SnackbarProvider>

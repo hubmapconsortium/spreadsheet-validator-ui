@@ -8,32 +8,36 @@ import AdherenceErrorRepairTable from '../../components/RepairTable/AdherenceErr
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { getAdherenceErrorReportByType } from '../../helpers/data-utils';
-import { getAdherenceErrorRepairTitle } from '../../helpers/title-utils';
+import { getAdherenceErrorRepairTitle, getTotalErrorCountTitle } from '../../helpers/title-utils';
+import { generateAdherenceErrorTableData } from '../../helpers/app-utils';
 
 const AdherenceErrorRepair = () => {
-  const { appData } = useContext(AppContext);
-  const { reporting } = appData;
+  const { appData, patches } = useContext(AppContext);
+  const { data, reporting } = appData;
   const { errorType } = useParams();
 
-  const adherenceErrorReport = useMemo(
+  const errorReport = useMemo(
     () => getAdherenceErrorReportByType(reporting, errorType),
     [reporting, errorType],
   );
+  const tableData = useMemo(
+    () => generateAdherenceErrorTableData(errorReport, data, patches),
+    [errorReport, patches],
+  );
 
-  const errorSize = adherenceErrorReport.length;
   return (
     <SnackbarProvider maxSnack={1}>
       <Container>
         <Section>
           <PageTitle
             title={getAdherenceErrorRepairTitle()}
-            subtitle={`${errorSize} issues were found.`}
+            subtitle={getTotalErrorCountTitle(errorReport)}
           />
         </Section>
         <DefaultInfoSection />
         <AdherenceErrorRepairTable
           errorType={errorType}
-          errorReport={adherenceErrorReport}
+          tableData={tableData}
         />
       </Container>
     </SnackbarProvider>

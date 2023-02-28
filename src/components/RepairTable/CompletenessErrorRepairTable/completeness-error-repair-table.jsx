@@ -11,9 +11,9 @@ import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import Flex from '../../../styles/Panel';
-import { createAddOperationPatch, generateCompletenessErrorTableData, getPagedData } from '../../../helpers/app-utils';
+import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
-import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, isColumnRequired } from '../../../helpers/data-utils';
+import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import InfoTooltip from '../info-tooltip';
@@ -25,10 +25,10 @@ import { nullOnEmpty } from '../../../helpers/string-utils';
 import EditableSheetCell from '../editable-sheet-cell';
 import StaticSheetCell from '../static-sheet-cell';
 
-const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
+const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
   const navigate = useNavigate();
   const { appData, patches, setPatches } = useContext(AppContext);
-  const { schema, data } = appData;
+  const { schema } = appData;
 
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useState('');
@@ -39,25 +39,9 @@ const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const columns = Object.keys(schema.columns);
-  const columnOrder = useMemo(
-    () => moveItemToFront(targetColumn, columns),
-    [targetColumn],
-  );
-
-  const badRows = useMemo(
-    () => errorReport.map(
-      (reportItem) => reportItem.row,
-    ),
-    [errorReport],
-  );
-  const tableData = useMemo(
-    () => generateCompletenessErrorTableData(errorReport, data, patches),
-    [errorReport, data, patches],
-  );
   useEffect(
     () => {
-      const existingUserInput = initUserInput(badRows, targetColumn, patches);
+      const existingUserInput = initUserInput(tableData, targetColumn, patches);
       setUserInput(existingUserInput);
       return () => setColumnFilters([]);
     },
@@ -88,31 +72,28 @@ const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
     [filteredData, page, rowsPerPage],
   );
 
+  const columnOrder = useMemo(
+    () => moveItemToFront(targetColumn, schema.columnOrder),
+    [targetColumn],
+  );
+
   const handleSaveChanges = () => {
-    Object.keys(userInput)
-      .forEach((row) => {
-        const value = userInput[row];
-        if (isColumnRequired(targetColumn, schema)) {
-          if (value !== null) {
-            const patch = createAddOperationPatch(row, targetColumn, value);
-            setPatches((existingPatches) => {
-              // eslint-disable-next-line no-param-reassign
-              existingPatches[row][targetColumn] = patch;
-            });
-          } else {
-            setPatches((existingPatches) => {
-              // eslint-disable-next-line no-param-reassign
-              delete existingPatches[row][targetColumn];
-            });
-          }
-        } else {
-          const patch = createAddOperationPatch(row, targetColumn, value);
-          setPatches((existingPatches) => {
-            // eslint-disable-next-line no-param-reassign
-            existingPatches[row][targetColumn] = patch;
-          });
-        }
-      });
+    tableData.forEach((record) => {
+      const { rowNumber } = record;
+      const value = userInput[rowNumber];
+      if (value !== null) {
+        const patch = createAddOperationPatch(rowNumber, targetColumn, value);
+        setPatches((existingPatches) => {
+          // eslint-disable-next-line no-param-reassign
+          existingPatches[rowNumber][targetColumn] = patch;
+        });
+      } else {
+        setPatches((existingPatches) => {
+          // eslint-disable-next-line no-param-reassign
+          delete existingPatches[rowNumber][targetColumn];
+        });
+      }
+    });
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
   };
 
@@ -125,6 +106,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
     },
     [userInput],
   );
+
   return (
     <Container>
       <DataSheetCard>
@@ -246,14 +228,8 @@ const CompletenessErrorRepairTable = ({ targetColumn, errorReport }) => {
 
 CompletenessErrorRepairTable.propTypes = {
   targetColumn: PropTypes.string.isRequired,
-  errorReport: PropTypes.arrayOf(
-    PropTypes.shape({
-      row: PropTypes.number.isRequired,
-      column: PropTypes.string.isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-      repairSuggestion: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-      errorType: PropTypes.string.isRequired,
-    }),
+  tableData: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.object]),
   ).isRequired,
 };
 

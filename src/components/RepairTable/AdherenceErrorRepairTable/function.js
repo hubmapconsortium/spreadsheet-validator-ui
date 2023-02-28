@@ -2,8 +2,8 @@ import { getPatchValue } from '../../../helpers/data-utils';
 import { checkRepairPatchPresent } from '../../../helpers/app-utils';
 
 // eslint-disable-next-line import/prefer-default-export
-export const initUserInput = (tableData, patches) => tableData
-  .reduce((accumulator, rowData) => ({
+export const initUserInput = (tableData, patches) => (
+  tableData.reduce((accumulator, rowData) => ({
     ...accumulator,
     [rowData.id]: {
       column: rowData.column,
@@ -15,4 +15,5 @@ export const initUserInput = (tableData, patches) => tableData
       rows: rowData.rows,
       approved: checkRepairPatchPresent(rowData.rows[0], rowData.column, patches),
     },
-  }), {});
+  }), {})
+);

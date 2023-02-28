@@ -27,8 +27,10 @@ const printFrequency = (rows) => {
 // eslint-disable-next-line max-len
 const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInput }) => {
   const [open, setOpen] = useState(false);
+
   const { id, column: targetColumn, value, rows, records } = rowData;
-  const targetColumnLabel = schema.columns[targetColumn].label;
+  const targetColumnLabel = schema.columnDescription[targetColumn].label;
+
   return (
     <>
       <TableRow key={`summary-row-${id}`}>
@@ -122,9 +124,9 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
               </Typography>
               <SheetTable size="small">
                 <SheetHeader>
-                  {Object.keys(schema.columns).map((columnHeader) => {
-                    const columnProperties = schema.columns[columnHeader];
-                    const { name: columnName, label: columnLabel } = columnProperties;
+                  {schema.columnOrder.map((columnHeader) => {
+                    const columnDescription = schema.columnDescription[columnHeader];
+                    const { name: columnName, label: columnLabel } = columnDescription;
                     return (
                       <StaticSheetCell
                         key={`table-header-${columnName}`}
@@ -138,9 +140,9 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
                 <SheetBody>
                   {records.map((record) => (
                     <TableRow key={`row-${record.rowNumber}`}>
-                      {Object.keys(schema.columns).map((columnHeader) => {
-                        const columnProperties = schema.columns[columnHeader];
-                        const { name: columnName } = columnProperties;
+                      {schema.columnOrder.map((columnHeader) => {
+                        const columnDescription = schema.columnDescription[columnHeader];
+                        const { name: columnName } = columnDescription;
                         return (
                           <StaticSheetCell
                             key={`cell-${columnName}-${record.rowNumber}`}
