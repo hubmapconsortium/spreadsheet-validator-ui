@@ -4,7 +4,7 @@ import AdherenceErrorNavMenu from '../NavMenu/AdherenceErrorNavMenu';
 import OverviewNavMenu from '../NavMenu/OverviewNavMenu';
 
 const Navbar = () => (
-  <AppBar component="nav" position="static">
+  <AppBar component="nav" position="sticky">
     <Container maxWidth="xl">
       <Toolbar disableGutters>
         <Typography
