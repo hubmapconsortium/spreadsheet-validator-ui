@@ -1,4 +1,5 @@
 import * as jsonpatch from 'fast-json-patch';
+import { writeFile, utils } from 'xlsx';
 import { GREEN, RED } from '../constants/Color';
 import { add } from './array-utils';
 import { getEffectiveValue } from './data-utils';
@@ -261,7 +262,9 @@ export const generateAdherenceErrorTableData = (errorReport, data, patches) => {
 export const generateNewSpreadsheet = (data, patches) => {
   const patchArray = patches.map((patch) => (Object.values(patch))).flat();
   const patchedData = jsonpatch.applyPatch(data, patchArray).newDocument;
-  return `data:text/json;chatset=utf-8,${encodeURIComponent(
-    JSON.stringify(patchedData, null, 2),
-  )}`;
+  const finalData = patchedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
+  const ws = utils.json_to_sheet(finalData);
+  const wb = utils.book_new();
+  utils.book_append_sheet(wb, ws);
+  writeFile(wb, 'repaired_spreadsheet.xlsx');
 };
