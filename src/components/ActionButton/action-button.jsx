@@ -35,7 +35,7 @@ const ActionButton = ({ title, errorCount, navigateTo }) => {
     <MenuStyleButton
       onClick={() => navigate(navigateTo)}
       sx={{
-        bgcolor: WHITE,
+        bgcolor: errorCount === 0 ? LIGHT_GREEN : WHITE,
         borderColor: errorCount === 0 ? GREEN : RED,
         '&:hover': {
           backgroundColor: errorCount === 0 ? LIGHT_GREEN : LIGHT_RED,
