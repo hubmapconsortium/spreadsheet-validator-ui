@@ -15,6 +15,7 @@ const HomeContainer = styled(Container)({
   justifyContent: 'center',
   alignItems: 'center',
   position: 'absolute',
+  height: '100vh',
 });
 
 const InputArea = styled(Box)({
