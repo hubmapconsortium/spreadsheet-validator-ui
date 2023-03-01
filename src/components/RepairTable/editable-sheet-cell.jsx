@@ -22,7 +22,6 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
         )
         : (
           <InputField
-            required
             value={value}
             type={type}
             inputRef={inputRef}
