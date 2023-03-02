@@ -174,14 +174,15 @@ const Home = ({ setAppData }) => {
   const submitSpreadsheet = () => {
     const validateData = async () => {
       const response = await validateSpreadsheet(data, template);
-      setAppData(response);
-      navigate(OVERVIEW_PATH, {
-        state: {
+      setAppData({
+        ...response,
+        otherProps: {
           inputFileName,
           templateName,
           templateUrl,
         },
       });
+      navigate(OVERVIEW_PATH);
     };
     validateData();
   };

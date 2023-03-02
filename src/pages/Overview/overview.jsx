@@ -1,5 +1,4 @@
 import { useContext, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
 import AppContext from '../AppContext';
@@ -14,8 +13,7 @@ import InfoBox from '../../components/InfoBox/info-box';
 
 const Overview = () => {
   const { appData } = useContext(AppContext);
-  const { data, reporting } = appData;
-  const { state } = useLocation();
+  const { data, reporting, otherProps } = appData;
 
   const evaluationSummaryData = useMemo(
     () => generateEvaluationSummaryData(data, reporting),
@@ -46,9 +44,9 @@ const Overview = () => {
       </Section>
       <Section>
         <InfoBox
-          inputFileName={state.inputFileName}
-          templateName={state.templateName}
-          templateUrl={state.templateUrl}
+          inputFileName={otherProps.inputFileName}
+          templateName={otherProps.templateName}
+          templateUrl={otherProps.templateUrl}
         />
       </Section>
       <Section>
