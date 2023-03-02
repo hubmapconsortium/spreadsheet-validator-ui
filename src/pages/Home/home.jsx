@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, styled } from '@mui/material';
+import { Box, Typography, styled, CircularProgress } from '@mui/material';
 import { FileUploader } from 'react-drag-drop-files';
 import { read, utils } from 'xlsx';
 import JSZip from 'jszip';
@@ -11,6 +11,7 @@ import './home.css';
 import { OVERVIEW_PATH } from '../../constants/Router';
 import { MAIN_SHEET, METADATA_SHEET, CEDAR_TEMPLATE_IRI, CEDAR_TEMPLATE_NAME, CEDAR_TEMPLATE_VERSION } from '../../constants/Sheet';
 import BaseButton from '../../styles/BaseButton';
+import { GREEN } from '../../constants/Color';
 
 const HomeContainer = styled(Container)({
   display: 'flex',
@@ -94,6 +95,8 @@ const Home = ({ setAppData }) => {
   const [inputFileName, setInputFileName] = useState();
   const [templateName, setTemplateName] = useState();
   const [templateUrl, setTemplateUrl] = useState();
+  const [enabled, setEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const excelReader = () => {
@@ -161,6 +164,7 @@ const Home = ({ setAppData }) => {
 
   const handleChange = async (file) => {
     if (file) {
+      setEnabled(true);
       const fileType = file.type;
       if (fileType === 'application/zip') {
         zipReader().readAsArrayBuffer(file);
@@ -184,6 +188,7 @@ const Home = ({ setAppData }) => {
       });
       navigate(OVERVIEW_PATH);
     };
+    setLoading(true);
     validateData();
   };
   const fileTypes = ['xlsx', 'zip'];
@@ -210,7 +215,27 @@ const Home = ({ setAppData }) => {
           </FileUploader>
         </InputSection>
         <SubmitBox>
-          <BaseButton variant="contained" size="large" onClick={submitSpreadsheet}>Start Validating</BaseButton>
+          <BaseButton
+            variant="contained"
+            size="large"
+            onClick={submitSpreadsheet}
+            disabled={!enabled}
+          >
+            Start Validating
+          </BaseButton>
+          {loading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: GREEN,
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: '-12px',
+                marginLeft: '-12px',
+              }}
+            />
+          )}
         </SubmitBox>
       </InputArea>
     </HomeContainer>
