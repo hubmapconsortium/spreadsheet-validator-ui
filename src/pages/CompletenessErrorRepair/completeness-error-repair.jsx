@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
-import DefaultInfoSection from '../../components/DefaultInfoSection';
 import CompletenessErrorRepairTable from '../../components/RepairTable/CompletenessErrorRepairTable';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
@@ -32,7 +31,6 @@ const CompletenessErrorRepair = () => {
             subtitle={getTotalErrorCountTitle(errorReport)}
           />
         </Section>
-        <DefaultInfoSection />
         <CompletenessErrorRepairTable
           targetColumn={targetColumn}
           tableData={tableData}

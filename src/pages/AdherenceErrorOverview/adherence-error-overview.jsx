@@ -1,7 +1,6 @@
 import { useContext, useMemo } from 'react';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
-import DefaultInfoSection from '../../components/DefaultInfoSection';
 import ActionButton from '../../components/ActionButton';
 import Container from '../../styles/Container';
 import Card from '../../styles/Card';
@@ -36,7 +35,6 @@ const AdherenceErrorOverview = () => {
           subtitle={`${errorSize} values are not in accordance with the metadata specification.`}
         />
       </Section>
-      <DefaultInfoSection />
       <Card>
         <Block sx={{ width: '30%', padding: '20px 40px 20px 20px' }}>
           <Paragraph>

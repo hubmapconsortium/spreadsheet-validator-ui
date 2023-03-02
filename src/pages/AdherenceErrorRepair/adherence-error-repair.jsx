@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
-import DefaultInfoSection from '../../components/DefaultInfoSection';
 import AdherenceErrorRepairTable from '../../components/RepairTable/AdherenceErrorRepairTable';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
@@ -34,7 +33,6 @@ const AdherenceErrorRepair = () => {
             subtitle={getTotalErrorCountTitle(errorReport)}
           />
         </Section>
-        <DefaultInfoSection />
         <AdherenceErrorRepairTable
           errorType={errorType}
           tableData={tableData}

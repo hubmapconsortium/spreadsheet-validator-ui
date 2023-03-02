@@ -99,8 +99,9 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             specification.
           </Paragraph>
           <Paragraph>
-            A metadata record is called invalid when errors were found
-            in its value using these two metrics.
+            A metadata record is called invalid when the system detects errors
+            using these two metrics. Use the button below to start the repair
+            action.
           </Paragraph>
         </Block>
         <Block textAlign="center" sx={{ paddingTop: '30px' }}>
@@ -108,11 +109,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             sx={{ width: '310px' }}
             variant="contained"
             disabled={!evaluationSummaryData.hasCompletenessErrors}
-            onClick={() => navigate(`../${COMPLETENESS_ERROR_PATH}`, {
-              state: {
-                selectedMenuItem: 'repair-missing-values',
-              },
-            })}
+            onClick={() => navigate(`../${COMPLETENESS_ERROR_PATH}`)}
           >
             Repair Completeness Errors
           </BaseButton>
@@ -120,11 +117,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             sx={{ width: '310px' }}
             variant="contained"
             disabled={!evaluationSummaryData.hasAdherenceErrors}
-            onClick={() => navigate(`../${ADHERENCE_ERROR_PATH}`, {
-              state: {
-                selectedMenuItem: 'repair-invalid-value-types',
-              },
-            })}
+            onClick={() => navigate(`../${ADHERENCE_ERROR_PATH}`)}
           >
             Repair Adherence Errors
           </BaseButton>

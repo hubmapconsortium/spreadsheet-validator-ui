@@ -1,19 +1,22 @@
 import { useContext, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { Chart as ChartJS } from 'chart.js/auto';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
-import DefaultInfoSection from '../../components/DefaultInfoSection';
 import EvaluationSummaryChart from '../../components/EvaluationSummaryChart/evaluation-summary-chart';
 import ErrorAnalysisChart from '../../components/ErrorAnalysisChart';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { generateErrorSummaryReport, generateEvaluationSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
 import { getValidationResultTitle } from '../../helpers/title-utils';
+import InfoBox from '../../components/InfoBox/info-box';
 
 const Overview = () => {
   const { appData } = useContext(AppContext);
   const { data, reporting } = appData;
+  const { state } = useLocation();
+
   const evaluationSummaryData = useMemo(
     () => generateEvaluationSummaryData(data, reporting),
     [reporting],
@@ -38,9 +41,15 @@ const Overview = () => {
           subtitle={`${data.length} metadata records were found in the spreadsheet.`}
         />
       </Section>
-      <DefaultInfoSection />
       <Section>
         <EvaluationSummaryChart evaluationSummaryData={evaluationSummaryData} />
+      </Section>
+      <Section>
+        <InfoBox
+          inputFileName={state.inputFileName}
+          templateName={state.templateName}
+          templateUrl={state.templateUrl}
+        />
       </Section>
       <Section>
         <ErrorAnalysisChart

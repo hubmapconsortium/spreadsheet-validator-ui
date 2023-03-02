@@ -158,13 +158,7 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
       <ButtonPanel>
         <CancelButton
           variant="outlined"
-          onClick={
-            () => navigate(`../${ADHERENCE_ERROR_PATH}`, {
-              state: {
-                selectedMenuItem: 'repair-invalid-value-types',
-              },
-            })
-          }
+          onClick={() => navigate(`../${ADHERENCE_ERROR_PATH}`)}
         >
           Cancel
         </CancelButton>

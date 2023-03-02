@@ -1,7 +1,6 @@
 import { useContext, useMemo } from 'react';
 import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
-import DefaultInfoSection from '../../components/DefaultInfoSection';
 import ActionButton from '../../components/ActionButton';
 import Container from '../../styles/Container';
 import Card from '../../styles/Card';
@@ -36,7 +35,6 @@ const CompletenessErrorOverview = () => {
           subtitle={`${errorSize} required values are missing from the metadata records.`}
         />
       </Section>
-      <DefaultInfoSection />
       <Card>
         <Block sx={{ width: '30%', padding: '20px 40px 20px 20px' }}>
           <Paragraph>

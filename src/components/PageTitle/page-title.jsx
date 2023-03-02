@@ -1,5 +1,6 @@
 import { styled, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import Section from '../../styles/Section';
 
 const Title = styled(Typography)({
   fontSize: '27pt',
@@ -11,10 +12,10 @@ const SubTitle = styled(Typography)({
 });
 
 const PageTitle = ({ title, subtitle }) => (
-  <>
+  <Section>
     <Title variant="h3">{title}</Title>
     <SubTitle variant="h4">{subtitle}</SubTitle>
-  </>
+  </Section>
 );
 
 PageTitle.propTypes = {
