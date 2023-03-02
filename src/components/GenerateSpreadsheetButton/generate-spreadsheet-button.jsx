@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AppBar, Container, Slide, styled, Toolbar } from '@mui/material';
 import AppContext from '../../pages/AppContext';
 import BaseButton from '../../styles/BaseButton';
-import { generateNewSpreadsheet, isRepairCompleted } from '../../helpers/app-utils';
+import { generateNewCsv, isRepairCompleted } from '../../helpers/app-utils';
 import { WHITE, LIME, LIGHT_LIME } from '../../constants/Color';
 
 const GenerateButton = styled(BaseButton)({
@@ -38,7 +38,7 @@ const GenerateSpreadsheetButton = () => {
           }}
         >
           <Toolbar disableGutters>
-            <GenerateButton onClick={() => generateNewSpreadsheet(data, patches)}>
+            <GenerateButton onClick={() => generateNewCsv(data, patches)}>
               Generate Repaired Spreadsheet
             </GenerateButton>
           </Toolbar>

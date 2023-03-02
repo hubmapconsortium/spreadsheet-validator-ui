@@ -1,5 +1,6 @@
 import * as jsonpatch from 'fast-json-patch';
 import { writeFile, utils } from 'xlsx';
+import Papa from 'papaparse';
 import { GREEN, RED } from '../constants/Color';
 import { add } from './array-utils';
 import { getEffectiveValue } from './data-utils';
@@ -267,4 +268,21 @@ export const generateNewSpreadsheet = (data, patches) => {
   const wb = utils.book_new();
   utils.book_append_sheet(wb, ws);
   writeFile(wb, 'repaired_spreadsheet.xlsx');
+};
+
+const writeCsv = (data, filename) => {
+  const element = document.createElement('a');
+  const file = new Blob([data], { type: 'text/csv' });
+  element.href = URL.createObjectURL(file);
+  element.download = filename;
+  document.body.appendChild(element); // Required for this to work in FireFox
+  element.click();
+};
+
+export const generateNewCsv = (data, patches) => {
+  const patchArray = patches.map((patch) => (Object.values(patch))).flat();
+  const patchedData = jsonpatch.applyPatch(data, patchArray).newDocument;
+  const finalData = patchedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
+  const csv = Papa.unparse(finalData);
+  writeCsv(csv, 'repaired_spreadsheet.csv');
 };
