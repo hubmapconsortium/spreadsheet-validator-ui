@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Typography, styled } from '@mui/material';
 import { FileUploader } from 'react-drag-drop-files';
 import { read, utils } from 'xlsx';
+import JSZip from 'jszip';
+import Papa from 'papaparse';
 import Container from '../../styles/Container';
 import logo from '../../logo.svg';
 import './home.css';
@@ -91,30 +93,75 @@ const Home = ({ setAppData }) => {
   const [template, setTemplate] = useState();
   const navigate = useNavigate();
 
+  const excelReader = () => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target.result;
+      const workbook = read(content, { type: 'array' });
+
+      let mainSheet = workbook.Sheets[MAIN_SHEET];
+      if (!mainSheet) {
+        const sheetName = workbook.SheetNames[0];
+        mainSheet = workbook.Sheets[sheetName];
+      }
+      const dt = utils.sheet_to_json(mainSheet, { defval: '' });
+      setData(dt);
+
+      let metadataSheet = workbook.Sheets[METADATA_SHEET];
+      if (!metadataSheet) {
+        const sheetName = workbook.SheetNames[1];
+        metadataSheet = workbook.Sheets[sheetName];
+      }
+      const md = utils.sheet_to_json(metadataSheet, { defval: '' });
+      const templateIri = md[0][CEDAR_TEMPLATE_IRI];
+      setTemplate(templateIri);
+    };
+    return reader;
+  };
+
+  const zipReader = () => {
+    const reader = new FileReader();
+    const FLOAT = /^\s*-?(\d*\.?\d+|\d+\.?\d*)(e[-+]?\d+)?\s*$/i;
+    reader.onload = (e) => {
+      const res = e.target.result;
+      const defval = (value) => {
+        let output = value;
+        if (value === 'true' || value === 'TRUE') {
+          output = true;
+        } else if (value === 'false' || value === 'FALSE') {
+          output = false;
+        } else if (FLOAT.test(value)) {
+          output = parseFloat(value);
+        } else {
+          return value;
+        }
+        return output;
+      };
+      JSZip.loadAsync(res).then((zip) => (
+        zip.file('MAIN.csv').async('string')
+      )).then((content) => {
+        const dt = Papa.parse(content, { header: true, dynamicTyping: false, transform: defval });
+        setData(dt.data);
+      });
+      JSZip.loadAsync(res).then((zip) => (
+        zip.file('metadata').async('string')
+      )).then((content) => {
+        const md = Papa.parse(content, { header: true, dynamicTyping: true });
+        const templateIri = md.data[0][CEDAR_TEMPLATE_IRI];
+        setTemplate(templateIri);
+      });
+    };
+    return reader;
+  };
+
   const handleChange = async (userFile) => {
     if (userFile) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target.result;
-        const workbook = read(content, { type: 'array' });
-
-        let mainSheet = workbook.Sheets[MAIN_SHEET];
-        if (!mainSheet) {
-          const sheetName = workbook.SheetNames[0];
-          mainSheet = workbook.Sheets[sheetName];
-        }
-        const dt = utils.sheet_to_json(mainSheet, { defval: '' });
-        setData(dt);
-
-        let metadataSheet = workbook.Sheets[METADATA_SHEET];
-        if (!metadataSheet) {
-          const sheetName = workbook.SheetNames[1];
-          metadataSheet = workbook.Sheets[sheetName];
-        }
-        const md = utils.sheet_to_json(metadataSheet, { defval: '' });
-        setTemplate(md[md.length - 1][CEDAR_TEMPLATE_IRI]);
-      };
-      reader.readAsArrayBuffer(userFile);
+      const fileType = userFile.type;
+      if (fileType === 'application/zip') {
+        zipReader().readAsArrayBuffer(userFile);
+      } else if (fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+        excelReader().readAsArrayBuffer(userFile);
+      }
       setFile(userFile);
     }
   };
@@ -130,7 +177,7 @@ const Home = ({ setAppData }) => {
     };
     validateData();
   };
-  const fileTypes = ['xlsx'];
+  const fileTypes = ['xlsx', 'zip'];
   return (
     <HomeContainer>
       <InputArea>
