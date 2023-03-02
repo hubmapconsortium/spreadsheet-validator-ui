@@ -6,13 +6,13 @@ import PageTitle from '../../components/PageTitle';
 import CompletenessErrorRepairTable from '../../components/RepairTable/CompletenessErrorRepairTable';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
-import { getCompletenessErrorReportByColumn } from '../../helpers/data-utils';
+import { getColumnLabel, getCompletenessErrorReportByColumn } from '../../helpers/data-utils';
 import { generateCompletenessErrorTableData } from '../../helpers/app-utils';
 import { getCompletenessErrorRepairTitle, getTotalErrorCountTitle } from '../../helpers/title-utils';
 
 const CompletenessErrorRepair = () => {
   const { appData, patches } = useContext(AppContext);
-  const { data, reporting } = appData;
+  const { schema, data, reporting } = appData;
   const { targetColumn } = useParams();
   const errorReport = useMemo(
     () => getCompletenessErrorReportByColumn(reporting, targetColumn),
@@ -28,7 +28,11 @@ const CompletenessErrorRepair = () => {
         <Section>
           <PageTitle
             title={getCompletenessErrorRepairTitle()}
-            subtitle={getTotalErrorCountTitle(errorReport)}
+            subtitle={getTotalErrorCountTitle(
+              errorReport,
+              'missingRequired',
+              getColumnLabel(targetColumn, schema),
+            )}
           />
         </Section>
         <CompletenessErrorRepairTable

@@ -30,7 +30,10 @@ const AdherenceErrorRepair = () => {
         <Section>
           <PageTitle
             title={getAdherenceErrorRepairTitle()}
-            subtitle={getTotalErrorCountTitle(errorReport)}
+            subtitle={getTotalErrorCountTitle(
+              errorReport,
+              errorType,
+            )}
           />
         </Section>
         <AdherenceErrorRepairTable
