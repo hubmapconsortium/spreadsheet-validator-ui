@@ -11,7 +11,7 @@ import './home.css';
 import { OVERVIEW_PATH } from '../../constants/Router';
 import { MAIN_SHEET, METADATA_SHEET, CEDAR_TEMPLATE_IRI, CEDAR_TEMPLATE_NAME, CEDAR_TEMPLATE_VERSION } from '../../constants/Sheet';
 import BaseButton from '../../styles/BaseButton';
-import { GREEN } from '../../constants/Color';
+import { BLUE, LIGHT_YELLOW } from '../../constants/Color';
 
 const HomeContainer = styled(Container)({
   display: 'flex',
@@ -189,6 +189,7 @@ const Home = ({ setAppData }) => {
       navigate(OVERVIEW_PATH);
     };
     setLoading(true);
+    setEnabled(false);
     validateData();
   };
   const fileTypes = ['xlsx', 'zip'];
@@ -202,10 +203,16 @@ const Home = ({ setAppData }) => {
           <h2>Upload and submit your spreadsheet file to validate the metadata records</h2>
         </TaglineBox>
         <InputSection>
-          <FileUploader handleChange={handleChange} name="file" types={fileTypes}>
+          <FileUploader
+            name="file"
+            hoverTitle=" "
+            handleChange={handleChange}
+            types={fileTypes}
+            dropMessageStyle={{ backgroundColor: LIGHT_YELLOW }}
+          >
             <UploadBox>
               <Typography sx={{ fontSize: '20px' }} color="text.secondary" gutterBottom>
-                {inputFile ? `${inputFile.name}` : 'Drag & Drop your Excel spreadsheet file'}
+                {inputFile ? `${inputFile.name}` : 'Drag & drop your spreadsheet file here'}
                 {' '}
                 or
                 {' '}
@@ -214,7 +221,7 @@ const Home = ({ setAppData }) => {
             </UploadBox>
           </FileUploader>
         </InputSection>
-        <SubmitBox>
+        <SubmitBox sx={{ position: 'relative' }}>
           <BaseButton
             variant="contained"
             size="large"
@@ -227,7 +234,7 @@ const Home = ({ setAppData }) => {
             <CircularProgress
               size={24}
               sx={{
-                color: GREEN,
+                color: BLUE,
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
