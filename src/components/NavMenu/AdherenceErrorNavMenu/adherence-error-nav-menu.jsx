@@ -62,6 +62,7 @@ const AdherenceErrorNavMenu = () => {
           key="adherence-error-overview-item"
           onClick={() => {
             navigate(ADHERENCE_ERROR_PATH);
+            handleClose();
           }}
         >
           <Typography>Overview</Typography>
@@ -72,7 +73,10 @@ const AdherenceErrorNavMenu = () => {
           return (
             <MenuItem
               key={errorId}
-              onClick={() => navigate(`${ADHERENCE_ERROR_PATH}/${errorType}`)}
+              onClick={() => {
+                navigate(`${ADHERENCE_ERROR_PATH}/${errorType}`);
+                handleClose();
+              }}
             >
               <Panel sx={{ minWidth: '275px', justifyContent: 'space-between' }}>
                 <Typography>{getNavigationSubMenuTitle(errorType)}</Typography>

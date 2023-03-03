@@ -63,6 +63,7 @@ const CompletenessErrorNavMenu = () => {
           key="completeness-error-overview-menu-item"
           onClick={() => {
             navigate(COMPLETENESS_ERROR_PATH);
+            handleClose();
           }}
         >
           <Typography>Overview</Typography>
@@ -73,7 +74,10 @@ const CompletenessErrorNavMenu = () => {
           return (
             <MenuItem
               key={errorId}
-              onClick={() => navigate(`${COMPLETENESS_ERROR_PATH}/${errorLocation}`)}
+              onClick={() => {
+                navigate(`${COMPLETENESS_ERROR_PATH}/${errorLocation}`);
+                handleClose();
+              }}
             >
               <Panel sx={{ minWidth: '360px', justifyContent: 'space-between' }}>
                 <Typography>
