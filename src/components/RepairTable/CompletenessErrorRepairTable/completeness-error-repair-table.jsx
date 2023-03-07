@@ -15,7 +15,7 @@ import Container from '../../../styles/Container';
 import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
 import { nullOnEmpty } from '../../../helpers/string-utils';
-import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName } from '../../../helpers/data-utils';
+import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, isColumnRequired } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import InfoTooltip from '../info-tooltip';
@@ -128,6 +128,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
                       key={`header-with-batch-input-on-${column}-to-repair-${targetColumn}`}
                       label={getColumnLabel(column, schema)}
                       description={getColumnDescription(column, schema)}
+                      required={isColumnRequired(column, schema)}
                       type={getColumnType(column, schema)}
                       permissibleValues={getPermissibleValues(column, schema)}
                       setBatchInput={setBatchInput}
@@ -141,6 +142,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
                       name={getColumnName(column, schema)}
                       label={getColumnLabel(column, schema)}
                       description={getColumnDescription(column, schema)}
+                      required={isColumnRequired(column, schema)}
                       setColumnFilters={setColumnFilters}
                       setStaleBatch={setStaleBatch}
                     />

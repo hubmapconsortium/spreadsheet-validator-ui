@@ -7,8 +7,10 @@ import PropTypes from 'prop-types';
 import FilterInputField from '../DataSheet/FilterInputField';
 import InfoTooltip from './info-tooltip';
 import { HeaderCell, HeaderLabel } from './styled';
+import { RED } from '../../constants/Color';
 
-const HeaderWithFilter = ({ id, name, label, description, setColumnFilters, setStaleBatch }) => {
+// eslint-disable-next-line max-len
+const HeaderWithFilter = ({ id, name, label, description, required, setColumnFilters, setStaleBatch }) => {
   const [filterEnabled, setFilterEnabled] = useState(true);
   const handleFilterChange = (event) => {
     const enteredValue = event.target.value;
@@ -47,7 +49,10 @@ const HeaderWithFilter = ({ id, name, label, description, setColumnFilters, setS
   return (
     <HeaderCell>
       <Stack direction="row" gap={1}>
-        <HeaderLabel>{label}</HeaderLabel>
+        <HeaderLabel>
+          {label}
+          {required ? <span style={{ color: RED }}>*</span> : ''}
+        </HeaderLabel>
         <InfoTooltip title={description}>
           <InfoOutlinedIcon fontSize="small" />
         </InfoTooltip>
@@ -72,6 +77,7 @@ HeaderWithFilter.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   description: PropTypes.string,
+  required: PropTypes.bool,
   setColumnFilters: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,
 };
@@ -79,6 +85,7 @@ HeaderWithFilter.propTypes = {
 HeaderWithFilter.defaultProps = {
   id: undefined,
   description: undefined,
+  required: false,
 };
 
 export default HeaderWithFilter;

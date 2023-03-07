@@ -9,7 +9,7 @@ import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import InfoTooltip from './info-tooltip';
 import { HeaderLabel, SheetTable } from './styled';
-import { getColumnDescription, getColumnType, getPermissibleValues } from '../../helpers/data-utils';
+import { getColumnDescription, getColumnLabel, getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
 import { BLACK, DARK_GRAY, LIGHTER_GRAY, RED } from '../../constants/Color';
 import { nullOnEmpty } from '../../helpers/string-utils';
 import EditableSheetCell from './editable-sheet-cell';
@@ -29,7 +29,8 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
   const [open, setOpen] = useState(false);
 
   const { id, column: targetColumn, value, rows, records } = rowData;
-  const targetColumnLabel = schema.columnDescription[targetColumn].label;
+  const targetColumnLabel = getColumnLabel(targetColumn, schema);
+  const required = isColumnRequired(targetColumn, schema);
 
   return (
     <>
@@ -45,7 +46,10 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
         </SheetCell>
         <SheetCell key={`target-column-cell-${id}`}>
           <Stack direction="row" gap={1}>
-            <HeaderLabel>{targetColumnLabel}</HeaderLabel>
+            <HeaderLabel>
+              {targetColumnLabel}
+              {required ? <span style={{ color: RED }}>*</span> : ''}
+            </HeaderLabel>
             <InfoTooltip title={getColumnDescription(targetColumn, schema)}>
               <InfoOutlinedIcon fontSize="small" />
             </InfoTooltip>
