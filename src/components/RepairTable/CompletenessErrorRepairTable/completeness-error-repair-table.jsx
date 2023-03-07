@@ -11,24 +11,24 @@ import SheetHeader from '../../DataSheet/SheetHeader';
 import SheetBody from '../../DataSheet/SheetBody';
 import SheetPagination from '../../DataSheet/SheetPagination';
 import Flex from '../../../styles/Panel';
+import Container from '../../../styles/Container';
 import { createAddOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import { moveItemToFront } from '../../../helpers/array-utils';
+import { nullOnEmpty } from '../../../helpers/string-utils';
 import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
 import InfoTooltip from '../info-tooltip';
-import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
-import { getFilteredData, initUserInput } from './function';
-import { COMPLETENESS_ERROR_PATH } from '../../../constants/Router';
-import Container from '../../../styles/Container';
-import { nullOnEmpty } from '../../../helpers/string-utils';
 import EditableSheetCell from '../editable-sheet-cell';
 import StaticSheetCell from '../static-sheet-cell';
+import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, SaveAndRepairNextButton, SaveButton, SheetTable, SheetTableContainer } from '../styled';
+import { getFilteredData, initUserInput } from './function';
+import { COMPLETENESS_ERROR_PATH } from '../../../constants/Router';
 
 const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
   const navigate = useNavigate();
   const { appData, patches, setPatches } = useContext(AppContext);
-  const { schema } = appData;
+  const { schema, paths } = appData;
 
   const [userInput, setUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useState('');
@@ -95,6 +95,13 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
       }
     });
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
+  };
+
+  const getNextRepair = () => {
+    const locations = paths.completenessErrorLocations;
+    const index = locations.indexOf(targetColumn);
+    const nextIndex = (index + 1 === locations.length) ? 0 : index + 1;
+    return locations[nextIndex];
   };
 
   const saveChangesHotKeys = useHotkeys(
@@ -209,9 +216,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
       <ButtonPanel>
         <CancelButton
           variant="outlined"
-          onClick={
-            () => navigate(`../${COMPLETENESS_ERROR_PATH}`)
-          }
+          onClick={() => navigate(`../${COMPLETENESS_ERROR_PATH}`)}
         >
           Cancel
         </CancelButton>
@@ -221,6 +226,15 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
         >
           Save
         </SaveButton>
+        <SaveAndRepairNextButton
+          variant="contained"
+          onClick={() => {
+            handleSaveChanges();
+            navigate(`../${COMPLETENESS_ERROR_PATH}/${getNextRepair()}`);
+          }}
+        >
+          Save and Repair Next
+        </SaveAndRepairNextButton>
       </ButtonPanel>
     </Container>
   );

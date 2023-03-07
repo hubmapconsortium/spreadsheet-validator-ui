@@ -6,11 +6,12 @@ import { read, utils } from 'xlsx';
 import JSZip from 'jszip';
 import Papa from 'papaparse';
 import Container from '../../styles/Container';
+import BaseButton from '../../styles/BaseButton';
 import logo from '../../logo.svg';
 import './home.css';
+import { getAdherenceErrorReport, getCompletenessErrorReport } from '../../helpers/data-utils';
 import { OVERVIEW_PATH } from '../../constants/Router';
 import { MAIN_SHEET, METADATA_SHEET, CEDAR_TEMPLATE_IRI, CEDAR_TEMPLATE_NAME, CEDAR_TEMPLATE_VERSION } from '../../constants/Sheet';
-import BaseButton from '../../styles/BaseButton';
 import { BLUE, LIGHT_YELLOW } from '../../constants/Color';
 
 const HomeContainer = styled(Container)({
@@ -175,11 +176,27 @@ const Home = ({ setAppData }) => {
       setInputFileName(file.name);
     }
   };
+  const getErrorLocations = (reporting) => {
+    const completenessErrorReport = getCompletenessErrorReport(reporting);
+    return completenessErrorReport
+      .map((reportItem) => reportItem.column)
+      .filter((value, index, arr) => arr.indexOf(value) === index);
+  };
+  const getErrorTypes = (reporting) => {
+    const adherenceErrorReport = getAdherenceErrorReport(reporting);
+    return adherenceErrorReport
+      .map((reportItem) => reportItem.errorType)
+      .filter((value, index, arr) => arr.indexOf(value) === index);
+  };
   const submitSpreadsheet = () => {
     const validateData = async () => {
       const response = await validateSpreadsheet(data, template);
       setAppData({
         ...response,
+        paths: {
+          completenessErrorLocations: getErrorLocations(response.reporting),
+          adherenceErrorTypes: getErrorTypes(response.reporting),
+        },
         otherProps: {
           inputFileName,
           templateName,

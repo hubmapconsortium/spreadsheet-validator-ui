@@ -48,3 +48,7 @@ export const CancelButton = styled(BaseButton)({
 export const SaveButton = styled(BaseButton)({
   width: '150px',
 });
+
+export const SaveAndRepairNextButton = styled(BaseButton)({
+  width: '275px',
+});

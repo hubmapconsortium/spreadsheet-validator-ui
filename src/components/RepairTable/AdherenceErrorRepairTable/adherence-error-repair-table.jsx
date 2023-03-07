@@ -17,13 +17,13 @@ import HeaderWithCheckbox from '../header-with-checkbox';
 import CollapsibleTableRow from '../collapsible-table-row';
 import InfoTooltip from '../info-tooltip';
 import { initUserInput } from './function';
-import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, HeaderCell, HeaderLabel, SaveButton, SheetTable, SheetTableContainer } from '../styled';
+import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, HeaderCell, HeaderLabel, SaveAndRepairNextButton, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { ADHERENCE_ERROR_PATH } from '../../../constants/Router';
 
 const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
   const navigate = useNavigate();
   const { appData, patches, setPatches } = useContext(AppContext);
-  const { schema } = appData;
+  const { schema, paths } = appData;
 
   const [userInput, setUserInput] = useImmer({});
   const [page, setPage] = useState(0);
@@ -73,6 +73,13 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
         });
       });
     enqueueSnackbar('Changes are saved!', { variant: 'success' });
+  };
+
+  const getNextRepair = () => {
+    const types = paths.adherenceErrorTypes;
+    const index = types.indexOf(errorType);
+    const nextIndex = (index + 1 === types.length) ? 0 : index + 1;
+    return types[nextIndex];
   };
 
   const saveChanges = useHotkeys(
@@ -168,6 +175,15 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
         >
           Save
         </SaveButton>
+        <SaveAndRepairNextButton
+          variant="contained"
+          onClick={() => {
+            handleSaveChanges();
+            navigate(`../${ADHERENCE_ERROR_PATH}/${getNextRepair()}`);
+          }}
+        >
+          Save and Repair Next
+        </SaveAndRepairNextButton>
       </ButtonPanel>
     </>
   );
