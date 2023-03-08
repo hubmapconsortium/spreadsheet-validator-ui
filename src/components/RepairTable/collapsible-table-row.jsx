@@ -10,7 +10,7 @@ import SheetCell from '../DataSheet/SheetCell';
 import InfoTooltip from './info-tooltip';
 import { HeaderLabel, SheetTable } from './styled';
 import { getColumnDescription, getColumnLabel, getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
-import { BLACK, DARK_GRAY, LIGHTER_GRAY, RED } from '../../constants/Color';
+import { BLACK, DARK_GRAY, GREEN, LIGHTER_GRAY, RED } from '../../constants/Color';
 import { nullOnEmpty } from '../../helpers/string-utils';
 import EditableSheetCell from './editable-sheet-cell';
 import StaticSheetCell from './static-sheet-cell';
@@ -147,11 +147,18 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
                       {schema.columnOrder.map((columnHeader) => {
                         const columnDescription = schema.columnDescription[columnHeader];
                         const { name: columnName } = columnDescription;
+                        const getTextColor = (column) => {
+                          const isFixed = userInput[id]?.approved || false;
+                          if (column === targetColumn) {
+                            return isFixed ? GREEN : RED;
+                          }
+                          return BLACK;
+                        };
                         return (
                           <StaticSheetCell
                             key={`cell-${columnName}-${record.rowNumber}`}
                             value={record[columnName]}
-                            color={columnName === targetColumn ? RED : BLACK}
+                            color={getTextColor(columnName)}
                           />
                         );
                       })}
