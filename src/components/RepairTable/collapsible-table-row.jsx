@@ -8,7 +8,7 @@ import SheetHeader from '../DataSheet/SheetHeader';
 import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import InfoTooltip from './info-tooltip';
-import { HeaderLabel, SheetTable } from './styled';
+import { SheetTable } from './styled';
 import { getColumnDescription, getColumnLabel, getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
 import { BLACK, DARK_GRAY, GREEN, LIGHTER_GRAY, RED } from '../../constants/Color';
 import { nullOnEmpty } from '../../helpers/string-utils';
@@ -35,28 +35,19 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
   return (
     <>
       <TableRow key={`summary-row-${id}`}>
-        <SheetCell key={`expand-icon-cell-${id}`}>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </SheetCell>
         <SheetCell key={`target-column-cell-${id}`}>
           <Stack direction="row" gap={1}>
-            <HeaderLabel>
+            <CellValue sx={{ fontWeight: 'bold', paddingLeft: '15px' }}>
               {targetColumnLabel}
               {required ? <span style={{ color: RED }}>*</span> : ''}
-            </HeaderLabel>
+            </CellValue>
             <InfoTooltip title={getColumnDescription(targetColumn, schema)}>
               <InfoOutlinedIcon fontSize="small" />
             </InfoTooltip>
           </Stack>
         </SheetCell>
         <SheetCell key={`target-value-cell-${id}`}>
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CellValue>{value}</CellValue>
             &nbsp;
             <CellValue
@@ -67,6 +58,15 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
               }}
             >
               {printFrequency(rows)}
+            </CellValue>
+            <CellValue>
+              <IconButton
+                aria-label="expand row"
+                size="small"
+                onClick={() => setOpen(!open)}
+              >
+                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
             </CellValue>
           </Box>
         </SheetCell>

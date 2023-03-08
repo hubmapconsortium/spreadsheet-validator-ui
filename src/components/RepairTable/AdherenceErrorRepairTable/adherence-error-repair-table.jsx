@@ -98,7 +98,6 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
         <SheetTableContainer>
           <SheetTable stickyHeader>
             <SheetHeader>
-              <HeaderCell />
               <HeaderCell align="center" width="30%">
                 <HeaderLabel>Column name</HeaderLabel>
               </HeaderCell>
