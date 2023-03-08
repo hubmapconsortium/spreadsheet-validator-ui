@@ -32,11 +32,11 @@ const HeaderWithFilter = ({ id, name, label, description, required, setColumnFil
     setStaleBatch(true);
     event.preventDefault();
   };
-  const handleFilterInconClick = (event) => {
+  const handleFilterIconClick = (event) => {
     setFilterEnabled(!filterEnabled);
     setColumnFilters((currentFilters) => {
       const foundFilter = currentFilters.filter(
-        (filter) => filter.column === label,
+        (filter) => filter.column === name,
       );
       if (foundFilter.length === 1) {
         const filter = foundFilter[0];
@@ -62,7 +62,7 @@ const HeaderWithFilter = ({ id, name, label, description, required, setColumnFil
         onChange={handleFilterChange}
         endAdornment={(
           <InputAdornment position="end">
-            <IconButton edge="end" onClick={handleFilterInconClick}>
+            <IconButton edge="end" onClick={handleFilterIconClick}>
               {filterEnabled ? <FilterAltIcon /> : <FilterAltOffIcon />}
             </IconButton>
           </InputAdornment>
