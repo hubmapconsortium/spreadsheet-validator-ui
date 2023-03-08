@@ -167,7 +167,7 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
           variant="outlined"
           onClick={() => navigate(`../${ADHERENCE_ERROR_PATH}`)}
         >
-          Cancel
+          Back to Overview
         </CancelButton>
         <SaveButton
           variant="contained"

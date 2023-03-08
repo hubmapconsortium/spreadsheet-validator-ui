@@ -220,7 +220,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
           variant="outlined"
           onClick={() => navigate(`../${COMPLETENESS_ERROR_PATH}`)}
         >
-          Cancel
+          Back to Overview
         </CancelButton>
         <SaveButton
           variant="contained"

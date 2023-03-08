@@ -42,11 +42,11 @@ export const FooterPanel = styled(Flex)({
 
 export const CancelButton = styled(BaseButton)({
   backgroundColor: WHITE,
-  width: '150px',
+  width: '220px',
 });
 
 export const SaveButton = styled(BaseButton)({
-  width: '150px',
+  width: '190px',
 });
 
 export const SaveAndRepairNextButton = styled(BaseButton)({
