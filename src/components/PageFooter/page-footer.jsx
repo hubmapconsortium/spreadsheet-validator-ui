@@ -12,10 +12,16 @@ const PageFooter = () => (
       justifyContent: 'center',
     }}
   >
-    <Block sx={{ width: '200px', fontFamily: 'Impact', fontSize: '28pt' }}>
-      HuBMAP
+    <Block sx={{ paddingRight: '40px' }}>
+      <a href="https://metadatacenter.org/" target="_blank" rel="noreferrer">
+        <img
+          src="https://more.metadatacenter.org/sites/default/files/cedar_logo3.png"
+          alt="CEDAR logo"
+          width="400px"
+        />
+      </a>
     </Block>
-    <Block sx={{ width: '30%' }}>
+    <Block sx={{ width: '35%' }}>
       Copyright @ 2023 The Board of Trustees of Leland Stanford Junior University
     </Block>
     <Block>
