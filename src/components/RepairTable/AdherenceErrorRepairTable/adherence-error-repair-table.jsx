@@ -141,16 +141,16 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
           <Flex sx={{ width: '400px', paddingLeft: '5px' }}>
             <Stack direction="row" gap={1}>
               <InfoTooltip
-                title="INSTRUCTION: The table below shows all the metadata records that contain values
-                that are not according to the metadata specification. Please correct those values using
-                the available input field, or using the check box to approve the suggested value given
-                by the application.."
+                title="The table shows all the values from users that are not correctly entered
+                according to the metadata specification. Use the available input field to enter
+                the correct value, or use the check box to approve the suggested value given
+                by the application."
                 placement="right"
                 arrow
               >
                 <HelpIcon color="primary" fontSize="medium" />
               </InfoTooltip>
-              <Typography>Help Tooltip</Typography>
+              <Typography>How to Use the Table</Typography>
             </Stack>
           </Flex>
           <SheetPagination

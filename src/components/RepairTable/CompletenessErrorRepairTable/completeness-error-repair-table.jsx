@@ -195,15 +195,15 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
           <Flex sx={{ width: '400px', paddingLeft: '5px' }}>
             <Stack direction="row" gap={1}>
               <InfoTooltip
-                title="INSTRUCTION: The table below shows all the metadata records with missing required
-                values. Please fill out the missing value using the input field on each metadata record,
-                or using the table header input field to enter in a batch mode."
+                title="The table shows the metadata records with a missing required value.
+                Use the input field on each metadata record to enter the correct value,
+                or use the input field on the table header to enter the value in a batch mode."
                 placement="right"
                 arrow
               >
                 <HelpIcon color="primary" fontSize="medium" />
               </InfoTooltip>
-              <Typography>Help Tooltip</Typography>
+              <Typography>How to Use the Table</Typography>
             </Stack>
           </Flex>
           <SheetPagination
