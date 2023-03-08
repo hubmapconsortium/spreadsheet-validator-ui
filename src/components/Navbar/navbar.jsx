@@ -17,7 +17,7 @@ const Navbar = () => (
             textDecoration: 'none',
           }}
         >
-          HuBMAP Metadata Spreadsheet Validator
+          Metadata Spreadsheet Validator
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
