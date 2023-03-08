@@ -9,7 +9,7 @@ const FilterInputField = ({ id, type, onChange, endAdornment }) => (
     key={id}
     type={type}
     size="small"
-    placeholder="Filter text..."
+    placeholder="Filter..."
     onChange={onChange}
     endAdornment={endAdornment}
     sx={{ minWidth: '150px', backgroundColor: WHITE }}
