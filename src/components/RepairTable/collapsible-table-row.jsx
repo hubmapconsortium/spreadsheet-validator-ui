@@ -148,9 +148,11 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
                         const columnDescription = schema.columnDescription[columnHeader];
                         const { name: columnName } = columnDescription;
                         const getTextColor = (column) => {
-                          const isFixed = userInput[id]?.approved || false;
+                          const suggestedInput = userInput[id]?.value || '';
+                          const isApproved = userInput[id]?.approved || false;
+                          const isSaved = suggestedInput === record[column];
                           if (column === targetColumn) {
-                            return isFixed ? GREEN : RED;
+                            return (isApproved && isSaved) ? GREEN : RED;
                           }
                           return BLACK;
                         };
