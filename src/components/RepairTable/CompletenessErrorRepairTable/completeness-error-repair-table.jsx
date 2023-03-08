@@ -43,7 +43,6 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
     () => {
       const existingUserInput = initUserInput(tableData, targetColumn, patches);
       setUserInput(existingUserInput);
-      return () => setColumnFilters([]);
     },
     [tableData, patches],
   );
