@@ -102,14 +102,14 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
                 <HeaderLabel>Column name</HeaderLabel>
               </HeaderCell>
               <HeaderCell align="center" width="30%">
-                <HeaderLabel>Cell value</HeaderLabel>
+                <HeaderLabel>Original value</HeaderLabel>
               </HeaderCell>
               <HeaderCell align="center" width="30%">
-                <HeaderLabel>Suggested value</HeaderLabel>
+                <HeaderLabel>New value</HeaderLabel>
               </HeaderCell>
               <HeaderWithCheckbox
                 id={`checkbox-${errorType}`}
-                label="Approved?"
+                label="Accept?"
                 handleCheckAll={(event) => {
                   updateUserInput((currentUserInput) => {
                     pagedData.forEach((summaryData) => {
