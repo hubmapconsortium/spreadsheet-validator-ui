@@ -128,8 +128,8 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
               </Typography>
               <SheetTable size="small">
                 <SheetHeader>
-                  {schema.columnOrder.map((columnHeader) => {
-                    const columnDescription = schema.columnDescription[columnHeader];
+                  {schema.columnOrder.map((column) => {
+                    const columnDescription = schema.columnDescription[column];
                     const { name: columnName, label: columnLabel } = columnDescription;
                     return (
                       <StaticSheetCell
@@ -144,14 +144,14 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
                 <SheetBody>
                   {records.map((record) => (
                     <TableRow key={`row-${record.rowNumber}`}>
-                      {schema.columnOrder.map((columnHeader) => {
-                        const columnDescription = schema.columnDescription[columnHeader];
+                      {schema.columnOrder.map((column) => {
+                        const columnDescription = schema.columnDescription[column];
                         const { name: columnName } = columnDescription;
-                        const getTextColor = (column) => {
+                        const getTextColor = (colName) => {
                           const suggestedInput = userInput[id]?.value || '';
                           const isApproved = userInput[id]?.approved || false;
-                          const isSaved = suggestedInput === record[column];
-                          if (column === targetColumn) {
+                          const isSaved = suggestedInput === record[colName];
+                          if (colName === targetColumn) {
                             return (isApproved && isSaved) ? GREEN : RED;
                           }
                           return BLACK;
