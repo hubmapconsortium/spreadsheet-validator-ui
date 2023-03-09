@@ -11,7 +11,7 @@ import logo from '../../logo.svg';
 import './home.css';
 import { getAdherenceErrorReport, getCompletenessErrorReport } from '../../helpers/data-utils';
 import { OVERVIEW_PATH } from '../../constants/Router';
-import { MAIN_SHEET, METADATA_SHEET, CEDAR_TEMPLATE_IRI, CEDAR_TEMPLATE_NAME, CEDAR_TEMPLATE_VERSION } from '../../constants/Sheet';
+import { CEDAR_TEMPLATE_IRI, MAIN_SHEET, METADATA_SHEET } from '../../constants/Sheet';
 import { BLUE, LIGHT_YELLOW } from '../../constants/Color';
 
 const HomeContainer = styled(Container)({
@@ -92,10 +92,8 @@ const validateSpreadsheet = async (spreadsheetData, cedarTemplateIri) => {
 const Home = ({ setAppData }) => {
   const [data, setData] = useState();
   const [template, setTemplate] = useState();
-  const [inputFile, setInputFile] = useState();
-  const [inputFileName, setInputFileName] = useState();
-  const [templateName, setTemplateName] = useState();
-  const [templateUrl, setTemplateUrl] = useState();
+  const [templateMetadata, setTemplateMetadata] = useState();
+  const [fileMetadata, setFileMetadata] = useState();
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -120,9 +118,8 @@ const Home = ({ setAppData }) => {
         metadataSheet = workbook.Sheets[sheetName];
       }
       const md = utils.sheet_to_json(metadataSheet, { defval: '' });
-      setTemplateName(`${md[0][CEDAR_TEMPLATE_NAME]} ${md[0][CEDAR_TEMPLATE_VERSION]}`);
       setTemplate(md[0][CEDAR_TEMPLATE_IRI]);
-      setTemplateUrl(`https://openview.metadatacenter.org/templates/${encodeURIComponent(md[0][CEDAR_TEMPLATE_IRI])}`);
+      setTemplateMetadata(md[0]);
     };
     return reader;
   };
@@ -155,9 +152,8 @@ const Home = ({ setAppData }) => {
         zip.file('metadata').async('string')
       )).then((content) => {
         const md = Papa.parse(content, { header: true, dynamicTyping: true });
-        setTemplateName(`${md.data[0][CEDAR_TEMPLATE_NAME]} ${md.data[0][CEDAR_TEMPLATE_VERSION]}`);
         setTemplate(md.data[0][CEDAR_TEMPLATE_IRI]);
-        setTemplateUrl(`https://openview.metadatacenter.org/templates/${encodeURIComponent(md.data[0][CEDAR_TEMPLATE_IRI])}`);
+        setTemplateMetadata(md.data[0]);
       });
     };
     return reader;
@@ -172,8 +168,10 @@ const Home = ({ setAppData }) => {
       } else if (fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
         excelReader().readAsArrayBuffer(file);
       }
-      setInputFile(file);
-      setInputFileName(file.name);
+      setFileMetadata({
+        name: file.name,
+        size: file.size,
+      });
     }
   };
   const getErrorLocations = (reporting) => {
@@ -198,9 +196,8 @@ const Home = ({ setAppData }) => {
           adherenceErrorTypes: getErrorTypes(response.reporting),
         },
         otherProps: {
-          inputFileName,
-          templateName,
-          templateUrl,
+          templateMetadata,
+          fileMetadata,
         },
       });
       navigate(OVERVIEW_PATH);
@@ -229,7 +226,7 @@ const Home = ({ setAppData }) => {
           >
             <UploadBox>
               <Typography sx={{ fontSize: '20px' }} color="text.secondary" gutterBottom>
-                {inputFile ? `${inputFile.name}` : 'Drag & drop your spreadsheet file here'}
+                {fileMetadata ? `${fileMetadata.name}` : 'Drag & drop your spreadsheet file here'}
                 {' '}
                 or
                 {' '}

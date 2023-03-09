@@ -260,13 +260,15 @@ export const generateAdherenceErrorTableData = (errorReport, data, patches) => {
   return Object.values(result);
 };
 
-export const generateNewSpreadsheet = (data, patches) => {
+export const generateNewSpreadsheet = (data, metadata, patches) => {
   const patchArray = patches.map((patch) => (Object.values(patch))).flat();
   const patchedData = jsonpatch.applyPatch(data, patchArray).newDocument;
   const finalData = patchedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
-  const ws = utils.json_to_sheet(finalData);
+  const main = utils.json_to_sheet(finalData);
+  const md = utils.json_to_sheet([metadata]);
   const wb = utils.book_new();
-  utils.book_append_sheet(wb, ws);
+  utils.book_append_sheet(wb, main, 'MAIN');
+  utils.book_append_sheet(wb, md, '.metadata');
   writeFile(wb, 'repaired_spreadsheet.xlsx');
 };
 
