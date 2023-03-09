@@ -22,10 +22,10 @@ import { ADHERENCE_ERROR_PATH } from '../../../constants/Router';
 
 const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
   const navigate = useNavigate();
-  const { appData, patches, setPatches } = useContext(AppContext);
+  const { appData, patches, updatePatches } = useContext(AppContext);
   const { schema, paths } = appData;
 
-  const [userInput, setUserInput] = useImmer({});
+  const [userInput, updateUserInput] = useImmer({});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -34,7 +34,7 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
   useEffect(
     () => {
       const existingUserInput = initUserInput(tableData, patches);
-      setUserInput(existingUserInput);
+      updateUserInput(existingUserInput);
     },
     [tableData, patches],
   );
@@ -53,19 +53,19 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
           if (isColumnRequired(column, schema)) {
             if (value !== null) {
               const patch = createReplaceOperationPatch(row, column, value);
-              setPatches((existingPatches) => {
+              updatePatches((existingPatches) => {
                 // eslint-disable-next-line no-param-reassign
                 existingPatches[row][column] = patch;
               });
             } else {
-              setPatches((existingPatches) => {
+              updatePatches((existingPatches) => {
                 // eslint-disable-next-line no-param-reassign
                 delete existingPatches[row][column];
               });
             }
           } else {
             const patch = createReplaceOperationPatch(row, column, value);
-            setPatches((existingPatches) => {
+            updatePatches((existingPatches) => {
               // eslint-disable-next-line no-param-reassign
               existingPatches[row][column] = patch;
             });
@@ -111,7 +111,7 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
                 id={`checkbox-${errorType}`}
                 label="Approved?"
                 handleCheckAll={(event) => {
-                  setUserInput((currentUserInput) => {
+                  updateUserInput((currentUserInput) => {
                     pagedData.forEach((summaryData) => {
                       const { id } = summaryData;
                       // eslint-disable-next-line no-param-reassign
@@ -130,7 +130,7 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
                   schema={schema}
                   inputRef={saveChanges}
                   userInput={userInput}
-                  setUserInput={setUserInput}
+                  updateUserInput={updateUserInput}
                 />
               ))}
             </SheetBody>

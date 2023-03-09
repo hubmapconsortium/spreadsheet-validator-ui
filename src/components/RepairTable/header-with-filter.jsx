@@ -10,11 +10,11 @@ import { HeaderCell, HeaderLabel } from './styled';
 import { RED } from '../../constants/Color';
 
 // eslint-disable-next-line max-len
-const HeaderWithFilter = ({ id, name, label, description, required, setColumnFilters, setStaleBatch }) => {
+const HeaderWithFilter = ({ id, name, label, description, required, updateColumnFilters, setStaleBatch }) => {
   const [filterEnabled, setFilterEnabled] = useState(true);
   const handleFilterChange = (event) => {
     const enteredValue = event.target.value;
-    setColumnFilters((currentFilters) => {
+    updateColumnFilters((currentFilters) => {
       const foundFilter = currentFilters.filter(
         (filter) => filter.column === name,
       );
@@ -34,7 +34,7 @@ const HeaderWithFilter = ({ id, name, label, description, required, setColumnFil
   };
   const handleFilterIconClick = (event) => {
     setFilterEnabled(!filterEnabled);
-    setColumnFilters((currentFilters) => {
+    updateColumnFilters((currentFilters) => {
       const foundFilter = currentFilters.filter(
         (filter) => filter.column === name,
       );
@@ -78,7 +78,7 @@ HeaderWithFilter.propTypes = {
   label: PropTypes.string.isRequired,
   description: PropTypes.string,
   required: PropTypes.bool,
-  setColumnFilters: PropTypes.func.isRequired,
+  updateColumnFilters: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,
 };
 

@@ -59,8 +59,8 @@ const LandingPageContainer = () => (
 const WorkspaceContainer = ({ appData }) => {
   const { data } = appData;
   const initPatches = generateEmptyObjects(data.length);
-  const [patches, setPatches] = useImmer(initPatches);
-  const appContextData = useMemo(() => ({ appData, patches, setPatches }), [patches]);
+  const [patches, updatePatches] = useImmer(initPatches);
+  const appContextData = useMemo(() => ({ appData, patches, updatePatches }), [patches]);
   return (
     <AppContext.Provider value={appContextData}>
       <MainContainer>

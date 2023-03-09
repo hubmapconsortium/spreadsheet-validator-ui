@@ -27,13 +27,13 @@ import { COMPLETENESS_ERROR_PATH } from '../../../constants/Router';
 
 const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
   const navigate = useNavigate();
-  const { appData, patches, setPatches } = useContext(AppContext);
+  const { appData, patches, updatePatches } = useContext(AppContext);
   const { schema, paths } = appData;
 
-  const [userInput, setUserInput] = useImmer({});
+  const [userInput, updateUserInput] = useImmer({});
   const [batchInput, setBatchInput] = useState('');
   const [staleBatch, setStaleBatch] = useState(false);
-  const [columnFilters, setColumnFilters] = useImmer([]);
+  const [columnFilters, updateColumnFilters] = useImmer([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -42,28 +42,14 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
   useEffect(
     () => {
       const existingUserInput = initUserInput(tableData, targetColumn, patches);
-      setUserInput(existingUserInput);
+      updateUserInput(existingUserInput);
     },
-    [tableData, patches],
+    [targetColumn],
   );
 
   const filteredData = useMemo(
     () => getFilteredData(tableData, columnFilters),
     [tableData, columnFilters],
-  );
-
-  useEffect(
-    () => {
-      if (batchInput !== '' && !staleBatch) {
-        const rows = getRows(filteredData);
-        setUserInput((prevUserInput) => {
-          // eslint-disable-next-line no-param-reassign
-          rows.forEach((row) => { prevUserInput[row] = batchInput; });
-        });
-      }
-      return () => setStaleBatch(true);
-    },
-    [filteredData, batchInput, staleBatch],
   );
 
   const pagedData = useMemo(
@@ -76,18 +62,32 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
     [targetColumn],
   );
 
+  useEffect(
+    () => {
+      if (batchInput !== '' && !staleBatch) {
+        const rows = getRows(filteredData);
+        updateUserInput((prevUserInput) => {
+          // eslint-disable-next-line no-param-reassign
+          rows.forEach((row) => { prevUserInput[row] = batchInput; });
+        });
+      }
+      return () => setStaleBatch(true);
+    },
+    [filteredData, batchInput, staleBatch],
+  );
+
   const handleSaveChanges = () => {
     tableData.forEach((record) => {
       const { rowNumber } = record;
       const value = userInput[rowNumber];
       if (value !== null) {
         const patch = createAddOperationPatch(rowNumber, targetColumn, value);
-        setPatches((existingPatches) => {
+        updatePatches((existingPatches) => {
           // eslint-disable-next-line no-param-reassign
           existingPatches[rowNumber][targetColumn] = patch;
         });
       } else {
-        setPatches((existingPatches) => {
+        updatePatches((existingPatches) => {
           // eslint-disable-next-line no-param-reassign
           delete existingPatches[rowNumber][targetColumn];
         });
@@ -142,7 +142,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
                       label={getColumnLabel(column, schema)}
                       description={getColumnDescription(column, schema)}
                       required={isColumnRequired(column, schema)}
-                      setColumnFilters={setColumnFilters}
+                      updateColumnFilters={updateColumnFilters}
                       setStaleBatch={setStaleBatch}
                     />
                   );
@@ -167,7 +167,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
                             permissibleValues={getPermissibleValues(column, schema)}
                             inputRef={saveChangesHotKeys}
                             onSave={(userValue) => {
-                              setUserInput((currentUserInput) => {
+                              updateUserInput((currentUserInput) => {
                                 // eslint-disable-next-line no-param-reassign
                                 currentUserInput[row] = nullOnEmpty(userValue);
                               });

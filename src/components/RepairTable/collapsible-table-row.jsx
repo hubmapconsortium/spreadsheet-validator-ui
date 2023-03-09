@@ -25,7 +25,7 @@ const printFrequency = (rows) => {
 };
 
 // eslint-disable-next-line max-len
-const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInput }) => {
+const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserInput }) => {
   const [open, setOpen] = useState(false);
 
   const { id, column: targetColumn, value, rows, records } = rowData;
@@ -77,7 +77,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
           permissibleValues={getPermissibleValues(targetColumn, schema)}
           inputRef={inputRef}
           onSave={(userValue) => {
-            setUserInput((currentUserInput) => {
+            updateUserInput((currentUserInput) => {
               // eslint-disable-next-line no-param-reassign
               currentUserInput[id] = {
                 column: targetColumn,
@@ -93,7 +93,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, setUserInpu
             key={`checkbox-${id}`}
             onChange={(event) => {
               const { checked: approved } = event.target;
-              setUserInput((currentUserInput) => {
+              updateUserInput((currentUserInput) => {
                 // eslint-disable-next-line no-param-reassign
                 currentUserInput[id] = {
                   column: targetColumn,
@@ -197,7 +197,7 @@ CollapsibleTableRow.propTypes = {
     approved: PropTypes.bool,
   }),
   inputRef: PropTypes.oneOfType([PropTypes.object]),
-  setUserInput: PropTypes.func.isRequired,
+  updateUserInput: PropTypes.func.isRequired,
 };
 
 CollapsibleTableRow.defaultProps = {
