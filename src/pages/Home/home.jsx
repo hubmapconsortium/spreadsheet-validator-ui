@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, styled, CircularProgress } from '@mui/material';
+import { Box, Typography, styled, CircularProgress, Dialog, DialogContent, DialogContentText, DialogActions, DialogTitle, TextField } from '@mui/material';
 import { FileUploader } from 'react-drag-drop-files';
 import { read, utils } from 'xlsx';
 import JSZip from 'jszip';
@@ -12,7 +12,7 @@ import './home.css';
 import { getAdherenceErrorReport, getCompletenessErrorReport } from '../../helpers/data-utils';
 import { OVERVIEW_PATH } from '../../constants/Router';
 import { CEDAR_TEMPLATE_IRI, MAIN_SHEET, METADATA_SHEET } from '../../constants/Sheet';
-import { BLUE, LIGHT_YELLOW } from '../../constants/Color';
+import { BLUE, LIGHTER_GRAY, LIGHT_YELLOW } from '../../constants/Color';
 
 const HomeContainer = styled(Container)({
   display: 'flex',
@@ -78,12 +78,13 @@ const validateSpreadsheet = async (spreadsheetData, cedarTemplateIri) => {
       }),
   };
   const res = fetch(url, requestOptions)
-    .then((response) => {
-      let result = {};
-      if (response.ok) {
-        result = response.json();
+    .then(async (response) => {
+      if (!response.ok) {
+        const error = await response.json();
+        throw error;
       }
-      return result;
+      const data = await response.json();
+      return data;
     });
   return res;
 };
@@ -91,11 +92,13 @@ const validateSpreadsheet = async (spreadsheetData, cedarTemplateIri) => {
 // eslint-disable-next-line react/prop-types
 const Home = ({ setAppData }) => {
   const [data, setData] = useState();
+  const [error, setError] = useState();
   const [template, setTemplate] = useState();
   const [templateMetadata, setTemplateMetadata] = useState();
   const [fileMetadata, setFileMetadata] = useState();
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
 
   const excelReader = () => {
@@ -159,7 +162,7 @@ const Home = ({ setAppData }) => {
     return reader;
   };
 
-  const handleChange = async (file) => {
+  const handleChange = (file) => {
     if (file) {
       setEnabled(true);
       const fileType = file.type;
@@ -186,8 +189,10 @@ const Home = ({ setAppData }) => {
       .map((reportItem) => reportItem.errorType)
       .filter((value, index, arr) => arr.indexOf(value) === index);
   };
-  const submitSpreadsheet = () => {
-    const validateData = async () => {
+  const submitSpreadsheet = async () => {
+    try {
+      setLoading(true);
+      setEnabled(false);
       const response = await validateSpreadsheet(data, template);
       setAppData({
         ...response,
@@ -201,11 +206,18 @@ const Home = ({ setAppData }) => {
         },
       });
       navigate(OVERVIEW_PATH);
-    };
-    setLoading(true);
-    setEnabled(false);
-    validateData();
+    } catch (e) {
+      setError(e);
+      setOpenDialog(true);
+    }
   };
+
+  const handleDialogClose = () => {
+    setLoading(false);
+    setEnabled(false);
+    setOpenDialog(false);
+  };
+
   const fileTypes = ['xlsx', 'zip'];
   return (
     <HomeContainer>
@@ -258,6 +270,35 @@ const Home = ({ setAppData }) => {
             />
           )}
         </SubmitBox>
+        <Dialog
+          open={openDialog}
+          onClose={handleDialogClose}
+          maxWidth="lg"
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {error?.code === 1 && 'Input Spreadsheet Error'}
+            {error?.code === 2 && 'Access Error'}
+            {error?.code === 3 && 'Access Error'}
+          </DialogTitle>
+          <DialogContent sx={{ width: '600px' }}>
+            <DialogContentText id="alert-dialog-description" sx={{ paddingBottom: '30px' }}>
+              {error?.message}
+            </DialogContentText>
+            <TextField
+              sx={{ width: '100%', backgroundColor: LIGHTER_GRAY }}
+              label="Fix Suggestion:"
+              defaultValue={error?.suggestion}
+              multiline
+              maxRows={8}
+              disabled
+            />
+          </DialogContent>
+          <DialogActions>
+            <BaseButton onClick={handleDialogClose} autoFocus>Close</BaseButton>
+          </DialogActions>
+        </Dialog>
       </InputArea>
     </HomeContainer>
   );
