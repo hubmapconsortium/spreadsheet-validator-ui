@@ -93,7 +93,7 @@ const validateSpreadsheet = async (spreadsheetData, cedarTemplateIri) => {
 const Home = ({ setAppData }) => {
   const [data, setData] = useState();
   const [error, setError] = useState();
-  const [template, setTemplate] = useState();
+  const [templateIri, setTemplateIri] = useState();
   const [staticSheets, setStaticSheets] = useState();
   const [inputFileMetadata, setInputFileMetadata] = useState();
   const [enabled, setEnabled] = useState(false);
@@ -117,7 +117,7 @@ const Home = ({ setAppData }) => {
 
       const metadataSheet = workbook.Sheets[METADATA_SHEET];
       const md = utils.sheet_to_json(metadataSheet, { defval: '' });
-      setTemplate(md[0][CEDAR_TEMPLATE_IRI]);
+      setTemplateIri(md[0][CEDAR_TEMPLATE_IRI]);
 
       const staticSheetNames = workbook.SheetNames.slice(1);
       const staticSheetObjects = staticSheetNames.reduce((collector, name) => ({
@@ -157,7 +157,7 @@ const Home = ({ setAppData }) => {
         zip.file('metadata').async('string')
       )).then((content) => {
         const md = Papa.parse(content, { header: true, dynamicTyping: true });
-        setTemplate(md.data[0][CEDAR_TEMPLATE_IRI]);
+        setTemplateIri(md.data[0][CEDAR_TEMPLATE_IRI]);
       });
     };
     return reader;
@@ -194,7 +194,7 @@ const Home = ({ setAppData }) => {
     try {
       setLoading(true);
       setEnabled(false);
-      const response = await validateSpreadsheet(data, template);
+      const response = await validateSpreadsheet(data, templateIri);
       setAppData({
         ...response,
         paths: {
