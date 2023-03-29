@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AppBar, Container, Slide, styled, Toolbar } from '@mui/material';
 import AppContext from '../../pages/AppContext';
 import BaseButton from '../../styles/BaseButton';
-import { generateNewCsv, generateNewSpreadsheet, isRepairCompleted } from '../../helpers/app-utils';
+import { applyPatches, generateNewCsv, generateNewSpreadsheet, isRepairCompleted } from '../../helpers/app-utils';
 import { WHITE, LIME, LIGHT_LIME } from '../../constants/Color';
 
 const GenerateButton = styled(BaseButton)({
@@ -18,7 +18,7 @@ const GenerateButton = styled(BaseButton)({
 const GenerateSpreadsheetButton = () => {
   const { appData, patches } = useContext(AppContext);
   const { data, reporting, otherProps } = appData;
-  const { templateMetadata: metadata } = otherProps;
+  const { staticSheets } = otherProps;
 
   const [hide, setHide] = useState(true);
 
@@ -40,8 +40,9 @@ const GenerateSpreadsheetButton = () => {
         >
           <Toolbar disableGutters>
             <GenerateButton onClick={() => {
-              generateNewCsv(data, patches);
-              generateNewSpreadsheet(data, metadata, patches);
+              const repairedData = applyPatches(data, patches);
+              generateNewCsv(repairedData);
+              generateNewSpreadsheet(repairedData, staticSheets);
             }}
             >
               Generate Repaired Spreadsheet

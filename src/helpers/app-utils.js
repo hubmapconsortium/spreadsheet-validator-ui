@@ -260,15 +260,20 @@ export const generateAdherenceErrorTableData = (errorReport, data, patches) => {
   return Object.values(result);
 };
 
-export const generateNewSpreadsheet = (data, metadata, patches) => {
+export const applyPatches = (data, patches) => {
   const patchArray = patches.map((patch) => (Object.values(patch))).flat();
-  const patchedData = jsonpatch.applyPatch(data, patchArray).newDocument;
-  const finalData = patchedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
-  const main = utils.json_to_sheet(finalData);
-  const md = utils.json_to_sheet([metadata]);
+  return jsonpatch.applyPatch(data, patchArray).newDocument;
+};
+
+export const generateNewSpreadsheet = (repairedData, staticSheets) => {
+  const finalData = repairedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
   const wb = utils.book_new();
+  const main = utils.json_to_sheet(finalData);
   utils.book_append_sheet(wb, main, 'MAIN');
-  utils.book_append_sheet(wb, md, '.metadata');
+  Object.keys(staticSheets).forEach((sheetName) => {
+    const ss = utils.json_to_sheet(staticSheets[sheetName]);
+    utils.book_append_sheet(wb, ss, sheetName);
+  });
   writeFile(wb, 'repaired_spreadsheet.xlsx');
 };
 
@@ -281,10 +286,8 @@ const writeCsv = (data, filename) => {
   element.click();
 };
 
-export const generateNewCsv = (data, patches) => {
-  const patchArray = patches.map((patch) => (Object.values(patch))).flat();
-  const patchedData = jsonpatch.applyPatch(data, patchArray).newDocument;
-  const finalData = patchedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
+export const generateNewCsv = (repairedData) => {
+  const finalData = repairedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
   const csv = Papa.unparse(finalData);
   writeCsv(csv, 'repaired_spreadsheet.csv');
 };
