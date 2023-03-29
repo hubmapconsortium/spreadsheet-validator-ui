@@ -10,15 +10,14 @@ import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { generateErrorSummaryReport, generateEvaluationSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
 import { getValidationResultTitle } from '../../helpers/title-utils';
-import { CEDAR_TEMPLATE_IRI, CEDAR_TEMPLATE_NAME, CEDAR_TEMPLATE_VERSION } from '../../constants/Sheet';
 
 const Overview = () => {
   const { appData } = useContext(AppContext);
-  const { data, reporting, otherProps } = appData;
-  const { fileMetadata, templateMetadata } = otherProps;
-  const inputFileName = fileMetadata.name;
-  const templateName = `${templateMetadata[CEDAR_TEMPLATE_NAME]} ${templateMetadata[CEDAR_TEMPLATE_VERSION]}`;
-  const templateUrl = `https://openview.metadatacenter.org/templates/${encodeURIComponent(templateMetadata[CEDAR_TEMPLATE_IRI])}`;
+  const { schema, data, reporting, otherProps } = appData;
+  const { inputFileMetadata } = otherProps;
+  const inputFileName = inputFileMetadata.name;
+  const templateName = `${schema.name} ${schema.version}`;
+  const templateAccessUrl = schema.accessUrl;
 
   const evaluationSummaryData = useMemo(
     () => generateEvaluationSummaryData(data, reporting),
@@ -51,7 +50,7 @@ const Overview = () => {
         <InfoBox
           inputFileName={inputFileName}
           templateName={templateName}
-          templateUrl={templateUrl}
+          templateUrl={templateAccessUrl}
         />
       </Section>
       <Section>
