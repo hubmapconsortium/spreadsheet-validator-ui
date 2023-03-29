@@ -94,8 +94,8 @@ const Home = ({ setAppData }) => {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [template, setTemplate] = useState();
-  const [templateMetadata, setTemplateMetadata] = useState();
-  const [fileMetadata, setFileMetadata] = useState();
+  const [staticSheets, setStaticSheets] = useState();
+  const [inputFileMetadata, setInputFileMetadata] = useState();
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -115,14 +115,16 @@ const Home = ({ setAppData }) => {
       const dt = utils.sheet_to_json(mainSheet, { defval: '' });
       setData(dt);
 
-      let metadataSheet = workbook.Sheets[METADATA_SHEET];
-      if (!metadataSheet) {
-        const sheetName = workbook.SheetNames[1];
-        metadataSheet = workbook.Sheets[sheetName];
-      }
+      const metadataSheet = workbook.Sheets[METADATA_SHEET];
       const md = utils.sheet_to_json(metadataSheet, { defval: '' });
       setTemplate(md[0][CEDAR_TEMPLATE_IRI]);
-      setTemplateMetadata(md[0]);
+
+      const staticSheetNames = workbook.SheetNames.slice(1);
+      const staticSheetObjects = staticSheetNames.reduce((collector, name) => ({
+        ...collector,
+        [name]: workbook.Sheets[name],
+      }), {});
+      setStaticSheets(staticSheetObjects);
     };
     return reader;
   };
@@ -156,7 +158,6 @@ const Home = ({ setAppData }) => {
       )).then((content) => {
         const md = Papa.parse(content, { header: true, dynamicTyping: true });
         setTemplate(md.data[0][CEDAR_TEMPLATE_IRI]);
-        setTemplateMetadata(md.data[0]);
       });
     };
     return reader;
@@ -171,7 +172,7 @@ const Home = ({ setAppData }) => {
       } else if (fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
         excelReader().readAsArrayBuffer(file);
       }
-      setFileMetadata({
+      setInputFileMetadata({
         name: file.name,
         size: file.size,
       });
@@ -201,8 +202,8 @@ const Home = ({ setAppData }) => {
           adherenceErrorTypes: getErrorTypes(response.reporting),
         },
         otherProps: {
-          templateMetadata,
-          fileMetadata,
+          inputFileMetadata,
+          staticSheets,
         },
       });
       navigate(OVERVIEW_PATH);
@@ -238,7 +239,7 @@ const Home = ({ setAppData }) => {
           >
             <UploadBox>
               <Typography sx={{ fontSize: '20px' }} color="text.secondary" gutterBottom>
-                {fileMetadata ? `${fileMetadata.name}` : 'Drag & drop your spreadsheet file here'}
+                {inputFileMetadata ? `${inputFileMetadata.name}` : 'Drag & drop your spreadsheet file here'}
                 {' '}
                 or
                 {' '}
